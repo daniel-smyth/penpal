@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as bcrypt from 'bcrypt';
-import dbConnect from '@lib/mongoose/db';
-import { userService } from '@lib/mongoose/services';
+import dbConnect from '@lib/db/mongoose';
+import { userService } from '@lib/db/services';
 import { createJWT } from '@lib/auth';
 
 export default async function handler(

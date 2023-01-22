@@ -1,5 +1,5 @@
-import { IArticle, Article, User } from '@lib/mongoose/models';
-import { ArticleRepository } from '@lib/mongoose/repositories';
+import { IArticle, Article, User } from '@lib/db/models';
+import { ArticleRepository } from '@lib/db/repositories';
 
 class ArticleService {
   private repository: ArticleRepository;

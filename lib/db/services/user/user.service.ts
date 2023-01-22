@@ -1,5 +1,5 @@
-import { User, IUser } from '@lib/mongoose/models';
-import { UserRepository } from '@lib/mongoose/repositories';
+import { User, IUser } from '@lib/db/models';
+import { UserRepository } from '@lib/db/repositories';
 
 class UserService {
   private repository: UserRepository;
