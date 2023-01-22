@@ -8,7 +8,7 @@ Generate paragraphs of MBA-level English content with just a simple question.
 Question: Write me three paragraphs on the Australian Open today
 ```
 
-A simple question.
+Penpal does all the work.
 
 ```console
 Answer: "This year's Australian Open has seen some exciting matches and upsets, with many of the top players competing for the title. The men's singles tournament has seen the early exit of some of the top seeds…”
