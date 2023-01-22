@@ -24,7 +24,6 @@ export default async function handler(
     case 'POST':
       try {
         const userId = req.user._id;
-
         const article = await articleService.createArticle(req.body, userId);
         res.status(201).json(article);
       } catch (err: any) {

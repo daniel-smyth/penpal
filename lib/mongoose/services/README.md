@@ -1,24 +1,19 @@
 # Services
 
-This directory contains all the Service classes for the project. These classes handle the business logic and interact with the Repository classes to perform the necessary database operations.
+This directory contains all the Service classes for Paypal. These classes handle the business logic and interact with the Repository classes to perform the necessary database operations.
 
 ## Usage
 
 ```typescript
-import {
-  createUser,
-  getUser,
-  updateUser,
-  deleteUser
-} from './services/user.service';
+import { userService } from '@lib/mongoose/services';
 
-const newUser = await createUser({
+const newUser = await userService.createUser({
   email: 'user@example.com',
   password: 'password'
 });
-const user = await getUser('userId');
-await updateUser('userId', { email: 'newEmail@example.com' });
-await deleteUser('userId');
+const user = await userService.getUser('userId');
+await userService.updateUser('userId', { email: 'newEmail@example.com' });
+await userService.deleteUser('userId');
 ```
 
 Each class has methods that correspond to the CRUD operations. Ex: create, get, update, delete, etc.
