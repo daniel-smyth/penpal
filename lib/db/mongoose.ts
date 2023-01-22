@@ -8,13 +8,13 @@ if (!MONGODB_URI) {
   );
 }
 
-let cached = (global as any).mongoose;
+let cached = global.mongoose;
 
 if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function dbConnect() {
+const dbConnect = async () => {
   if (cached.conn) {
     return cached.conn;
   }
@@ -24,7 +24,7 @@ async function dbConnect() {
       bufferCommands: false
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
     });
   }
@@ -37,6 +37,6 @@ async function dbConnect() {
   }
 
   return cached.conn;
-}
+};
 
 export default dbConnect;
