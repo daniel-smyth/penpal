@@ -22,17 +22,37 @@ Penpal will improve the English and in most cases, the quality, of your content 
 | ---------- | ------------------------ |
 | Next.js 13 | https://nextjs.org/docs/ |
 
-## Getting Started
+## Setup
 
-First, run the development server:
+1. If you don’t have Node.js installed, [install it from here](https://nodejs.org/en/) (Node.js version >= 14.6.0 required)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+2. Install the requirements
+
+   ```bash
+   $ npm install
+   ```
+
+3. Make a copy of the example environment variables file
+
+   On Linux systems:
+
+   ```bash
+   $ cp .env.example .env
+   ```
+
+   On Windows:
+
+   ```powershell
+   $ copy .env.example .env
+   ```
+
+4. Add your [OpenAI API key](https://beta.openai.com/account/api-keys) to the newly created `.env` file
+
+5. Run the app
+
+   ```bash
+   $ npm run dev
+   ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
