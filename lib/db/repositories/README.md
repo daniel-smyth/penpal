@@ -1,18 +1,18 @@
-# Repositories
+## Repositories
 
-This directory contains all the Repository classes for Mongoose models in the project. These classes handle all the database operations for the corresponding model, providing a simple and consistent interface for interacting with the database.
+This directory contains all the Repository classes for Mongoose models in the project. They provide a simple and consistent interface for interacting with the database and are typically used in the service classes of the project.
 
-## Usage
+### Usage
 
 ```typescript
-import UserRepository from './repositories/UserRepository';
+import { UserRepository } from '@lib/db/repositories';
 
-const article = await UserRepository.findUserArticleByTitle('userId', 'title');
+const user = await UserRepository.findById('id');
 ```
 
 Each class has methods that correspond to the CRUD operations. Ex: find, findById, findOne, create, update, delete, etc.
 
-## Note
+### Note
 
 - Use the appropriate method for the operation, ex: `find()`, `findById()`, `findOne()`, `create()`, `update()`, `delete()`.
 

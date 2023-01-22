@@ -1,43 +1,51 @@
-import { IArticle, Article, User } from '@lib/db/models';
+import { Model } from 'mongoose';
+import { IArticle, Article } from '@lib/db/models';
 import { ArticleRepository } from '@lib/db/repositories';
+import { userService } from '@lib/db/services';
 
 class ArticleService {
   private repository: ArticleRepository;
 
-  constructor() {
-    this.repository = new ArticleRepository(Article);
+  constructor(model: Model<IArticle>) {
+    this.repository = new ArticleRepository(model);
   }
 
-  async createArticle(data: IArticle, userId: string): Promise<IArticle> {
-    const article = await this.repository.create(data);
-    await User.updateOne({ _id: userId }, { $push: { articles: article._id } });
-    return article;
+  public async create(article: IArticle): Promise<IArticle> {
+    return this.repository.create(article);
   }
 
-  public async getArticle(id: string): Promise<IArticle | null> {
+  public async createAndLinkToUser(article: IArticle, userId: string) {
+    const user = await userService.get(userId);
+    if (!user) {
+      throw new Error('cannot create article for non-existent user');
+    }
+    const newArticle = await this.repository.create(article);
+    user.articles.push(newArticle);
+    await user.save();
+    return newArticle;
+  }
+
+  public async get(id: string): Promise<IArticle | null> {
     return this.repository.findById(id);
   }
 
-  public async getAllArticles(): Promise<IArticle[]> {
+  public async getAll(): Promise<IArticle[]> {
     return this.repository.find({});
   }
 
-  public async findArticle(query: object): Promise<IArticle | null> {
+  public async find(query: object): Promise<IArticle | null> {
     return this.repository.findOne(query);
   }
 
-  public async updateArticle(
-    id: string,
-    update: object
-  ): Promise<IArticle | null> {
+  public async update(id: string, update: object): Promise<IArticle | null> {
     return this.repository.update(id, update);
   }
 
-  public async deleteArticle(id: string): Promise<IArticle | null> {
+  public async delete(id: string): Promise<IArticle | null> {
     return this.repository.delete(id);
   }
 }
 
-const articleService = new ArticleService();
+const articleService = new ArticleService(Article);
 
 export default articleService;

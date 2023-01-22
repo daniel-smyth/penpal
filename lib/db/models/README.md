@@ -1,11 +1,11 @@
-# Models
+## Models
 
-This directory contains all the Mongoose models for the project. These models define the shape of the data that is stored in the database, and are used by the Repository classes to perform database operations.
+This directory contains all the Mongoose models for the project.
 
-## Usage
+### Usage
 
 ```typescript
-import User, { IUser } from './models/User';
+import User, { IUser } from '@lib/db/models/User';
 
 const newUser: IUser = new User({
   name: 'John Doe',
@@ -14,7 +14,7 @@ const newUser: IUser = new User({
 });
 ```
 
-## Note
+### Note
 
 - Define the structure of the data using Mongoose Schemas.
 
@@ -35,5 +35,3 @@ const newUser: IUser = new User({
 - Keep the models decoupled from other parts of the application.
 
 - Keep the models simple and focused on a single responsibility.
-
-This folder structure is designed to keep the code organized and make it easy to find the right model class. With this, we can clearly separate the different concerns of the application and have a consistent structure for the data in the database.

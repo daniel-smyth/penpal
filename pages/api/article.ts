@@ -11,7 +11,7 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       try {
-        const article = await articleService.getArticle(req.query.id as string);
+        const article = await articleService.get(req.query.id as string);
         if (!article) {
           res.status(404).json({ message: 'article not found' });
         } else {
@@ -23,8 +23,10 @@ export default async function handler(
       break;
     case 'POST':
       try {
-        const userId = req.user._id;
-        const article = await articleService.createArticle(req.body, userId);
+        const article = await articleService.createAndLinkToUser(
+          req.body,
+          req.body.email
+        );
         res.status(201).json(article);
       } catch (err: any) {
         res.status(500).json({ message: err.message });
@@ -32,7 +34,7 @@ export default async function handler(
       break;
     case 'PUT':
       try {
-        const article = await articleService.updateArticle(
+        const article = await articleService.update(
           req.query.id as string,
           req.body
         );
@@ -47,9 +49,7 @@ export default async function handler(
       break;
     case 'DELETE':
       try {
-        const article = await articleService.deleteArticle(
-          req.query.id as string
-        );
+        const article = await articleService.delete(req.query.id as string);
         if (!article) {
           res.status(404).json({ message: 'article not found' });
         } else {

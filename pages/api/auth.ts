@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import * as bcrypt from 'bcrypt';
 import dbConnect from '@lib/db/mongoose';
 import { userService } from '@lib/db/services';
 import { createJWT } from '@lib/auth';
@@ -14,7 +13,7 @@ export default async function handler(
     case 'POST':
       try {
         const { email, password } = req.body;
-        const user = await userService.findUser({ email });
+        const user = await userService.find({ email });
         if (!user) {
           return res.status(401).json({ error: 'Invalid email or password' });
         }

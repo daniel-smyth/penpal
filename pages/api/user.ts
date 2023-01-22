@@ -11,7 +11,7 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       try {
-        const user = await userService.getUser(req.query.id as string);
+        const user = await userService.get(req.query.id as string);
         if (!user) {
           res.status(404).json({ message: 'user not found' });
         } else {
@@ -23,7 +23,7 @@ export default async function handler(
       break;
     case 'POST':
       try {
-        const user = await userService.createUser(req.body);
+        const user = await userService.create(req.body);
         res.status(201).json(user);
       } catch (err: any) {
         res.status(500).json({ message: err.message });
@@ -31,10 +31,7 @@ export default async function handler(
       break;
     case 'PUT':
       try {
-        const user = await userService.updateUser(
-          req.query.id as string,
-          req.body
-        );
+        const user = await userService.update(req.query.id as string, req.body);
         if (!user) {
           res.status(404).json({ message: 'user not found' });
         } else {
@@ -46,7 +43,7 @@ export default async function handler(
       break;
     case 'DELETE':
       try {
-        const user = await userService.deleteUser(req.query.id as string);
+        const user = await userService.delete(req.query.id as string);
         if (!user) {
           res.status(404).json({ message: 'user not found' });
         } else {
