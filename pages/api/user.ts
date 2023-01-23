@@ -13,10 +13,9 @@ export default async function handler(
       try {
         const user = await userService.get(req.query.id as string);
         if (!user) {
-          res.status(404).json({ message: 'user not found' });
-        } else {
-          res.status(200).json(user);
+          return res.status(404).json({ message: 'user not found' });
         }
+        res.status(200).json(user);
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }
@@ -33,10 +32,9 @@ export default async function handler(
       try {
         const user = await userService.update(req.query.id as string, req.body);
         if (!user) {
-          res.status(404).json({ message: 'user not found' });
-        } else {
-          res.status(200).json(user);
+          return res.status(404).json({ message: 'user not found' });
         }
+        res.status(200).json(user);
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }
@@ -45,10 +43,9 @@ export default async function handler(
       try {
         const user = await userService.delete(req.query.id as string);
         if (!user) {
-          res.status(404).json({ message: 'user not found' });
-        } else {
-          res.status(200).json({ message: 'user deleted successfully' });
+          return res.status(404).json({ message: 'user not found' });
         }
+        res.status(200).json({ message: 'user deleted successfully' });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }

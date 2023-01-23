@@ -26,7 +26,6 @@ export default async function handler(
       } catch (error: any) {
         return res.status(500).json({ error: error.message });
       }
-      break;
     default:
       res.status(400).json({ success: false });
       break;

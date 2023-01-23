@@ -13,10 +13,9 @@ export default async function handler(
       try {
         const article = await articleService.get(req.query.id as string);
         if (!article) {
-          res.status(404).json({ message: 'article not found' });
-        } else {
-          res.status(200).json(article);
+          return res.status(404).json({ message: 'article not found' });
         }
+        res.status(200).json(article);
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }
@@ -39,10 +38,9 @@ export default async function handler(
           req.body
         );
         if (!article) {
-          res.status(404).json({ message: 'article not found' });
-        } else {
-          res.status(200).json(article);
+          return res.status(404).json({ message: 'article not found' });
         }
+        res.status(200).json(article);
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }
@@ -52,9 +50,8 @@ export default async function handler(
         const article = await articleService.delete(req.query.id as string);
         if (!article) {
           res.status(404).json({ message: 'article not found' });
-        } else {
-          res.status(200).json({ message: 'article deleted successfully' });
         }
+        res.status(200).json({ message: 'article deleted successfully' });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }
