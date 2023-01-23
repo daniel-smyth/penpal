@@ -5,9 +5,12 @@ This directory contains all the Repository classes for Mongoose models in the pr
 ### Usage
 
 ```typescript
+import { User } from '@lib/db/models';
 import { UserRepository } from '@lib/db/repositories';
 
-const user = await UserRepository.findById('id');
+const repository = new UserRepository(User);
+
+const user = await repository.findById('id');
 ```
 
 Each class has methods that correspond to the CRUD operations. Ex: find, findById, findOne, create, update, delete, etc.
