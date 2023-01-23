@@ -1,15 +1,18 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import GoogleProvider from 'next-auth/providers/google';
 import FacebookProvider from 'next-auth/providers/facebook';
 import GithubProvider from 'next-auth/providers/github';
 import TwitterProvider from 'next-auth/providers/twitter';
 import Auth0Provider from 'next-auth/providers/auth0';
+import clientPromise from '@lib/database/mongodb';
 // import AppleProvider from "next-auth/providers/apple"
 // import EmailProvider from "next-auth/providers/email"
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export const authOptions: NextAuthOptions = {
+  adapter: MongoDBAdapter(clientPromise),
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
     /* EmailProvider({
