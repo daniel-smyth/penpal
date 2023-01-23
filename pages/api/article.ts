@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { articleService } from '@lib/db/services';
-import dbConnect from '@lib/db/mongoose';
+import { articleService } from '@lib/database/services';
+import dbConnect from '@lib/database/mongoose';
 
 export default async function handler(
   req: NextApiRequest,

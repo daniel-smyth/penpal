@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
-import { User, IUser } from '@lib/db/models';
-import { UserRepository } from '@lib/db/repositories';
+import { User, IUser } from '@lib/database/models';
+import { UserRepository } from '@lib/database/repositories';
 
 class UserService {
   private repository: UserRepository;

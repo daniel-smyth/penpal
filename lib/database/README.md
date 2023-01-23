@@ -1,6 +1,6 @@
 ## Database
 
-This directory contains all the database (MongoDB) code for the project. Mongoose is used as the ODM library for MongoDB.
+This folder houses all the code related to the MongoDB database for the project, with Mongoose serving as the ODM (Object Document Mapping) library for MongoDB.
 
 ### Directories
 

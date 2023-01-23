@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { IArticle } from '@lib/db/models';
+import { IArticle } from '@lib/database/models';
 
 export default class ArticleRepository {
   private article: Model<IArticle>;

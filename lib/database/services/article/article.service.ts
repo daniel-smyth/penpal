@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
-import { IArticle, Article } from '@lib/db/models';
-import { ArticleRepository } from '@lib/db/repositories';
-import { userService } from '@lib/db/services';
+import { IArticle, Article } from '@lib/database/models';
+import { ArticleRepository } from '@lib/database/repositories';
+import { userService } from '@lib/database/services';
 
 class ArticleService {
   private repository: ArticleRepository;

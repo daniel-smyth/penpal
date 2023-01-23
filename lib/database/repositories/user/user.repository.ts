@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { IUser } from '@lib/db/models';
+import { IUser } from '@lib/database/models';
 
 export default class UserRepository {
   private user: Model<IUser>;
