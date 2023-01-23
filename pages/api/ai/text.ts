@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { promptService } from '@lib/database/services';
+import { articleService, promptService } from '@lib/database/services';
 import { openAiClient } from '@lib/openai';
-import dbConnect from '@lib/database/mongoose';
+import { dbConnect } from '@lib/database/mongoose';
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,12 +17,11 @@ export default async function handler(
           prompt as string,
           Number(choiceCount)
         );
-        if (req.query.articleId) {
-          const promptRecord = {
+        if (articleId) {
+          articleService.recordTextPrompt(articleId as string, {
             input: prompt as string,
             output
-          };
-          await promptService.create(promptRecord, articleId as string);
+          });
         }
         res.status(200).json({ result: output });
       } catch (err: any) {

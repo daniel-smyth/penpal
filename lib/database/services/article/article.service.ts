@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { IArticle, Article } from '@lib/database/models';
 import { ArticleRepository } from '@lib/database/repositories';
-import { userService } from '@lib/database/services';
+import { promptService, userService } from '@lib/database/services';
 
 class ArticleService {
   private repository: ArticleRepository;
@@ -42,6 +42,26 @@ class ArticleService {
 
   public async delete(id: string) {
     return this.repository.delete(id);
+  }
+
+  public async recordTextPrompt(id: string, prompt: any) {
+    const article = await this.get(id);
+    if (!article) {
+      throw new Error('cannot record text prompt for non-existent article');
+    }
+    const promptRecord = await promptService.create(prompt);
+    article.text.history.push(promptRecord);
+    await article.save();
+  }
+
+  public async recordImagePrompt(id: string, prompt: any) {
+    const article = await this.get(id);
+    if (!article) {
+      throw new Error('cannot record image prompt for non-existent article');
+    }
+    const promptRecord = await promptService.create(prompt);
+    article.image.history.push(promptRecord);
+    await article.save();
   }
 }
 

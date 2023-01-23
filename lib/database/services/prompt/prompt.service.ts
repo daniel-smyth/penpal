@@ -1,7 +1,6 @@
 import { Model } from 'mongoose';
 import { IPrompt, Prompt } from '@lib/database/models';
 import { PromptRepository } from '@lib/database/repositories';
-import { articleService } from '@lib/database/services';
 
 class PromptService {
   private repository: PromptRepository;
@@ -10,18 +9,8 @@ class PromptService {
     this.repository = new PromptRepository(model);
   }
 
-  public async create(prompt: IPrompt, articleId?: string): Promise<IPrompt> {
-    if (!articleId) {
-      return this.repository.create(prompt);
-    }
-    const article = await articleService.get(articleId);
-    if (!article) {
-      throw new Error('cannot create prompt for non-existent article');
-    }
-    const newPrompt = await this.repository.create(prompt);
-    article.history.push(newPrompt);
-    await article.save();
-    return newPrompt;
+  public async create(prompt: IPrompt): Promise<IPrompt> {
+    return this.repository.create(prompt);
   }
 
   public async get(id: string): Promise<IPrompt | null> {

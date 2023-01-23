@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { promptService } from '@lib/database/services';
-import dbConnect from '@lib/database/mongoose';
+import { dbConnect } from '@lib/database/mongoose';
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,7 +22,7 @@ export default async function handler(
       break;
     case 'POST':
       try {
-        const prompt = await promptService.create(req.body, req.body.articleId);
+        const prompt = await promptService.create(req.body);
         res.status(201).json(prompt);
       } catch (err: any) {
         res.status(500).json({ message: err.message });

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { promptService } from '@lib/database/services';
+import { articleService } from '@lib/database/services';
 import { openAiClient } from '@lib/openai';
-import dbConnect from '@lib/database/mongoose';
+import { dbConnect } from '@lib/database/mongoose';
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,11 +15,10 @@ export default async function handler(
         const { prompt, articleId } = req.query;
         const output = await openAiClient.generateImage(prompt as string);
         if (articleId) {
-          const promptRecord = {
+          articleService.recordImagePrompt(articleId as string, {
             input: prompt as string,
             output
-          };
-          await promptService.create(promptRecord, articleId as string);
+          });
         }
         res.status(200).json({ result: output });
       } catch (err: any) {
