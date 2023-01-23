@@ -10,7 +10,7 @@ class ArticleService {
     this.repository = new ArticleRepository(model);
   }
 
-  public async create(article: IArticle, userId?: string): Promise<IArticle> {
+  public async create(article: IArticle, userId?: string) {
     if (!userId) {
       return this.repository.create(article);
     }
@@ -24,23 +24,23 @@ class ArticleService {
     return newArticle;
   }
 
-  public async get(id: string): Promise<IArticle | null> {
+  public async get(id: string) {
     return this.repository.findById(id);
   }
 
-  public async getAll(): Promise<IArticle[]> {
+  public async getAll() {
     return this.repository.find({});
   }
 
-  public async find(query: object): Promise<IArticle | null> {
+  public async find(query: object) {
     return this.repository.findOne(query);
   }
 
-  public async update(id: string, update: object): Promise<IArticle | null> {
+  public async update(id: string, update: object) {
     return this.repository.update(id, update);
   }
 
-  public async delete(id: string): Promise<IArticle | null> {
+  public async delete(id: string) {
     return this.repository.delete(id);
   }
 }

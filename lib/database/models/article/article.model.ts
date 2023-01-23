@@ -1,12 +1,14 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import { IPrompt } from '@lib/database/models';
 
-export interface IArticle extends Document {
+export interface IArticle {
   title: string;
   text: string;
   image: string;
+  history: Array<IPrompt>;
 }
 
-const ArticleSchema = new Schema({
+const ArticleSchema = new Schema<IArticle>({
   title: {
     type: String,
     required: true,
@@ -17,13 +19,16 @@ const ArticleSchema = new Schema({
   text: {
     type: String,
     required: true,
-    trim: true,
     minlength: 1
   },
   image: {
     type: String,
     required: true,
-    trim: true
+    minlength: 1
+  },
+  history: {
+    text: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }],
+    image: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
   }
 });
 

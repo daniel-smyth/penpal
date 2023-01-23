@@ -1,35 +1,34 @@
-import { Model } from 'mongoose';
-import { IUser } from '@lib/database/models';
+import { IUser, UserModel } from '@lib/database/models';
 
 export default class UserRepository {
-  private user: Model<IUser>;
+  private user: UserModel;
 
-  constructor(userModel: Model<IUser>) {
+  constructor(userModel: UserModel) {
     this.user = userModel;
   }
 
-  public async create(user: IUser): Promise<IUser> {
+  public async create(user: IUser) {
     const newUser = new this.user(user);
     return newUser.save();
   }
 
-  public async findById(id: string): Promise<IUser | null> {
+  public async findById(id: string) {
     return this.user.findById(id);
   }
 
-  public async findOne(query: object): Promise<IUser | null> {
+  public async findOne(query: object) {
     return this.user.findOne(query);
   }
 
-  public async find(query: object): Promise<IUser[]> {
+  public async find(query: object) {
     return this.user.find(query);
   }
 
-  public async update(id: string, update: object): Promise<IUser | null> {
+  public async update(id: string, update: object) {
     return this.user.findByIdAndUpdate(id, update, { new: true });
   }
 
-  public async delete(id: string): Promise<IUser | null> {
+  public async delete(id: string) {
     return this.user.findByIdAndDelete(id);
   }
 }

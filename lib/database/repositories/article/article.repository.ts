@@ -8,28 +8,28 @@ export default class ArticleRepository {
     this.article = articleModel;
   }
 
-  public async create(user: IArticle): Promise<IArticle> {
-    const newUser = new this.article(user);
-    return newUser.save();
+  public async create(user: IArticle) {
+    const newArticle = new this.article(user);
+    return newArticle.save();
   }
 
-  public async findById(id: string): Promise<IArticle | null> {
+  public async findById(id: string) {
     return this.article.findById(id);
   }
 
-  public async findOne(query: object): Promise<IArticle | null> {
+  public async findOne(query: object) {
     return this.article.findOne(query);
   }
 
-  public async find(query: object): Promise<IArticle[]> {
+  public async find(query: object) {
     return this.article.find(query);
   }
 
-  public async update(id: string, update: object): Promise<IArticle | null> {
+  public async update(id: string, update: object) {
     return this.article.findByIdAndUpdate(id, update, { new: true });
   }
 
-  public async delete(id: string): Promise<IArticle | null> {
+  public async delete(id: string) {
     return this.article.findByIdAndDelete(id);
   }
 }

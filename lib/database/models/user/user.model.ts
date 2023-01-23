@@ -1,15 +1,20 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { IArticle } from '../article/article.model';
+import { IArticle } from '@lib/database/models';
 
-export interface IUser extends Document {
+export interface IUser {
   email: string;
   password: string;
   articles: Array<IArticle>;
+}
+
+export interface IUserMethods {
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-const UserSchema: Schema = new Schema({
+export type UserModel = Model<IUser, {}, IUserMethods>;
+
+const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
   email: {
     type: String,
     required: true,
@@ -34,16 +39,15 @@ const UserSchema: Schema = new Schema({
   ]
 });
 
-UserSchema.pre<IUser>('save', async function (next) {
-  const user = this as IUser;
-  if (!user.isModified('password')) {
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
     return next();
   }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) return next(err);
-    bcrypt.hash(user.password, salt, (err, hash) => {
+    bcrypt.hash(this.password, salt, (err, hash) => {
       if (err) return next(err);
-      user.password = hash;
+      this.password = hash;
       next();
     });
   });
@@ -59,6 +63,6 @@ UserSchema.methods.comparePassword = async function (
   }
 };
 
-const User = mongoose.model<IUser>('User', UserSchema);
+const User = mongoose.model<IUser, UserModel>('User', UserSchema);
 
 export default User;
