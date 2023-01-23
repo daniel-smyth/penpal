@@ -1,8 +1,9 @@
+import { ICompletionResponse, IImageResponse } from '@lib/openai';
 import mongoose, { Schema } from 'mongoose';
 
 export interface IPrompt {
   input: string;
-  output: string;
+  output: ICompletionResponse | IImageResponse;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -15,8 +16,8 @@ const PromptSchema = new Schema(
       minlength: 1
     },
     output: {
-      type: String,
-      minlength: 1
+      type: Schema.Types.Mixed,
+      required: true
     }
   },
   {

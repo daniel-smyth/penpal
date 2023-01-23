@@ -3,9 +3,14 @@ import { IPrompt } from '@lib/database/models';
 
 export interface IArticle {
   title: string;
-  text: string;
-  image: string;
-  history: Array<IPrompt>;
+  text: {
+    current: string;
+    history: Array<IPrompt>;
+  };
+  image: {
+    current: string;
+    history: Array<IPrompt>;
+  };
 }
 
 const ArticleSchema = new Schema<IArticle>({
@@ -17,16 +22,21 @@ const ArticleSchema = new Schema<IArticle>({
     maxlength: 100
   },
   text: {
-    type: String,
-    required: true,
-    minlength: 1
+    current: {
+      type: String,
+      required: true,
+      minlength: 1
+    },
+    history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
   },
   image: {
-    type: String,
-    required: true,
-    minlength: 1
-  },
-  history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
+    current: {
+      type: String,
+      required: true,
+      minlength: 1
+    },
+    history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
+  }
 });
 
 const Article = mongoose.model<IArticle>('Article', ArticleSchema);
