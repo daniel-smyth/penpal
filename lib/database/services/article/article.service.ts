@@ -10,7 +10,7 @@ class ArticleService {
     this.repository = new ArticleRepository(model);
   }
 
-  public async create(article: IArticle, userId?: string) {
+  public async create(article: IArticle, userId?: string | null | undefined) {
     if (!userId) {
       return this.repository.create(article);
     }

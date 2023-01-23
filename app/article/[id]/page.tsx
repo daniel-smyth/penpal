@@ -2,15 +2,14 @@
 
 import { ChangeEvent } from 'react';
 import { useArticle } from '@lib/hooks';
-import { ICompletionResponse, IImageResponse } from '@lib/openai';
 
-interface CreateProps {
+interface ArticleProps {
   params: {
     articleId: string;
   };
 }
 
-export default function Create({ params: { articleId } }: CreateProps) {
+export default function Article({ params: { articleId } }: ArticleProps) {
   const { article, mutate } = useArticle(articleId);
 
   if (!article) {
@@ -24,16 +23,18 @@ export default function Create({ params: { articleId } }: CreateProps) {
           new URLSearchParams({ prompt: e.target.value, articleId })
       );
       if (res.status === 200) {
-        const response = (await res.json()) as ICompletionResponse;
-        const promptRecord = {
-          input: e.target.value,
-          output: response
-        };
+        const response = await res.json();
         mutate({
           ...article,
           text: {
             current: response.choices[0].text,
-            history: [...article.text.history, promptRecord]
+            history: [
+              ...article.text.history,
+              {
+                input: e.target.value,
+                output: response
+              }
+            ]
           }
         });
       } else {
@@ -53,16 +54,18 @@ export default function Create({ params: { articleId } }: CreateProps) {
           new URLSearchParams({ prompt: e.target.value, articleId })
       );
       if (res.status === 200) {
-        const response = (await res.json()) as IImageResponse;
-        const promptRecord = {
-          input: e.target.value,
-          output: response
-        };
+        const response = await res.json();
         mutate({
           ...article,
-          text: {
+          image: {
             current: response.data.url,
-            history: [...article.text.history, promptRecord]
+            history: [
+              ...article.text.history,
+              {
+                input: e.target.value,
+                output: response
+              }
+            ]
           }
         });
       } else {
