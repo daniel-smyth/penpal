@@ -12,17 +12,16 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       try {
-        const completion = await openAiClient.generateCompletion(
-          req.query.prompt as string
-        );
-        if (req.query.articleId) {
-          const prompt = {
-            input: req.query.prompt as string,
-            output: completion
+        const { prompt, articleId } = req.query;
+        const output = await openAiClient.generateImage(prompt as string);
+        if (articleId) {
+          const promptRecord = {
+            input: prompt as string,
+            output
           };
-          await promptService.create(prompt, req.query.articleId as string);
+          await promptService.create(promptRecord, articleId as string);
         }
-        res.status(200).json({ result: completion });
+        res.status(200).json({ result: output });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }
