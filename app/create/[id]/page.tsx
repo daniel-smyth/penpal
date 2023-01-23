@@ -5,12 +5,12 @@ import { useArticle } from '@lib/hooks';
 
 interface CreateProps {
   params: {
-    _id: string;
+    articleId: string;
   };
 }
 
-export default function Create({ params: { _id } }: CreateProps) {
-  const { article, mutate } = useArticle(_id);
+export default function Create({ params: { articleId } }: CreateProps) {
+  const { article, mutate } = useArticle(articleId);
 
   if (!article) {
     return null;
@@ -19,7 +19,8 @@ export default function Create({ params: { _id } }: CreateProps) {
   const generateCompletion = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
       let res: any = await fetch(
-        '/api/article' + new URLSearchParams({ prompt: e.target.value, _id })
+        '/api/article' +
+          new URLSearchParams({ prompt: e.target.value, articleId })
       );
       if (res.status === 200) {
         const { result } = await res.json();

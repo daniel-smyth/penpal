@@ -14,8 +14,8 @@ export default function Home() {
         })
       });
       if (res.status === 200) {
-        const { _id } = await res.json();
-        router.push('/create/' + _id);
+        const { _id: articleId } = await res.json();
+        router.push('/create/' + articleId);
       } else {
         res = await res.json();
         throw new Error(res.error);
