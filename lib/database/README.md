@@ -13,7 +13,7 @@ This folder houses all the code related to the MongoDB database for the project,
 Using a model.
 
 ```typescript
-// models/user.ts
+// models/user/user.model.ts
 import mongoose, { Schema } from 'mongoose';
 
 const userSchema = new Schema({
@@ -27,8 +27,8 @@ export default mongoose.model('User', userSchema);
 Using a repository.
 
 ```typescript
-// repositories/userRepository.ts
-import User from '../models/user';
+// repositories/user/user.repository.ts
+import { User } from '@lib/db/models';
 
 export default class UserRepository {
   async findOne(email: string) {
@@ -44,8 +44,8 @@ export default class UserRepository {
 Using a service.
 
 ```typescript
-// services/userService.ts
-import userRepository from '../repositories/userRepository';
+// services/user/user.service.ts
+import { userRepository } from '@lib/db/repositories';
 
 export default class UserService {
   async findOne(email: string) {
