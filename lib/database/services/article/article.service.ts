@@ -10,11 +10,10 @@ class ArticleService {
     this.repository = new ArticleRepository(model);
   }
 
-  public async create(article: IArticle): Promise<IArticle> {
-    return this.repository.create(article);
-  }
-
-  public async createAndLinkToUser(article: IArticle, userId: string) {
+  public async create(article: IArticle, userId?: string): Promise<IArticle> {
+    if (!userId) {
+      return this.repository.create(article);
+    }
     const user = await userService.get(userId);
     if (!user) {
       throw new Error('cannot create article for non-existent user');

@@ -7,13 +7,11 @@ export default async function handler(
 ) {
   switch (req.method) {
     case 'GET':
-      const { prompt = '' } = req.query;
+      const prompt = req.query.prompt as string;
 
-      if ((prompt as string).trim().length === 0) {
+      if (prompt.trim().length === 0) {
         res.status(400).json({
-          error: {
-            message: 'Please enter a valid prompt'
-          }
+          error: { message: 'Please enter a valid prompt' }
         });
         return;
       }

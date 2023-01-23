@@ -22,10 +22,7 @@ export default async function handler(
       break;
     case 'POST':
       try {
-        const article = await articleService.createAndLinkToUser(
-          req.body,
-          req.body.email
-        );
+        const article = await articleService.create(req.body, req.body.email);
         res.status(201).json(article);
       } catch (err: any) {
         res.status(500).json({ message: err.message });
