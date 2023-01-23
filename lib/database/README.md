@@ -10,6 +10,8 @@ This folder houses all the code related to the MongoDB database for the project,
 
 ### Examples of usage
 
+Using a model.
+
 ```typescript
 // models/user.ts
 import mongoose, { Schema } from 'mongoose';
@@ -20,7 +22,11 @@ const userSchema = new Schema({
 });
 
 export default mongoose.model('User', userSchema);
+```
 
+Using a repository.
+
+```typescript
 // repositories/userRepository.ts
 import User from '../models/user';
 
@@ -33,7 +39,11 @@ export default class UserRepository {
     return new User(user).save();
   }
 };
+```
 
+Using a service.
+
+```typescript
 // services/userService.ts
 import userRepository from '../repositories/userRepository';
 
