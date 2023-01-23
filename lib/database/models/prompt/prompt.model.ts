@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 export interface IPrompt {
   input: string;
-  output?: string;
+  output: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

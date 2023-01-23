@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from '@lib/database/mongoose';
 import { userService } from '@lib/database/services';
 import { createJWT } from '@lib/auth';
+import dbConnect from '@lib/database/mongoose';
 
 export default async function handler(
   req: NextApiRequest,

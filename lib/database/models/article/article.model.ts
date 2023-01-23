@@ -26,10 +26,7 @@ const ArticleSchema = new Schema<IArticle>({
     required: true,
     minlength: 1
   },
-  history: {
-    text: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }],
-    image: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
-  }
+  history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
 });
 
 const Article = mongoose.model<IArticle>('Article', ArticleSchema);

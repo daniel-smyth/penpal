@@ -1,1 +1,1 @@
-export { default as openai } from './client';
+export { default as openAiClient } from './client';
