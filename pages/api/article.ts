@@ -1,12 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { articleService } from '@lib/database/services';
-import dbConnect from '@lib/database/mongoose';
+import { dbConnect } from '@lib/database/mongoose';
+import { getUser } from '@lib/auth';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   await dbConnect();
+  const user = await getUser();
+
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
 
   switch (req.method) {
     case 'GET':
@@ -22,7 +28,7 @@ export default async function handler(
       break;
     case 'POST':
       try {
-        const article = await articleService.create(req.body, req.body.email);
+        const article = await articleService.create(req.body, user.email);
         res.status(201).json(article);
       } catch (err: any) {
         res.status(500).json({ message: err.message });
