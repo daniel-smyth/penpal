@@ -15,14 +15,12 @@ export default async function handler(
         const completion = await openAiClient.generateCompletion(
           req.query.prompt as string
         );
-        if (req.query.articleId) {
-          await promptService.create(
-            {
-              input: req.query.prompt as string,
-              output: completion
-            },
-            req.query.articleId as string
-          );
+        if (req.query._id) {
+          const prompt = {
+            input: req.query.prompt as string,
+            output: completion
+          };
+          await promptService.create(prompt, req.query._id as string);
         }
         res.status(200).json({ result: completion });
       } catch (err: any) {

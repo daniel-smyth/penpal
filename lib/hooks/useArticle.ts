@@ -1,8 +1,10 @@
 import useSWR from 'swr';
 import { IArticle } from '@lib/database/models';
 
-const useArticle = () => {
-  const { data, mutate, error, isLoading } = useSWR<IArticle>('/api/article');
+const useArticle = (id: string) => {
+  const { data, mutate, error, isLoading } = useSWR<IArticle>(
+    `/api/article/${id}`
+  );
 
   return {
     article: data,

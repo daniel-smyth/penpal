@@ -1,5 +1,34 @@
-import s from './page.module.css';
+'use client';
+
+import { useRouter } from 'next/router';
 
 export default function Home() {
-  return <main></main>;
+  const router = useRouter();
+
+  const createArticle = async () => {
+    try {
+      let res: any = await fetch('/api/article', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: 'My new article'
+        })
+      });
+      if (res.status === 200) {
+        const { _id } = await res.json();
+        router.push('/create/' + _id);
+      } else {
+        res = await res.json();
+        throw new Error(res.error);
+      }
+    } catch (err: any) {
+      console.log(err);
+      throw new Error(err);
+    }
+  };
+
+  return (
+    <main>
+      <button onClick={createArticle}>Create Article</button>
+    </main>
+  );
 }
