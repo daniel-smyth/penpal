@@ -20,3 +20,20 @@ const MyComponent = () => {
   );
 };
 ```
+
+### SWR
+
+We also have custom SWR hooks defined for easy data management and reusability. The example below demonstrates how to use the useArticle hook in a component.
+
+```javascript
+import { useArticle } from '@lib/hooks';
+
+function Profile() {
+  const { article, isLoading, isError } = useArticle();
+
+  if (isLoading) return <div>loading...</div>;
+  if (isError) return <div>error!</div>;
+
+  return <div>article title: {article.title}!</div>;
+}
+```
