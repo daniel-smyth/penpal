@@ -1,11 +1,20 @@
-import { ICompletionResponse, IImageResponse } from '@lib/openai';
-
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 if (!OPENAI_API_KEY) {
   throw new Error(
     'Please define the OPENAI_API_KEY environment variable inside .env.local'
   );
+}
+
+export interface ICompletionResponse {
+  choices: { text: string }[];
+}
+
+export interface IImageResponse {
+  data: {
+    url: string;
+  };
+  errors?: any[];
 }
 
 class OpenAIClient {

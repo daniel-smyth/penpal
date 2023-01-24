@@ -8,21 +8,24 @@ if (!MONGODB_URI) {
   );
 }
 
-let client: MongoClient | undefined;
-let promise: Promise<MongoClient>;
+let client;
+let clientPromise: Promise<MongoClient>;
 
-if (process.env.NODE_ENV === 'development') {
-  if (!global.mongo.promise) {
-    client = new MongoClient(MONGODB_URI);
+let cached = global.mongodb;
 
-    global.mongo.promise = client.connect();
-  }
-
-  promise = global.mongo.promise;
-} else {
-  client = new MongoClient(MONGODB_URI);
-
-  promise = client.connect();
+if (!cached) {
+  cached = global.mongodb = { promise: null };
 }
 
-export default promise;
+if (process.env.NODE_ENV === 'development') {
+  if (!global.mongodb.promise) {
+    client = new MongoClient(MONGODB_URI);
+    global.mongodb.promise = client.connect();
+  }
+  clientPromise = global.mongodb.promise;
+} else {
+  client = new MongoClient(MONGODB_URI);
+  clientPromise = client.connect();
+}
+
+export default clientPromise;

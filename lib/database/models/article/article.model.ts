@@ -5,11 +5,11 @@ export interface IArticle {
   title: string;
   text: {
     current: string;
-    history: Array<IPrompt>;
+    history: IPrompt[];
   };
   image: {
     current: string;
-    history: Array<IPrompt>;
+    history: IPrompt[];
   };
 }
 

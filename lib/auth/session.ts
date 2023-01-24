@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import { unstable_getServerSession } from 'next-auth/next';
-import { authOptions } from '@pages/api/auth/[...auth]';
+import { authOptions } from '@pages/api/auth/[...nextauth]';
 
 export async function getSession(context?: GetServerSidePropsContext) {
   if (context) {

@@ -1,10 +1,11 @@
-import { User, IUser, UserModel } from '@lib/database/models';
+import { Model } from 'mongoose';
+import { User, IUser } from '@lib/database/models';
 import { UserRepository } from '@lib/database/repositories';
 
 class UserService {
   private repository: UserRepository;
 
-  constructor(model: UserModel) {
+  constructor(model: Model<IUser>) {
     this.repository = new UserRepository(model);
   }
 
