@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 import fetcher from '@lib/fetcher';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const { data: session } = useSession();
+  const router = useRouter();
 
   const createArticle = async () => {
     try {
@@ -13,9 +14,16 @@ export default function Home() {
         url: '/api/article',
         method: 'POST',
         body: {
-          title: 'My new article'
+          title: 'My new article',
+          text: {
+            current: 'This is my new article'
+          },
+          image: {
+            current: 'https://picsum.photos/200/300'
+          }
         }
       });
+      router.push(`/article/${articleId}`);
     } catch (err: any) {
       console.log(err);
       throw new Error(err);
