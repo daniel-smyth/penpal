@@ -22,7 +22,7 @@ export default async function handler(
       break;
     case 'POST':
       try {
-        const prompt = await promptService.create(req.body);
+        const prompt = await promptService.generateCompletion(req.body);
         res.status(201).json(prompt);
       } catch (err: any) {
         res.status(500).json({ message: err.message });

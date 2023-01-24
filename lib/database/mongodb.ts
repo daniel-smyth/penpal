@@ -8,23 +8,26 @@ if (!MONGODB_URI) {
   );
 }
 
-let client;
-let clientPromise: Promise<MongoClient>;
-
 let cached = global.mongodb;
 
 if (!cached) {
   cached = global.mongodb = { promise: null };
 }
 
+let client;
+let clientPromise: Promise<MongoClient>;
+
 if (process.env.NODE_ENV === 'development') {
   if (!global.mongodb.promise) {
     client = new MongoClient(MONGODB_URI);
+
     global.mongodb.promise = client.connect();
   }
+
   clientPromise = global.mongodb.promise;
 } else {
   client = new MongoClient(MONGODB_URI);
+
   clientPromise = client.connect();
 }
 

@@ -13,16 +13,11 @@ export default async function handler(
     case 'GET':
       try {
         const { prompt, choiceCount = 1, articleId } = req.query;
-        const output = await openAiClient.generateCompletion(
+        const output = await promptService.generateCompletion(
           prompt as string,
-          Number(choiceCount)
+          Number(choiceCount),
+          articleId as string
         );
-        if (articleId) {
-          articleService.recordTextPrompt(articleId as string, {
-            input: prompt as string,
-            output
-          });
-        }
         res.status(200).json({ result: output });
       } catch (err: any) {
         res.status(500).json({ message: err.message });

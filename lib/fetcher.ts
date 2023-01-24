@@ -1,4 +1,4 @@
-const fetcher = async (config: {
+export interface IFetcher {
   url: string;
   method?: string;
   body?: any;
@@ -9,19 +9,20 @@ const fetcher = async (config: {
     [key: string]: string;
   };
   timeout?: number;
-}) => {
-  let { url, body, params, headers, timeout } = config;
+}
 
-  if (params) {
-    const query = new URLSearchParams(params).toString();
-    url += query ? `?${query}` : '';
-  }
+const fetcher = async (config: IFetcher) => {
+  let { url, body, params, headers, timeout } = config;
 
   let abortController: AbortController | null = null;
 
   if (timeout) {
     abortController = new AbortController();
-    setTimeout(() => abortController?.abort(), 500);
+    setTimeout(() => abortController?.abort(), timeout);
+  }
+
+  if (params) {
+    url += `?${new URLSearchParams(params).toString()}`;
   }
 
   let response: any = await fetch(url, {

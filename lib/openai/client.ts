@@ -26,10 +26,7 @@ class OpenAIClient {
     this.apiKey = apiKey;
   }
 
-  public async generateCompletion(
-    prompt: string,
-    choiceCount: number
-  ): Promise<ICompletionResponse> {
+  public async generateCompletion(prompt: string, choiceCount = 1) {
     const response: ICompletionResponse = await fetcher({
       url: 'https://api.openai.com/v1/completions',
       method: 'POST',
@@ -47,7 +44,7 @@ class OpenAIClient {
     return response;
   }
 
-  public async generateImage(prompt: string): Promise<IImageResponse> {
+  public async generateImage(prompt: string) {
     const response: IImageResponse = await fetcher({
       url: 'https://api.openai.com/v1/images/generations',
       method: 'POST',
