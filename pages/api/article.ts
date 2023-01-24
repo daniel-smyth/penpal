@@ -8,11 +8,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   await dbConnect();
-  const user = await getUser();
-
-  if (!user) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
+  const user = await getUser({ req, res });
 
   switch (req.method) {
     case 'GET':
@@ -28,7 +24,7 @@ export default async function handler(
       break;
     case 'POST':
       try {
-        const article = await articleService.create(req.body, user.email);
+        const article = await articleService.create(req.body, user?.id);
         res.status(201).json(article);
       } catch (err: any) {
         res.status(500).json({ message: err.message });

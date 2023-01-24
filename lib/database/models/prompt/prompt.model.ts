@@ -25,6 +25,7 @@ const PromptSchema = new Schema(
   }
 );
 
-const Prompt = mongoose.model<IPrompt>('Article', PromptSchema);
+const Prompt =
+  mongoose.models.Prompt || mongoose.model<IPrompt>('Prompt', PromptSchema);
 
 export default Prompt;

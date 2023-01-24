@@ -24,7 +24,6 @@ const ArticleSchema = new Schema<IArticle>({
   text: {
     current: {
       type: String,
-      required: true,
       minlength: 1
     },
     history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
@@ -32,13 +31,13 @@ const ArticleSchema = new Schema<IArticle>({
   image: {
     current: {
       type: String,
-      required: true,
       minlength: 1
     },
     history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
   }
 });
 
-const Article = mongoose.model<IArticle>('Article', ArticleSchema);
+const Article =
+  mongoose.models.Article || mongoose.model<IArticle>('Article', ArticleSchema);
 
 export default Article;

@@ -2,26 +2,29 @@ import mongoose, { Schema } from 'mongoose';
 import { IArticle } from '@lib/database/models';
 
 export interface IUser {
-  name: string;
-  email: string;
-  image: string;
+  id: string;
+  name?: string;
+  email?: string;
+  emailVerified?: boolean;
+  image?: string;
   articles: IArticle[];
 }
 
 const UserSchema = new Schema<IUser>({
   name: {
     type: String,
-    required: true,
     minlength: 1
   },
   email: {
     type: String,
-    required: true,
     unique: true,
     lowercase: true,
     trim: true,
     minlength: 1,
     maxlength: 100
+  },
+  emailVerified: {
+    type: String
   },
   image: {
     type: String,
@@ -38,6 +41,6 @@ const UserSchema = new Schema<IUser>({
   ]
 });
 
-const User = mongoose.model<IUser>('User', UserSchema);
+const User = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
 
 export default User;
