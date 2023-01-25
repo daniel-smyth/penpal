@@ -3,6 +3,8 @@
 import { ChangeEvent, FC } from 'react';
 import { useArticle } from '@lib/hooks';
 import fetcher from '@lib/fetcher';
+import { IQuery } from '@lib/database/models';
+import { ICompletionResponse, IImageResponse } from '@lib/openai';
 
 interface EditArticleProps {
   articleId: string;
@@ -17,7 +19,7 @@ const EditArticleInputs: FC<EditArticleProps> = ({ articleId }) => {
 
   const generateCompletion = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
-      const response = await fetcher({
+      const response: IQuery = await fetcher({
         url: '/api/ai/text',
         params: {
           prompt: e.target.value,
@@ -27,14 +29,8 @@ const EditArticleInputs: FC<EditArticleProps> = ({ articleId }) => {
       mutate({
         ...article,
         text: {
-          current: response.choices[0].text,
-          history: [
-            ...article.text.history,
-            {
-              input: e.target.value,
-              output: response
-            }
-          ]
+          current: (response.output as ICompletionResponse).choices[0].text,
+          history: [...article.text.history, response]
         }
       });
     } catch (err: any) {
@@ -45,7 +41,7 @@ const EditArticleInputs: FC<EditArticleProps> = ({ articleId }) => {
 
   const generateImage = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
-      const response = await fetcher({
+      const response: IQuery = await fetcher({
         url: '/api/ai/image',
         params: {
           prompt: e.target.value,
@@ -55,14 +51,8 @@ const EditArticleInputs: FC<EditArticleProps> = ({ articleId }) => {
       mutate({
         ...article,
         image: {
-          current: response.data.url,
-          history: [
-            ...article.text.history,
-            {
-              input: e.target.value,
-              output: response
-            }
-          ]
+          current: (response.output as IImageResponse).data.url,
+          history: [...article.image.history, response]
         }
       });
     } catch (err: any) {
@@ -73,11 +63,19 @@ const EditArticleInputs: FC<EditArticleProps> = ({ articleId }) => {
 
   return (
     <>
-      <input type="text" onChange={generateCompletion} />
+      <input
+        type="text"
+        onChange={generateCompletion}
+        placeholder="Enter completion text"
+      />
       {article.text.history.map((prompt, i) => (
         <p key={i}>{prompt.input}</p>
       ))}
-      <input type="text" onChange={generateImage} />
+      <input
+        type="text"
+        onChange={generateImage}
+        placeholder="Enter image text"
+      />
       {article.image.history.map((prompt, i) => (
         <p key={i}>{prompt.input}</p>
       ))}

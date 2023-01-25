@@ -1,6 +1,6 @@
 import fetcher from '@lib/fetcher';
 import { IArticle } from '@lib/database/models';
-import { EditArticleInputs } from '@components/app';
+import { EditArticleInputs } from '@components/app/article';
 
 async function getArticle(id: string) {
   try {
