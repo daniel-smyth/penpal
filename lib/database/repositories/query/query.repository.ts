@@ -1,14 +1,14 @@
 import { Model } from 'mongoose';
-import { IPrompt } from '@lib/database/models';
+import { IQuery } from '@lib/database/models';
 
-export default class PromptRepository {
-  private prompt: Model<IPrompt>;
+export default class QueryRepository {
+  private prompt: Model<IQuery>;
 
-  constructor(userModel: Model<IPrompt>) {
+  constructor(userModel: Model<IQuery>) {
     this.prompt = userModel;
   }
 
-  public async create(prompt: IPrompt) {
+  public async create(prompt: IQuery) {
     const newPrompt = new this.prompt(prompt);
     return newPrompt.save();
   }

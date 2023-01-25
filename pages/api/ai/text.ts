@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { articleService, promptService } from '@lib/database/services';
-import { openAiClient } from '@lib/openai';
+import { queryService } from '@lib/database/services';
 import { dbConnect } from '@lib/database/mongoose';
 
 export default async function handler(
@@ -12,13 +11,13 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       try {
-        const { prompt, choiceCount = 1, articleId } = req.query;
-        const output = await promptService.generateCompletion(
+        const { prompt, articleId, choiceCount = 1 } = req.query;
+        const completion = await queryService.createCompletion(
           prompt as string,
-          Number(choiceCount),
-          articleId as string
+          articleId as string,
+          Number(choiceCount)
         );
-        res.status(200).json({ result: output });
+        res.status(200).json({ result: completion });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }

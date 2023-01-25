@@ -1,14 +1,14 @@
 import { ICompletionResponse, IImageResponse } from '@lib/openai';
 import mongoose, { Schema } from 'mongoose';
 
-export interface IPrompt {
+export interface IQuery {
   input: string;
   output: ICompletionResponse | IImageResponse;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-const PromptSchema = new Schema(
+const QuerySchema = new Schema(
   {
     input: {
       type: String,
@@ -25,7 +25,7 @@ const PromptSchema = new Schema(
   }
 );
 
-const Prompt =
-  mongoose.models.Prompt || mongoose.model<IPrompt>('Prompt', PromptSchema);
+const Query =
+  mongoose.models.Prompt || mongoose.model<IQuery>('Query', QuerySchema);
 
-export default Prompt;
+export default Query;

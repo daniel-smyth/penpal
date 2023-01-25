@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { articleService, promptService } from '@lib/database/services';
-import { openAiClient } from '@lib/openai';
+import { queryService } from '@lib/database/services';
 import { dbConnect } from '@lib/database/mongoose';
 
 export default async function handler(
@@ -13,11 +12,11 @@ export default async function handler(
     case 'GET':
       try {
         const { prompt, articleId } = req.query;
-        const output = await promptService.generateImage(
+        const image = await queryService.createImage(
           prompt as string,
           articleId as string
         );
-        res.status(200).json({ result: output });
+        res.status(200).json({ result: image });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }

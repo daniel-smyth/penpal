@@ -1,16 +1,16 @@
 import mongoose, { Schema } from 'mongoose';
-import { IPrompt } from '@lib/database/models';
+import { IQuery } from '@lib/database/models';
 
 export interface IArticle {
   _id: string;
   title: string;
   text: {
     current: string;
-    history: IPrompt[];
+    history: IQuery[];
   };
   image: {
     current: string;
-    history: IPrompt[];
+    history: IQuery[];
   };
 }
 
