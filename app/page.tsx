@@ -1,16 +1,16 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { signIn, signOut } from 'next-auth/react';
 import fetcher from '@lib/fetcher';
-import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
 
   const createArticle = async () => {
     try {
-      const { _id: articleId } = await fetcher({
+      const { _id } = await fetcher({
         url: '/api/article',
         method: 'POST',
         body: {
@@ -23,7 +23,7 @@ export default function Home() {
           }
         }
       });
-      router.push(`/article/${articleId}`);
+      router.push(`/article/${_id}`);
     } catch (err: any) {
       console.log(err);
       throw new Error(err);
@@ -32,6 +32,7 @@ export default function Home() {
 
   return (
     <main>
+      <Link href="/profile">Profile</Link>
       <Link
         href="/api/auth/signin"
         onClick={(e) => {

@@ -2,19 +2,11 @@ import fetcher from '@lib/fetcher';
 import { IArticle } from '@lib/database/models';
 import { EditArticleInputs } from '@components/app';
 
-interface EditArticleProps {
-  params: {
-    id: string;
-  };
-}
-
 async function getArticle(id: string) {
   try {
     const article: IArticle = await fetcher({
       url: `http://localhost:3000/api/article`,
-      params: {
-        id
-      }
+      params: { id }
     });
     return article;
   } catch (error: any) {
@@ -22,9 +14,11 @@ async function getArticle(id: string) {
   }
 }
 
-export default async function EditArticle({
+export default async function EditArticlePage({
   params: { id }
-}: EditArticleProps) {
+}: {
+  params: { id: string };
+}) {
   const article = await getArticle(id);
 
   return (
