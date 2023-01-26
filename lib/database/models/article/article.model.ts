@@ -1,16 +1,16 @@
 import mongoose, { Schema } from 'mongoose';
-import { IQuery } from '@lib/database/models';
+import { IImageQuery, ITextQuery } from '../query/query.model';
 
 export interface IArticle {
   _id: string;
   title: string;
   text: {
-    current: string;
-    history: IQuery[];
+    current: ITextQuery;
+    history: ITextQuery[];
   };
   image: {
-    current: string;
-    history: IQuery[];
+    current: IImageQuery;
+    history: IImageQuery[];
   };
 }
 
@@ -23,19 +23,11 @@ const ArticleSchema = new Schema<IArticle>({
     maxlength: 100
   },
   text: {
-    current: {
-      type: String,
-      required: true,
-      minlength: 1
-    },
+    current: { type: Schema.Types.ObjectId, ref: 'Prompt' },
     history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
   },
   image: {
-    current: {
-      type: String,
-      required: true,
-      minlength: 1
-    },
+    current: { type: Schema.Types.ObjectId, ref: 'Prompt' },
     history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
   }
 });

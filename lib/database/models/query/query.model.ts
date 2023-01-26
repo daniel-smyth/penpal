@@ -1,11 +1,19 @@
-import { ICompletionResponse, IImageResponse } from '@lib/openai';
 import mongoose, { Schema } from 'mongoose';
+import { ICompletionResponse, IImageResponse } from '@lib/openai';
 
 export interface IQuery {
   input: string;
   output: ICompletionResponse | IImageResponse;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface ITextQuery extends IQuery {
+  output: ICompletionResponse;
+}
+
+export interface IImageQuery extends IQuery {
+  output: IImageResponse;
 }
 
 const QuerySchema = new Schema(
@@ -26,6 +34,7 @@ const QuerySchema = new Schema(
 );
 
 const Query =
-  mongoose.models.Prompt || mongoose.model<IQuery>('Query', QuerySchema);
+  mongoose.models.Prompt ||
+  mongoose.model<ITextQuery & IImageQuery>('Query', QuerySchema);
 
 export default Query;

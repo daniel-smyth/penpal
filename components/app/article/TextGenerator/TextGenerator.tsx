@@ -3,8 +3,7 @@
 import { ChangeEvent, FC } from 'react';
 import { useArticle } from '@lib/hooks';
 import { fetcher } from '@lib/fetcher';
-import { IQuery } from '@lib/database/models';
-import { ICompletionResponse, IImageResponse } from '@lib/openai';
+import { ITextQuery } from '@lib/database/models/query/query.model';
 
 interface EditArticleInputsProps {
   articleId: string;
@@ -19,7 +18,7 @@ const EditArticleInputs: FC<EditArticleInputsProps> = ({ articleId }) => {
 
   const generateCompletion = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
-      const response: IQuery = await fetcher({
+      const response: ITextQuery = await fetcher({
         url: '/api/ai/text',
         params: {
           prompt: e.target.value,
@@ -29,30 +28,8 @@ const EditArticleInputs: FC<EditArticleInputsProps> = ({ articleId }) => {
       mutate({
         ...article,
         text: {
-          current: (response.output as ICompletionResponse).choices[0].text,
+          current: response,
           history: [...article.text.history, response]
-        }
-      });
-    } catch (err: any) {
-      console.log(err);
-      throw new Error(err);
-    }
-  };
-
-  const generateImage = async (e: ChangeEvent<HTMLInputElement>) => {
-    try {
-      const response: IQuery = await fetcher({
-        url: '/api/ai/image',
-        params: {
-          prompt: e.target.value,
-          articleId: article._id
-        }
-      });
-      mutate({
-        ...article,
-        image: {
-          current: (response.output as IImageResponse).data.url,
-          history: [...article.image.history, response]
         }
       });
     } catch (err: any) {
@@ -69,14 +46,6 @@ const EditArticleInputs: FC<EditArticleInputsProps> = ({ articleId }) => {
         placeholder="Enter completion text"
       />
       {article.text.history.map((prompt, i) => (
-        <li key={i}>{prompt.input}</li>
-      ))}
-      <input
-        type="text"
-        onChange={generateImage}
-        placeholder="Enter image text"
-      />
-      {article.image.history.map((prompt, i) => (
         <li key={i}>{prompt.input}</li>
       ))}
     </>

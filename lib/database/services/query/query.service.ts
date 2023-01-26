@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { IQuery, Query } from '@lib/database/models';
+import { IImageQuery, IQuery, ITextQuery, Query } from '@lib/database/models';
 import { QueryRepository } from '@lib/database/repositories';
 import { articleService } from '@lib/database/services';
 import { openAiClient } from '@lib/openai';
@@ -29,7 +29,7 @@ class QueryService {
       throw new Error('cannot record prompt for non-existent article');
     }
     const promptRecord = await this.create({ input: prompt, output });
-    article.image.history.push(promptRecord);
+    article.text.history.push(promptRecord as ITextQuery);
     await article.save();
     return promptRecord;
   }
@@ -44,7 +44,7 @@ class QueryService {
       throw new Error('cannot record prompt for non-existent article');
     }
     const promptRecord = await this.create({ input: prompt, output });
-    article.image.history.push(promptRecord);
+    article.image.history.push(promptRecord as IImageQuery);
     await article.save();
     return promptRecord;
   }

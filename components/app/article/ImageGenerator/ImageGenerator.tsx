@@ -1,54 +1,73 @@
 'use client';
 
-import { ChangeEvent, FC } from 'react';
+import { FC, useState } from 'react';
 import { useArticle } from '@lib/hooks';
 import { fetcher } from '@lib/fetcher';
-import { IQuery } from '@lib/database/models';
-import { ICompletionResponse, IImageResponse } from '@lib/openai';
+import { IImageQuery } from '@lib/database/models/query/query.model';
 
-interface EditArticleInputsProps {
+interface ImageGeneratorProps {
   articleId: string;
 }
 
-const EditArticleInputs: FC<EditArticleInputsProps> = ({ articleId }) => {
+const ImageGenerator: FC<ImageGeneratorProps> = ({ articleId }) => {
   const { article, mutate } = useArticle(articleId);
+  const [prompt, setPrompt] = useState('');
+  const [error, setError] = useState('');
 
   if (!article) {
     return <div>Loading...</div>;
   }
 
-  const generateImage = async (e: ChangeEvent<HTMLInputElement>) => {
+  const generateImage = async () => {
     try {
-      const response: IQuery = await fetcher({
+      const response: IImageQuery = await fetcher({
         url: '/api/ai/image',
-        params: {
-          prompt: e.target.value,
-          articleId: article._id
-        }
+        params: { prompt, articleId: article._id }
       });
       mutate({
         ...article,
         image: {
-          current: (response.output as IImageResponse).data.url,
+          current: response,
           history: [...article.image.history, response]
         }
       });
     } catch (err: any) {
       console.log(err);
-      throw new Error(err);
+      setError(err.message);
     }
   };
 
   return (
     <>
-      <p>{article.image.current}</p>
+      <p>{error}</p>
+      <p>{article.image.current.output.data.url}</p>
       <label htmlFor="image-generator-input">image-generator-input</label>
-      <input id="image-generator-input" type="text" onChange={generateImage} />
+      <input
+        id="image-generator-input"
+        type="text"
+        value={article.image.current.input}
+        onChange={(e) => setPrompt(e.target.value)}
+      />
       {article.image.history.map((prompt, i) => (
-        <li key={i}>{prompt.input}</li>
+        <li key={i}>
+          <button
+            onClick={() =>
+              mutate({
+                ...article,
+                image: {
+                  ...article.image,
+                  current: prompt
+                }
+              })
+            }
+          >
+            {prompt.input}
+          </button>
+        </li>
       ))}
+      <button onClick={generateImage}>Generate Image</button>
     </>
   );
 };
 
-export default EditArticleInputs;
+export default ImageGenerator;

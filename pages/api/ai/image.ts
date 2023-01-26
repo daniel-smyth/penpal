@@ -12,11 +12,11 @@ export default async function handler(
     case 'GET':
       try {
         const { prompt, articleId } = req.query;
-        const image = await queryService.createImage(
+        const query = await queryService.createImage(
           prompt as string,
           articleId as string
         );
-        res.status(200).json({ result: image });
+        res.status(200).json({ result: query });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }

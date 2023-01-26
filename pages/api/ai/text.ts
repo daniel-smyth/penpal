@@ -12,12 +12,12 @@ export default async function handler(
     case 'GET':
       try {
         const { prompt, articleId, choiceCount = 1 } = req.query;
-        const completion = await queryService.createCompletion(
+        const query = await queryService.createCompletion(
           prompt as string,
           articleId as string,
           Number(choiceCount)
         );
-        res.status(200).json({ result: completion });
+        res.status(200).json({ result: query });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }

@@ -1,14 +1,16 @@
 import '@testing-library/jest-dom';
-import 'whatwg-fetch';
+// import 'whatwg-fetch';
 
-import { server } from './server/server';
+// import { server } from './server/server';
 
-// Establish API mocking before all tests.
-beforeAll(() => server.listen());
+// // Establish API mocking before all tests.
+// beforeAll(() => server.listen());
 
-// Reset any request handlers that we may add during the tests,
-// so they don't affect other tests.
-afterEach(() => server.resetHandlers());
+// // Reset any request handlers that we may add during the tests,
+// // so they don't affect other tests.
+// afterEach(() => server.resetHandlers());
 
-// Clean up after the tests are finished.
-afterAll(() => server.close());
+// // Clean up after the tests are finished.
+// afterAll(() => server.close());
+
+require('jest-fetch-mock').enableMocks();
