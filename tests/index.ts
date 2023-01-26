@@ -1,0 +1,1 @@
+export { customSwrRender } from './swr';
