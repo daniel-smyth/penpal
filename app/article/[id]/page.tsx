@@ -1,6 +1,6 @@
-import fetcher from '@lib/fetcher';
+import { fetcher } from '@lib/fetcher';
 import { IArticle } from '@lib/database/models';
-import { EditArticleInputs } from '@components/app/article';
+import { ImageGenerator, TextGenerator } from '@components/app/article';
 
 async function getArticle(id: string) {
   try {
@@ -31,7 +31,8 @@ export default async function EditArticlePage({
         <br />
         Text: {article.image.current}
         <br />
-        <EditArticleInputs articleId={article._id} />
+        <TextGenerator articleId={article._id} />
+        <ImageGenerator articleId={article._id} />
       </>
     </main>
   );

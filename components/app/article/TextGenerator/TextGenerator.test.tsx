@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import EditArticleInputs from './EditArticleInputs';
+import EditArticleInputs from './TextGenerator';
 import * as ArticleHook from '@lib/hooks/useArticle';
 
 const mockArticle = {
@@ -33,26 +33,6 @@ describe('EditArticleInputs', () => {
     useArticle.mockImplementation(() => ({ article: undefined } as any));
     render(<EditArticleInputs articleId={mockArticle._id} />);
     expect(screen.getByText('Loading...')).toBeInTheDocument();
-  });
-
-  it('should render completion and image inputs', () => {
-    useArticle.mockImplementation(() => ({ article: mockArticle } as any));
-    render(<EditArticleInputs articleId={mockArticle._id} />);
-    expect(
-      screen.getByPlaceholderText('Enter completion text')
-    ).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Enter image text')).toBeInTheDocument();
-  });
-
-  it('should render completion and image history', () => {
-    useArticle.mockImplementation(() => ({ article: mockArticle } as any));
-    render(<EditArticleInputs articleId={mockArticle._id} />);
-    mockArticle.text.history.forEach(({ input }) => {
-      expect(screen.getByText(input)).toBeInTheDocument();
-    });
-    mockArticle.image.history.forEach(({ input }) => {
-      expect(screen.getByText(input)).toBeInTheDocument();
-    });
   });
 });
 

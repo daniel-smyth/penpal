@@ -1,4 +1,4 @@
-import fetcher from '@lib/fetcher';
+import { fetcher } from '@lib/fetcher';
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 

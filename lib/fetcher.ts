@@ -11,7 +11,7 @@ export interface IFetcher {
   timeout?: number;
 }
 
-const fetcher = async (config: IFetcher) => {
+export const fetcher = async (config: IFetcher) => {
   let { url, body, params, headers, timeout } = config;
 
   let abortController: AbortController | null = null;
@@ -42,5 +42,3 @@ const fetcher = async (config: IFetcher) => {
     throw new Error(response.message || response.error.message);
   }
 };
-
-export default fetcher;
