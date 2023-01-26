@@ -15,6 +15,7 @@ module.exports = {
     '^@components/(.*)$': '<rootDir>/components/$1',
     '^@lib/(.*)$': '<rootDir>/lib/$1',
     '^@pages/(.*)$': '<rootDir>/pages/$1',
+    '^@tests/(.*)$': '<rootDir>/tests/$1',
     '^@tests': '<rootDir>/tests/index.ts'
   },
   coverageThreshold: {

@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import 'whatwg-fetch';
 
-import { server } from './server';
+import { server } from './server/server';
 
 // Establish API mocking before all tests.
 beforeAll(() => server.listen());

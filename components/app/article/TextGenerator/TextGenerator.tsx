@@ -2,7 +2,7 @@
 
 import { ChangeEvent, FC } from 'react';
 import { useArticle } from '@lib/hooks';
-import fetcher from '@lib/fetcher';
+import { fetcher } from '@lib/fetcher';
 import { IQuery } from '@lib/database/models';
 import { ICompletionResponse, IImageResponse } from '@lib/openai';
 
