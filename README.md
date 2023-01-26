@@ -11,16 +11,17 @@ Question: Write me three paragraphs on the Australian Open today
 Penpal does all the work.
 
 ```console
-Answer: "This year's Australian Open has seen some exciting matches and upsets, with many of the top players competing for the title. The men's singles tournament has seen the early exit of some of the top seeds…”
+Answer: "This year's Australian Open has seen some exciting matches and upsets...”
 ```
 
-Penpal will improve the English and in most cases, the quality, of your content no matter the circumstances. Lawyers, copywriters, engineers, students, social media content creators, and many more will all be shocked at Penpal's imagination and writing ability.
+Penpal is a powerful tool that can enhance the quality and fluency of your written content, regardless of your profession or level of expertise. With its advanced algorithms and natural language processing capabilities, Penpal can help lawyers, copywriters, engineers, students, social media content creators, and many others to produce high-quality, professional-grade writing. Whether you're working on an important document, a blog post, or a social media update, Penpal can help you take your writing to the next level, leaving your readers impressed by your imagination and writing ability.
 
 ## Stack
 
-| Library    | Website                  |
-| ---------- | ------------------------ |
-| Next.js 13 | https://nextjs.org/docs/ |
+|           | Library    | Website                       |
+| --------- | ---------- | ----------------------------- |
+| Framework | Next.js 13 | https://nextjs.org/docs/      |
+| Database  | MongoDB    | https://www.mongodb.com/docs/ |
 
 ## Setup
 
@@ -46,7 +47,7 @@ Penpal will improve the English and in most cases, the quality, of your content 
    $ copy .env.example .env
    ```
 
-4. Add your [OpenAI API key](https://beta.openai.com/account/api-keys) to the newly created `.env` file
+4. Add required environment variables to the newly created `.env` file
 
 5. Run the app
 
