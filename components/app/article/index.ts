@@ -1,1 +1,1 @@
-export { default as EditArticleInputs } from './inputs/Inputs';
+export { default as EditArticleInputs } from './EditArticleInputs/EditArticleInputs';

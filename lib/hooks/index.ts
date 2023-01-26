@@ -1,1 +1,1 @@
-export { default as useArticle } from './useArticle';
+export { useArticle } from './useArticle';

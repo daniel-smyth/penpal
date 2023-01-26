@@ -3,7 +3,7 @@ import { IArticle } from '@lib/database/models';
 
 const fetcher = (id: string) => fetch(id).then((res) => res.json());
 
-const useArticle = (id: string) => {
+export const useArticle = (id: string) => {
   const { data, mutate, error, isLoading } = useSWR<IArticle>(
     `http://localhost:3000/api/article?id=${id}`,
     fetcher
@@ -16,5 +16,3 @@ const useArticle = (id: string) => {
     isError: error
   };
 };
-
-export default useArticle;

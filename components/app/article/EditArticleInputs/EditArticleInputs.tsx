@@ -6,11 +6,11 @@ import fetcher from '@lib/fetcher';
 import { IQuery } from '@lib/database/models';
 import { ICompletionResponse, IImageResponse } from '@lib/openai';
 
-interface EditArticleProps {
+interface EditArticleInputsProps {
   articleId: string;
 }
 
-const EditArticleInputs: FC<EditArticleProps> = ({ articleId }) => {
+const EditArticleInputs: FC<EditArticleInputsProps> = ({ articleId }) => {
   const { article, mutate } = useArticle(articleId);
 
   if (!article) {
@@ -69,7 +69,7 @@ const EditArticleInputs: FC<EditArticleProps> = ({ articleId }) => {
         placeholder="Enter completion text"
       />
       {article.text.history.map((prompt, i) => (
-        <p key={i}>{prompt.input}</p>
+        <li key={i}>{prompt.input}</li>
       ))}
       <input
         type="text"
@@ -77,7 +77,7 @@ const EditArticleInputs: FC<EditArticleProps> = ({ articleId }) => {
         placeholder="Enter image text"
       />
       {article.image.history.map((prompt, i) => (
-        <p key={i}>{prompt.input}</p>
+        <li key={i}>{prompt.input}</li>
       ))}
     </>
   );
