@@ -32,7 +32,7 @@ class OpenAIClient {
       method: 'POST',
       body: {
         model: 'text-davinci-003',
-        prompt: prompt
+        prompt
       },
       headers: {
         Authorization: `Bearer ${this.apiKey}`
