@@ -31,8 +31,8 @@ export default async function EditArticlePage({
         <br />
         Text: {article.image.current}
         <br />
-        <TextGenerator articleId={article._id} />
-        <ImageGenerator articleId={article._id} />
+        <TextGenerator article={article} />
+        <ImageGenerator article={article} />
       </>
     </main>
   );

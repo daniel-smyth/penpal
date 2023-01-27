@@ -4,11 +4,29 @@ const mockArticle = {
   text: {
     current: {
       input: '',
-      output: ''
+      output: {
+        choices: [{ text: '' }]
+      }
     },
     history: [
-      { input: 'Test Text Input 1', output: 'Test Text Output 1' },
-      { input: 'Test Text Input 2', output: 'Test Text Output 2' }
+      {
+        input: 'Test Text Input 1',
+        output: {
+          choices: [
+            { text: 'Test Text Output 1' },
+            { text: 'Test Text Output 2' }
+          ]
+        }
+      },
+      {
+        input: 'Test Text Input 2',
+        output: {
+          choices: [
+            { text: 'Test Text Output 3' },
+            { text: 'Test Text Output 4' }
+          ]
+        }
+      }
     ]
   },
   image: {

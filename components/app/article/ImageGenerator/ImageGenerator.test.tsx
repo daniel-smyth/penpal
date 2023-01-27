@@ -28,15 +28,14 @@ const performInputChange = async (name: string, value: string) => {
   fireEvent.change(input, { target: { value } });
 };
 
-const performButtonClick = (text: string) => {
+const clickButton = (text: string) => {
   const generateImageBtn = screen.getByText(text);
   fireEvent.click(generateImageBtn);
 };
 
 beforeEach(async () => {
-  fetchMock.mockOnce(JSON.stringify(mockArticle));
-  customSwrRender(<ImageGenerator articleId="123" />);
-  await waitForElementToBeRemoved(() => screen.getByText('Loading...'));
+  fetchMock.resetMocks();
+  customSwrRender(<ImageGenerator article={mockArticle} />);
 });
 
 describe('Image Generator', () => {
@@ -57,7 +56,7 @@ describe('Image Generator', () => {
 
     await act(async () => {
       performInputChange('image-generator-input', mockQuery.input);
-      performButtonClick('Generate Image');
+      clickButton('Generate Image');
     });
 
     expect(fetch).toHaveBeenCalledWith({
@@ -68,12 +67,12 @@ describe('Image Generator', () => {
     await waitFor(() => screen.getByText(mockQuery.output.data.url));
   });
 
-  it('adds input to input history after submit button click', async () => {
+  it('adds a new input to input history after submit button click', async () => {
     fetchMock.mockOnce(JSON.stringify(mockQuery));
 
     await act(async () => {
       performInputChange('image-generator-input', mockQuery.input);
-      performButtonClick('Generate Image');
+      clickButton('Generate Image');
     });
 
     await waitFor(() => screen.getByText(mockQuery.output.data.url));
@@ -82,7 +81,7 @@ describe('Image Generator', () => {
 
     await act(async () => {
       performInputChange('image-generator-input', 'test input 2');
-      performButtonClick('Generate Image');
+      clickButton('Generate Image');
     });
 
     expect(screen.getByText(mockQuery.input)).toBeInTheDocument();
@@ -94,7 +93,7 @@ describe('Image Generator', () => {
 
     await act(async () => {
       performInputChange('image-generator-input', mockQuery.input);
-      performButtonClick('Generate Image');
+      clickButton('Generate Image');
     });
 
     expect(fetch).toHaveBeenCalledWith({
@@ -107,9 +106,7 @@ describe('Image Generator', () => {
 
   it('changes user input and output when input history item is clicked', async () => {
     const historyItem = mockArticle.image.history.at(-1)?.input || '';
-    const historyItemBtn = screen.getByText(historyItem);
-
-    await act(async () => fireEvent.click(historyItemBtn));
+    await act(async () => fireEvent.click(screen.getByText(historyItem)));
 
     const input = screen.getByRole('textbox', {
       name: 'image-generator-input'

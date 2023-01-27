@@ -1,43 +1,106 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import EditArticleInputs from './TextGenerator';
-import * as ArticleHook from '@lib/hooks/useArticle';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import fetchMock from 'jest-fetch-mock';
+import * as fetcher from '@lib/fetcher';
+import { customSwrRender } from '@tests/utils';
+import { mockArticle } from '@tests/mocks';
+import TextGenerator from './TextGenerator';
 
-const mockArticle = {
-  _id: '123',
-  title: 'Test Title',
-  text: {
-    current: 'Test Current Text',
-    history: [
-      { input: 'Test Text Input 1', output: 'Test Text Output 1' },
-      { input: 'Test Text Input 2', output: 'Test Text Output 2' }
-    ]
-  },
-  image: {
-    current: 'Test Current Image',
-    history: [
-      { input: 'Test Image Input 1', output: 'Test Image Output 1' },
-      { input: 'Test Image Input 2', output: 'Test Image Output 2' }
-    ]
+const mockQuery = {
+  input: 'test text input',
+  output: {
+    choices: [{ text: 'test text output 1' }, { text: 'test text output 2' }]
   }
 };
 
-jest.mock('@lib/hooks/useArticle', () => ({
-  useArticle: jest.fn()
-}));
+const fetch = jest.spyOn(fetcher, 'fetcher');
 
-const useArticle = jest.spyOn(ArticleHook, 'useArticle');
+const performInputChange = async (name: string, value: string) => {
+  const input = screen.getByRole('textbox', { name }) as HTMLInputElement;
+  fireEvent.change(input, { target: { value } });
+};
 
-describe('EditArticleInputs', () => {
-  it('should render loading first', () => {
-    useArticle.mockImplementation(() => ({ article: undefined } as any));
-    render(<EditArticleInputs articleId={mockArticle._id} />);
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+const clickButton = (text: string) => {
+  const generateTextBtn = screen.getByText(text);
+  fireEvent.click(generateTextBtn);
+};
+
+beforeEach(async () => {
+  fetchMock.resetMocks();
+  customSwrRender(<TextGenerator article={mockArticle} />);
+});
+
+describe('Text Generator', () => {
+  it('renders text generator input', () => {
+    expect(
+      screen.getByRole('textbox', { name: 'text-generator-input' })
+    ).toHaveValue('');
+  });
+
+  it('renders text generator input history', () => {
+    mockArticle.text.history.forEach((query) => {
+      expect(screen.getByText(query.input)).toBeInTheDocument();
+    });
+  });
+
+  it('inputs into text generator and fetches text on submit button click', async () => {
+    fetchMock.mockOnce(JSON.stringify(mockQuery));
+
+    await act(async () => {
+      performInputChange('text-generator-input', mockQuery.input);
+      clickButton('Generate Text');
+    });
+
+    expect(fetch).toHaveBeenCalledWith({
+      url: '/api/ai/text',
+      params: { prompt: mockQuery.input, articleId: mockArticle._id }
+    });
+
+    await waitFor(() => screen.getByText(mockQuery.output.choices[0].text));
+  });
+
+  it('adds a new input to input history after submit button click', async () => {
+    fetchMock.mockOnce(JSON.stringify(mockQuery));
+
+    await act(async () => {
+      performInputChange('text-generator-input', mockQuery.input);
+      clickButton('Generate Text');
+    });
+
+    await waitFor(() => screen.getByText(mockQuery.output.choices[0].text));
+
+    fetchMock.mockOnce(JSON.stringify({ ...mockQuery, input: 'test input 2' }));
+
+    await act(async () => {
+      performInputChange('text-generator-input', 'test input 2');
+      clickButton('Generate Text');
+    });
+
+    expect(screen.getByText(mockQuery.input)).toBeInTheDocument();
+  });
+
+  it('renders error message after submit button click if fetch fails', async () => {
+    const mockError = { name: '', message: 'test error' };
+    fetchMock.mockRejectOnce(mockError);
+
+    await act(async () => {
+      performInputChange('text-generator-input', mockQuery.input);
+      clickButton('Generate Text');
+    });
+
+    await waitFor(() => screen.getByText(mockError.message));
+  });
+
+  it('changes current input and current output when input history item is clicked', async () => {
+    const { input: prompt, output } = mockArticle.text.history[0 + 1];
+
+    await act(async () => fireEvent.click(screen.getByText(prompt)));
+
+    const input = screen.getByRole('textbox', {
+      name: 'text-generator-input'
+    });
+
+    expect(input).toHaveValue(prompt);
+    expect(screen.getByText(output.choices[0].text)).toBeInTheDocument();
   });
 });
-
-afterEach(() => {
-  jest.restoreAllMocks();
-});
-
-export {};
