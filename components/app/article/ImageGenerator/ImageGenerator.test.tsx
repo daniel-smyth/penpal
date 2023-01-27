@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  act,
-  fireEvent,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved
-} from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import * as fetcher from '@lib/fetcher';
 import { customSwrRender } from '@tests/utils';

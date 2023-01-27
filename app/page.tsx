@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn, signOut } from 'next-auth/react';
-import fetcher from '@lib/fetcher';
+import { fetcher } from '@lib/fetcher';
 
 export default function Home() {
   const router = useRouter();
