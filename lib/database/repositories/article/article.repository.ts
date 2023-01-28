@@ -8,8 +8,8 @@ export default class ArticleRepository {
     this.article = articleModel;
   }
 
-  public async create(user: IArticle) {
-    const newArticle = new this.article(user);
+  public async create(article: IArticle) {
+    const newArticle = new this.article(article);
     return newArticle.save();
   }
 

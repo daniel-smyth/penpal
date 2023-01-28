@@ -1,34 +1,42 @@
-import mongoose, { Schema } from 'mongoose';
-import { IImageQuery, ITextQuery } from '../query/query.model';
+import mongoose, { ObjectId, Schema } from 'mongoose';
+import { ITextQuery, IQuery, IImageQuery } from '@lib/database/models';
 
 export interface IArticle {
-  _id: string;
+  _id?: string;
   title: string;
   text: {
     current: ITextQuery;
-    history: ITextQuery[];
+    history: (ObjectId | IQuery)[];
   };
   image: {
     current: IImageQuery;
-    history: IImageQuery[];
+    history: (ObjectId | IQuery)[];
   };
 }
 
 const ArticleSchema = new Schema<IArticle>({
   title: {
     type: String,
-    required: true,
-    trim: true,
-    minlength: 1,
-    maxlength: 100
+    maxlength: 20
   },
   text: {
-    current: { type: Schema.Types.ObjectId, ref: 'Prompt' },
-    history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
+    current: {
+      input: String,
+      output: {
+        choices: [{ text: String }]
+      }
+    },
+    history: [{ type: Schema.Types.ObjectId, ref: 'Query' }]
   },
   image: {
-    current: { type: Schema.Types.ObjectId, ref: 'Prompt' },
-    history: [{ type: Schema.Types.ObjectId, ref: 'Prompt' }]
+    current: {
+      input: String,
+      output: {
+        data: { url: String },
+        errors: [{ type: Schema.Types.Mixed }]
+      }
+    },
+    history: [{ type: Schema.Types.ObjectId, ref: 'Query' }]
   }
 });
 

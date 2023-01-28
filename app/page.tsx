@@ -4,24 +4,28 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn, signOut } from 'next-auth/react';
 import { fetcher } from '@lib/fetcher';
+import { IArticle } from '@lib/database/models';
 
 export default function Home() {
   const router = useRouter();
 
   const createArticle = async () => {
     try {
+      const article: IArticle = {
+        title: '',
+        text: {
+          current: { input: '', output: { choices: [{ text: '' }] } },
+          history: []
+        },
+        image: {
+          current: { input: '', output: { data: { url: '' } } },
+          history: []
+        }
+      };
       const { _id } = await fetcher({
         url: '/api/article',
         method: 'POST',
-        body: {
-          title: 'My new article',
-          text: {
-            current: 'This is my new article'
-          },
-          image: {
-            current: 'https://picsum.photos/200/300'
-          }
-        }
+        body: article
       });
       router.push(`/article/${_id}`);
     } catch (err: any) {
