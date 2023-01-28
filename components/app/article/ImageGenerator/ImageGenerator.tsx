@@ -3,17 +3,18 @@
 import { FC, useState } from 'react';
 import { fetcher } from '@lib/fetcher';
 import { useArticle } from '@lib/hooks';
-import { IArticle } from '@lib/database/models';
+import { IArticle, IImageQuery } from '@lib/database/models';
 
 interface ImageGeneratorProps {
   article: IArticle;
 }
 
-const ImageGenerator: FC<ImageGeneratorProps> = ({ article: initialData }) => {
-  const { article, mutate } = useArticle(initialData._id, {
-    fallbackData: initialData
+const ImageGenerator: FC<ImageGeneratorProps> = ({ article: fallbackData }) => {
+  const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
+  const [query, setQuery] = useState({
+    input: fallbackData.image.current.input,
+    output: fallbackData.image.current.output
   });
-  const [prompt, setPrompt] = useState(article?.image.current.input || '');
   const [error, setError] = useState('');
 
   if (!article) {
@@ -24,53 +25,68 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ article: initialData }) => {
     try {
       const { result } = await fetcher({
         url: '/api/ai/image',
-        params: { prompt, articleId: article._id }
+        params: { prompt: query.input, articleId: article._id }
       });
       mutate({
         ...article,
         image: {
           current: { ...result, input: '' },
-          history: [result, ...article.text.history]
+          history: [result, ...article.image.history]
         }
       });
+      setQuery(result);
     } catch (err: any) {
       console.log(err);
       setError(err.message);
     }
   };
 
+  const onHistoryClick = async (query: IImageQuery) => {
+    setQuery(query);
+    await fetcher({
+      url: '/api/article',
+      method: 'PUT',
+      params: { id: article._id },
+      body: { ...article, image: { ...article.image, current: query } }
+    });
+    mutate({ ...article, image: { ...article.image, current: query } });
+  };
+
   return (
     <>
-      <strong>Error</strong>
+      <strong>
+        Error: <p>{error}</p>
+      </strong>
+
       <br />
-      <p>{error}</p>
-      <strong>Current Output</strong>
+
+      <strong>
+        Current Output
+        <p>{article.image.current.output.data.url}</p>=
+      </strong>
+
       <br />
-      <p>{article.image.current.output.data.url}</p>
+
       <label htmlFor="image-generator-input">image-generator-input</label>
       <input
         id="image-generator-input"
         type="text"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
+        value={query.input}
+        onChange={(e) =>
+          setQuery((query) => ({ ...query, input: e.target.value }))
+        }
       />
+
+      <br />
+
       <button onClick={generateImage}>Generate Image</button>
-      {article.image.history.map((prompt, i) => (
+
+      <br />
+
+      <strong>History</strong>
+      {article.image.history.map((query, i) => (
         <li key={i}>
-          <button
-            onClick={() => {
-              mutate({
-                ...article,
-                image: {
-                  ...article.image,
-                  current: prompt
-                }
-              });
-              setPrompt(prompt.input);
-            }}
-          >
-            {prompt.input}
-          </button>
+          <button onClick={() => onHistoryClick(query)}>{query.input}</button>
         </li>
       ))}
     </>

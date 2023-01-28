@@ -7,7 +7,6 @@ import { mockArticle, mockTextQueries } from '@tests/mocks';
 import TextGenerator from './TextGenerator';
 
 const mockQuery = mockTextQueries[0];
-
 const mockError = { name: '', message: 'test error' };
 
 const fetch = jest.spyOn(fetcher, 'fetcher');
