@@ -2,7 +2,7 @@
 
 import { FC, useState } from 'react';
 import { IArticle } from '@lib/database/models';
-import { getSession, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 interface ShareArticleProps {
   article: IArticle;

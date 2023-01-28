@@ -1,4 +1,6 @@
-const mockArticle = {
+import { IArticle } from '@lib/database/models';
+
+const mockArticle: IArticle = {
   _id: '123',
   title: 'Test Title',
   text: {

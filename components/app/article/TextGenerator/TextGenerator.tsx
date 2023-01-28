@@ -29,8 +29,8 @@ const TextGenerator: FC<TextGeneratorProps> = ({ article: initialState }) => {
       mutate({
         ...article,
         text: {
-          current: response,
-          history: [...article.text.history, response]
+          current: { ...response, input: '' },
+          history: [response, ...article.text.history]
         }
       });
     } catch (err: any) {

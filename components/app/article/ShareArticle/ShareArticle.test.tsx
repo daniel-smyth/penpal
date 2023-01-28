@@ -1,9 +1,8 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { useSession } from 'next-auth/react';
 import * as fetcher from '@lib/fetcher';
-import * as getUserHook from '@lib/auth/session';
 import { mockArticle } from '@tests/mocks';
 import ShareArticle from './ShareArticle';
-import { useSession } from 'next-auth/react';
 
 const fetch = jest.spyOn(fetcher, 'fetcher');
 

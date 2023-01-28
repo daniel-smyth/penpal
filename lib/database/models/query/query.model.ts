@@ -1,22 +1,14 @@
-import mongoose, { Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 import { ITextResponse, IImageResponse } from '@lib/openai';
 
-export interface IQuery {
+export interface ITextQuery {
   input: string;
-  output: ITextResponse | IImageResponse;
+  output: ITextResponse;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface ITextQuery extends IQuery {
-  output: ITextResponse;
-}
-
-export interface IImageQuery extends IQuery {
-  output: IImageResponse;
-}
-
-const QuerySchema = new Schema(
+export const TextQuerySchema = new Schema<ITextQuery>(
   {
     input: {
       type: String,
@@ -24,8 +16,7 @@ const QuerySchema = new Schema(
       minlength: 1
     },
     output: {
-      type: Schema.Types.Mixed,
-      required: true
+      choices: [{ text: String }]
     }
   },
   {
@@ -33,7 +24,28 @@ const QuerySchema = new Schema(
   }
 );
 
-const Query =
-  mongoose.models.Query || mongoose.model<IQuery>('Query', QuerySchema);
+export interface IImageQuery {
+  input: string;
+  output: IImageResponse;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
-export default Query;
+export const ImageQuerySchema = new Schema<IImageQuery>(
+  {
+    input: {
+      type: String,
+      required: true,
+      minlength: 1
+    },
+    output: {
+      data: {
+        url: String
+      },
+      errors: []
+    }
+  },
+  {
+    timestamps: true
+  }
+);

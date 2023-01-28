@@ -1,16 +1,21 @@
-import mongoose, { ObjectId, Schema } from 'mongoose';
-import { ITextQuery, IQuery, IImageQuery } from '@lib/database/models';
+import mongoose, { Schema } from 'mongoose';
+import {
+  IImageQuery,
+  ImageQuerySchema,
+  ITextQuery,
+  TextQuerySchema
+} from '@lib/database/models';
 
 export interface IArticle {
-  _id?: string;
+  _id: string;
   title: string;
   text: {
     current: ITextQuery;
-    history: (ObjectId | IQuery)[];
+    history: ITextQuery[];
   };
   image: {
     current: IImageQuery;
-    history: (ObjectId | IQuery)[];
+    history: IImageQuery[];
   };
 }
 
@@ -26,7 +31,7 @@ const ArticleSchema = new Schema<IArticle>({
         choices: [{ text: String }]
       }
     },
-    history: [{ type: Schema.Types.ObjectId, ref: 'Query' }]
+    history: [{ type: TextQuerySchema }]
   },
   image: {
     current: {
@@ -36,7 +41,7 @@ const ArticleSchema = new Schema<IArticle>({
         errors: [{ type: Schema.Types.Mixed }]
       }
     },
-    history: [{ type: Schema.Types.ObjectId, ref: 'Query' }]
+    history: [{ type: ImageQuerySchema }]
   }
 });
 
