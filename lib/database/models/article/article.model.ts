@@ -1,7 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
 import { ITextResponse, IImageResponse } from '@lib/openai';
 
-export interface ITextQuery {
+export interface IQuery {
+  input: string;
+  output: ITextResponse | IImageResponse;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ITextQuery extends IQuery {
   input: string;
   output: ITextResponse;
   createdAt?: Date;
