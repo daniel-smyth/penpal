@@ -52,7 +52,8 @@ class ArticleService {
       throw new Error('cannot find article to generate text for');
     }
     const record = { input: prompt, output };
-    article.text.history.push(record);
+    article.text.current = record;
+    article.text.history.unshift(record);
     await article.save();
     return record;
   }
@@ -64,6 +65,7 @@ class ArticleService {
     }
     const output = await openAiClient.generateImage(prompt);
     const record = { input: prompt, output };
+    article.image.current = record;
     article.image.history.push(record);
     await article.save();
     return record;

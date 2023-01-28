@@ -3,17 +3,18 @@
 import React, { FC, useState } from 'react';
 import { fetcher } from '@lib/fetcher';
 import { useArticle } from '@lib/hooks';
-import { IArticle } from '@lib/database/models';
+import { IArticle, ITextQuery } from '@lib/database/models';
 
 interface TextGeneratorProps {
   article: IArticle;
 }
 
-const TextGenerator: FC<TextGeneratorProps> = ({ article: initialState }) => {
-  const { article, mutate } = useArticle(initialState._id, {
-    fallbackData: initialState
+const TextGenerator: FC<TextGeneratorProps> = ({ article: fallbackData }) => {
+  const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
+  const [query, setQuery] = useState({
+    input: fallbackData.text.current.input,
+    output: fallbackData.text.current.output
   });
-  const [prompt, setPrompt] = useState(article?.text.current.input || '');
   const [error, setError] = useState('');
 
   if (!article) {
@@ -22,9 +23,9 @@ const TextGenerator: FC<TextGeneratorProps> = ({ article: initialState }) => {
 
   const generateText = async () => {
     try {
-      const { result } = await fetcher({
+      const { result }: { result: ITextQuery } = await fetcher({
         url: '/api/ai/text',
-        params: { prompt, articleId: article._id }
+        params: { prompt: query.input, articleId: article._id }
       });
       mutate({
         ...article,
@@ -33,46 +34,59 @@ const TextGenerator: FC<TextGeneratorProps> = ({ article: initialState }) => {
           history: [result, ...article.text.history]
         }
       });
+      setQuery(result);
     } catch (err: any) {
       console.log(err);
       setError(err.message);
     }
   };
 
+  const onHistoryClick = async (query: ITextQuery) => {
+    setQuery(query);
+    await fetcher({
+      url: '/api/article',
+      method: 'PUT',
+      params: { id: article._id },
+      body: { ...article, text: { ...article.text, current: query } }
+    });
+    mutate({ ...article, text: { ...article.text, current: query } });
+  };
+
   return (
     <>
-      <strong>Error</strong>
+      <strong>
+        Error: <p>{error}</p>
+      </strong>
+
       <br />
-      <p>{error}</p>
-      <strong>Current Output</strong>
+
+      <strong>
+        Current Output
+        <p>{article.text.current.output.choices[0].text}</p>
+      </strong>
+
       <br />
-      <p>{article.text.current.output.choices[0].text}</p>
+
       <label htmlFor="text-generator-input">text-generator-input</label>
       <input
         id="text-generator-input"
         type="text"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
+        value={query.input}
+        onChange={(e) =>
+          setQuery((query) => ({ ...query, input: e.target.value }))
+        }
       />
-      <button onClick={generateText}>Generate Text</button>
+
       <br />
+
+      <button onClick={generateText}>Generate Text</button>
+
+      <br />
+
       <strong>History</strong>
-      {article.text.history.map((prompt, i) => (
+      {article.text.history.map((query, i) => (
         <li key={i}>
-          <button
-            onClick={() => {
-              mutate({
-                ...article,
-                text: {
-                  ...article.text,
-                  current: prompt
-                }
-              });
-              setPrompt(prompt.input);
-            }}
-          >
-            {prompt.input}
-          </button>
+          <button onClick={() => onHistoryClick(query)}>{query.input}</button>
         </li>
       ))}
     </>
