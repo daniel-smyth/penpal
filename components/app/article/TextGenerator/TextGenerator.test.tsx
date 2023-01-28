@@ -27,23 +27,25 @@ const clickButton = (text: string) => {
 
 beforeEach(async () => {
   fetchMock.resetMocks();
-  customSwrRender(<TextGenerator article={mockArticle} />);
 });
 
 describe('Text Generator', () => {
   it('renders text generator input', () => {
+    customSwrRender(<TextGenerator article={mockArticle} />);
     expect(
       screen.getByRole('textbox', { name: 'text-generator-input' })
     ).toHaveValue('');
   });
 
   it('renders text generator input history', () => {
+    customSwrRender(<TextGenerator article={mockArticle} />);
     mockArticle.text.history.forEach((query) => {
       expect(screen.getByText(query.input)).toBeInTheDocument();
     });
   });
 
   it('inputs into text generator and fetches text on submit button click', async () => {
+    customSwrRender(<TextGenerator article={mockArticle} />);
     fetchMock.mockOnce(JSON.stringify(mockQuery));
 
     await act(async () => {
@@ -56,10 +58,11 @@ describe('Text Generator', () => {
       params: { prompt: mockQuery.input, articleId: mockArticle._id }
     });
 
-    await waitFor(() => screen.getByText(mockQuery.output.choices[0].text));
+    await screen.findByText(mockQuery.output.choices[0].text);
   });
 
   it('adds a new input to input history after submit button click', async () => {
+    customSwrRender(<TextGenerator article={mockArticle} />);
     fetchMock.mockOnce(JSON.stringify(mockQuery));
 
     await act(async () => {
@@ -67,7 +70,7 @@ describe('Text Generator', () => {
       clickButton('Generate Text');
     });
 
-    await waitFor(() => screen.getByText(mockQuery.output.choices[0].text));
+    await screen.findByText(mockQuery.output.choices[0].text);
 
     fetchMock.mockOnce(JSON.stringify({ ...mockQuery, input: 'test input 2' }));
 
@@ -80,6 +83,7 @@ describe('Text Generator', () => {
   });
 
   it('renders error message after submit button click if fetch fails', async () => {
+    customSwrRender(<TextGenerator article={mockArticle} />);
     const mockError = { name: '', message: 'test error' };
     fetchMock.mockRejectOnce(mockError);
 
@@ -88,13 +92,14 @@ describe('Text Generator', () => {
       clickButton('Generate Text');
     });
 
-    await waitFor(() => screen.getByText(mockError.message));
+    await screen.findByText(mockError.message);
   });
 
   it('changes current input and current output when input history item is clicked', async () => {
+    customSwrRender(<TextGenerator article={mockArticle} />);
     const { input: prompt, output } = mockArticle.text.history[0 + 1];
 
-    await act(async () => fireEvent.click(screen.getByText(prompt)));
+    await act(async () => clickButton(prompt));
 
     const input = screen.getByRole('textbox', {
       name: 'text-generator-input'
