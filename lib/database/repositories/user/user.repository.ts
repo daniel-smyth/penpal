@@ -1,9 +1,10 @@
-import { IUser, UserModel } from '@lib/database/models';
+import { Model } from 'mongoose';
+import { IUser } from '@lib/database/models';
 
 export default class UserRepository {
-  private user: UserModel;
+  private user: Model<IUser>;
 
-  constructor(userModel: UserModel) {
+  constructor(userModel: Model<IUser>) {
     this.user = userModel;
   }
 

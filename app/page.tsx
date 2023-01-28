@@ -4,14 +4,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn, signOut } from 'next-auth/react';
 import { fetcher } from '@lib/fetcher';
-import { IArticle } from '@lib/database/models';
 
 export default function Home() {
   const router = useRouter();
 
   const createArticle = async () => {
     try {
-      const article: IArticle = {
+      const article = {
         title: '',
         text: {
           current: { input: '', output: { choices: [{ text: '' }] } },

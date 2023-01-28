@@ -2,6 +2,7 @@ import { Model } from 'mongoose';
 import { IArticle, Article } from '@lib/database/models';
 import { ArticleRepository } from '@lib/database/repositories';
 import { userService } from '@lib/database/services';
+import { openAiClient } from '@lib/openai';
 
 class ArticleService {
   private repository: ArticleRepository;
@@ -42,6 +43,30 @@ class ArticleService {
 
   public async delete(id: string) {
     return this.repository.delete(id);
+  }
+
+  public async generateText(id: string, prompt: string, choiceCount = 1) {
+    const output = await openAiClient.generateText(prompt, choiceCount);
+    const article = await this.get(id);
+    if (!article) {
+      throw new Error('cannot find article to generate text for');
+    }
+    const record = { input: prompt, output };
+    article.text.history.push(record);
+    await article.save();
+    return record;
+  }
+
+  public async generateImage(id: string, prompt: string) {
+    const article = await this.get(id);
+    if (!article) {
+      throw new Error('cannot find article to generate image for');
+    }
+    const output = await openAiClient.generateImage(prompt);
+    const record = { input: prompt, output };
+    article.image.history.push(record);
+    await article.save();
+    return record;
   }
 }
 

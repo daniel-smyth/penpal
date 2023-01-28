@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { queryService } from '@lib/database/services';
+import { articleService } from '@lib/database/services';
 import { dbConnect } from '@lib/database/mongoose';
 
 export default async function handler(
@@ -12,11 +12,14 @@ export default async function handler(
     case 'GET':
       try {
         const { prompt, articleId } = req.query;
-        const query = await queryService.createImage(
-          prompt as string,
-          articleId as string
+        if (!articleId) {
+          throw new Error('article is required to generate image');
+        }
+        const result = await articleService.generateImage(
+          articleId as string,
+          prompt as string
         );
-        res.status(200).json({ result: query });
+        res.status(200).json({ result });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }

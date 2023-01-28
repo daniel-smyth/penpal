@@ -3,7 +3,7 @@
 import { FC, useState } from 'react';
 import { fetcher } from '@lib/fetcher';
 import { useArticle } from '@lib/hooks';
-import { IArticle, IImageQuery } from '@lib/database/models';
+import { IArticle } from '@lib/database/models';
 
 interface ImageGeneratorProps {
   article: IArticle;
@@ -13,7 +13,7 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ article: initialData }) => {
   const { article, mutate } = useArticle(initialData._id, {
     fallbackData: initialData
   });
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState(article?.image.current.input || '');
   const [error, setError] = useState('');
 
   if (!article) {
@@ -22,15 +22,15 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ article: initialData }) => {
 
   const generateImage = async () => {
     try {
-      const response: IImageQuery = await fetcher({
+      const { result } = await fetcher({
         url: '/api/ai/image',
         params: { prompt, articleId: article._id }
       });
       mutate({
         ...article,
         image: {
-          current: response,
-          history: [...article.image.history, response]
+          current: { ...result, input: '' },
+          history: [result, ...article.text.history]
         }
       });
     } catch (err: any) {
@@ -41,33 +41,38 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ article: initialData }) => {
 
   return (
     <>
+      <strong>Error</strong>
+      <br />
       <p>{error}</p>
+      <strong>Current Output</strong>
+      <br />
       <p>{article.image.current.output.data.url}</p>
       <label htmlFor="image-generator-input">image-generator-input</label>
       <input
         id="image-generator-input"
         type="text"
-        value={article.image.current.input}
+        value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
       />
+      <button onClick={generateImage}>Generate Image</button>
       {article.image.history.map((prompt, i) => (
         <li key={i}>
           <button
-            onClick={() =>
+            onClick={() => {
               mutate({
                 ...article,
                 image: {
                   ...article.image,
                   current: prompt
                 }
-              })
-            }
+              });
+              setPrompt(prompt.input);
+            }}
           >
             {prompt.input}
           </button>
         </li>
       ))}
-      <button onClick={generateImage}>Generate Image</button>
     </>
   );
 };

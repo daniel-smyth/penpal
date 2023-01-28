@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { queryService } from '@lib/database/services';
+import { articleService } from '@lib/database/services';
 import { dbConnect } from '@lib/database/mongoose';
 
 export default async function handler(
@@ -12,12 +12,15 @@ export default async function handler(
     case 'GET':
       try {
         const { prompt, articleId, choiceCount = 1 } = req.query;
-        const query = await queryService.createCompletion(
-          prompt as string,
+        if (!articleId) {
+          throw new Error('article is required to generate text');
+        }
+        const result = await articleService.generateText(
           articleId as string,
+          prompt as string,
           Number(choiceCount)
         );
-        res.status(200).json({ result: query });
+        res.status(200).json({ result });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }
