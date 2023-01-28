@@ -8,7 +8,7 @@ if (!OPENAI_API_KEY) {
   );
 }
 
-export interface ICompletionResponse {
+export interface ITextResponse {
   choices: { text: string }[];
 }
 
@@ -26,8 +26,14 @@ class OpenAIClient {
     this.apiKey = apiKey;
   }
 
-  public async generateCompletion(prompt: string, choiceCount = 1) {
-    const response: ICompletionResponse = await fetcher({
+  public async generateText(prompt: string, choiceCount = 1) {
+    const mockResponse: ITextResponse = {
+      choices: [{ text: prompt + ' I am AI output' }]
+    };
+
+    return mockResponse;
+
+    const response: ITextResponse = await fetcher({
       url: 'https://api.openai.com/v1/completions',
       method: 'POST',
       body: {
@@ -45,6 +51,12 @@ class OpenAIClient {
   }
 
   public async generateImage(prompt: string) {
+    const mockResponse: IImageResponse = {
+      data: { url: prompt + ' I am AI output' }
+    };
+
+    return mockResponse;
+
     const response: IImageResponse = await fetcher({
       url: 'https://api.openai.com/v1/images/generations',
       method: 'POST',

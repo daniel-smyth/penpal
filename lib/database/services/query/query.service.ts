@@ -20,7 +20,7 @@ class QueryService {
     articleId?: string,
     choiceCount = 1
   ) {
-    const output = await openAiClient.generateCompletion(prompt, choiceCount);
+    const output = await openAiClient.generateText(prompt, choiceCount);
     if (!articleId) {
       return this.create({ input: prompt, output });
     }
@@ -29,7 +29,7 @@ class QueryService {
       throw new Error('cannot record prompt for non-existent article');
     }
     const promptRecord = await this.create({ input: prompt, output });
-    article.text.history.push(promptRecord as ITextQuery);
+    article.text.history.push(promptRecord);
     await article.save();
     return promptRecord;
   }
