@@ -1,31 +1,46 @@
 'use client';
 
 import React from 'react';
-import { mutate } from 'swr';
+import { useSWRConfig } from 'swr';
+import { useRouter } from 'next/navigation';
+import { fetcher } from '@lib/fetcher';
 import { IArticle } from '@lib/database/models';
+
+const deleteFetcher = (id: string) =>
+  fetcher({ url: `/api/article?id=${id}`, method: 'DELETE' });
 
 interface ArticleListItemProps {
   article: IArticle;
 }
 
-const fetcher = (id: string) =>
-  fetch(`/api/article?id=${id}`, { method: 'DELETE' }).then((res) =>
-    res.json()
-  );
-
 const ArticleListItem: React.FC<ArticleListItemProps> = ({ article }) => {
-  const deleteArticle = () => {
-    mutate('/api/article', fetcher(article._id), {
-      optimisticData: (current: IArticle[]) => {
-        return current.filter((a) => a._id !== article._id);
-      }
-    });
+  const { mutate } = useSWRConfig();
+  const router = useRouter();
+
+  const openArticle = () => {
+    router.push(`/article/${article._id}`);
+  };
+
+  const deleteArticle = async () => {
+    try {
+      mutate('/api/article', deleteFetcher(article._id || ''), {
+        populateCache: (_r, articles: IArticle[] = []) => {
+          return articles.filter((a) => a._id !== article._id);
+        },
+        revalidate: false
+      });
+    } catch (err: any) {
+      console.log(err);
+      throw new Error(err);
+    }
   };
 
   return (
     <>
-      <br />
-      {article.title}
+      <div onClick={openArticle}>
+        <br />
+        <p>{article.title}</p>
+      </div>
       <button onClick={deleteArticle}>Delete</button>
     </>
   );

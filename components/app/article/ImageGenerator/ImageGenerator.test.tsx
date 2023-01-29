@@ -41,14 +41,14 @@ describe('Image Generator', () => {
     });
   });
 
-  it('changes input and output on history list item click', async () => {
+  it('changes input and output on history item click', async () => {
     customSwrRender(<ImageGenerator article={mockArticle} />);
     const historyItem = mockArticle.image.history[0 + 1];
     const input = screen.getByRole('textbox', {
       name: 'image-generator-input'
     });
 
-    // Mock fetch with article's "current" prop set to the history item
+    // Mock fetch (PUT) response with history item as "current"
     fetchMock.mockOnce(
       JSON.stringify({
         result: {

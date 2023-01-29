@@ -1,10 +1,14 @@
+'use client';
+
 import React from 'react';
 import useSWR from 'swr';
 import { IArticle } from '@lib/database/models';
 import { ArticleListItem } from '@components/app/profile';
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 const ArticleList: React.FC = () => {
-  const { data: articles } = useSWR<IArticle[]>(`/api/article`);
+  const { data: articles } = useSWR<IArticle[]>(`/api/article`, fetcher);
 
   if (!articles) {
     return <div>Loading...</div>;
@@ -13,7 +17,7 @@ const ArticleList: React.FC = () => {
   return (
     <>
       {articles.map((article) => (
-        <ArticleListItem article={article} key={article.title} />
+        <ArticleListItem article={article} key={article._id} />
       ))}
     </>
   );
