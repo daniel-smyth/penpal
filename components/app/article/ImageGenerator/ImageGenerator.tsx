@@ -62,7 +62,7 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ article: fallbackData }) => {
 
       <strong>
         Current Output
-        <p>{article.image.current.output.data.url}</p>=
+        <p>{article.image.current.output.data.url}</p>
       </strong>
 
       <br />

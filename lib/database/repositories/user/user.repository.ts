@@ -13,7 +13,7 @@ export default class UserRepository {
     return newUser.save();
   }
 
-  public async findById(id: string) {
+  public async findById(id: string): Promise<IUser | null> {
     return this.user.findById(id);
   }
 

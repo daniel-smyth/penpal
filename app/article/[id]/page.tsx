@@ -32,8 +32,8 @@ export default async function EditArticlePage({
         Title: {article.title}
         <br />
         <TextGenerator article={article} />
-        {/* <ImageGenerator article={article} />
-        <ShareArticle article={article} /> */}
+        <ImageGenerator article={article} />
+        <ShareArticle article={article} />
       </>
     </main>
   );

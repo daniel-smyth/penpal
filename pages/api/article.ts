@@ -13,6 +13,15 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       try {
+        const getAll = !req.query;
+        if (getAll) {
+          if (!user) {
+            return res
+              .status(401)
+              .json({ message: 'sign in to get your articles' });
+          }
+          return res.status(200).json(user.articles);
+        }
         const article = await articleService.get(req.query.id as string);
         if (!article) {
           return res.status(404).json({ message: 'article not found' });
