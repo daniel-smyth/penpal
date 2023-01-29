@@ -14,6 +14,10 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
+/**
+ * Setup database connection with mongoose ORM and cache it. This is used
+ * specifically for Next.js API routes.
+ */
 export const dbConnect = async () => {
   if (cached.conn) {
     return cached.conn;

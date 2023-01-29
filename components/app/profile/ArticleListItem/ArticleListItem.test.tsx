@@ -1,13 +1,9 @@
 import fetchMock from 'jest-fetch-mock';
-import * as fetcher from '@lib/fetcher';
 import { render, screen, waitFor } from '@testing-library/react';
-import { mockArticle, mockNextRouter } from '@tests/mocks';
+import { fetcher, mockArticle, mockNextRouter } from '@tests/mocks';
 import ArticleListItem from './ArticleListItem';
 
 const mockError = { name: '', message: 'test error' };
-
-const fetchSpy = jest.spyOn(global, 'fetch');
-const fetcherSpy = jest.spyOn(fetcher, 'fetcher');
 
 beforeEach(() => {
   mockNextRouter({ pathname: '/profile', asPath: '/profile' });
@@ -26,7 +22,7 @@ describe('Article List Item', () => {
     const deleteButton = screen.getByText('Delete');
     deleteButton.click();
 
-    expect(fetcherSpy).toHaveBeenCalledWith({
+    expect(fetcher).toHaveBeenCalledWith({
       url: `/api/article?id=${mockArticle._id}`,
       method: 'DELETE'
     });

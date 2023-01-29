@@ -8,14 +8,16 @@ if (!OPENAI_API_KEY) {
   );
 }
 
+// A text response from OpenAI
+// https://beta.openai.com/docs/api-reference/completions/create
 export interface ITextResponse {
   choices: { text: string }[];
 }
 
+// An image response from OpenAI
+// https://beta.openai.com/docs/api-reference/images/create
 export interface IImageResponse {
-  data: {
-    url: string;
-  };
+  data: { url: string };
   errors?: any[];
 }
 

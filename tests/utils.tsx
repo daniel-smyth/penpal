@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
 import { SWRConfig } from 'swr';
 
-const SwrTestingProvider = ({ children }: { children?: ReactNode }) => {
+const SWRTestingProvider = ({ children }: { children?: ReactNode }) => {
   return (
     <SWRConfig
       value={{
@@ -15,8 +15,11 @@ const SwrTestingProvider = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-// Custom Jest render to clear SWR caches after each test
-export const customSwrRender = (
+/**
+ * Custom render method that wraps components in the SwrTestingProvider. This is
+ * needed to reset the cache before every test.
+ */
+export const customSWRRender = (
   ui: React.ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>
-) => render(ui, { wrapper: SwrTestingProvider, ...options });
+) => render(ui, { wrapper: SWRTestingProvider, ...options });

@@ -1,15 +1,12 @@
 import React from 'react';
 import { act, fireEvent, screen } from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
-import * as fetcher from '@lib/fetcher';
-import { customSwrRender } from '@tests/utils';
-import { mockArticle, mockTextQueries } from '@tests/mocks';
+import { customSWRRender } from '@tests/utils';
+import { fetcher, mockArticle, mockTextQueries } from '@tests/mocks';
 import TextGenerator from './TextGenerator';
 
 const mockQuery = mockTextQueries[0];
 const mockError = { name: '', message: 'test error' };
-
-const fetch = jest.spyOn(fetcher, 'fetcher');
 
 const clickButton = (text: string) => {
   fireEvent.click(screen.getByText(text));
@@ -27,20 +24,20 @@ beforeEach(async () => {
 
 describe('Text Generator', () => {
   it('renders text generator input', () => {
-    customSwrRender(<TextGenerator article={mockArticle} />);
+    customSWRRender(<TextGenerator article={mockArticle} />);
     const input = screen.getByRole('textbox', { name: 'text-generator-input' });
     expect(input).toHaveValue('');
   });
 
   it('renders text generator input history list', () => {
-    customSwrRender(<TextGenerator article={mockArticle} />);
+    customSWRRender(<TextGenerator article={mockArticle} />);
     mockArticle.text.history.forEach((query) => {
       expect(screen.getByText(query.input)).toBeInTheDocument();
     });
   });
 
   it('changes input and output on history list item click', async () => {
-    customSwrRender(<TextGenerator article={mockArticle} />);
+    customSWRRender(<TextGenerator article={mockArticle} />);
     const historyItem = mockArticle.text.history[0 + 1];
     const input = screen.getByRole('textbox', { name: 'text-generator-input' });
 
@@ -62,7 +59,7 @@ describe('Text Generator', () => {
   });
 
   it('inputs into text generator and fetches output on submit', async () => {
-    customSwrRender(<TextGenerator article={mockArticle} />);
+    customSWRRender(<TextGenerator article={mockArticle} />);
 
     // Mock query includes a mocked "output" property
     fetchMock.mockOnce(JSON.stringify({ result: mockQuery }));
@@ -72,7 +69,7 @@ describe('Text Generator', () => {
       clickButton('Generate Text');
     });
 
-    expect(fetch).toHaveBeenCalledWith({
+    expect(fetcher).toHaveBeenCalledWith({
       url: '/api/ai/text',
       params: { prompt: mockQuery.input, articleId: mockArticle._id }
     });
@@ -82,7 +79,7 @@ describe('Text Generator', () => {
   });
 
   it('adds inputs to history on submit', async () => {
-    customSwrRender(<TextGenerator article={mockArticle} />);
+    customSWRRender(<TextGenerator article={mockArticle} />);
     for (let i = 0; i < mockTextQueries.length; i++) {
       const mockQuery = mockTextQueries[i];
 
@@ -101,7 +98,7 @@ describe('Text Generator', () => {
   });
 
   it('renders error on submit if fetch fails', async () => {
-    customSwrRender(<TextGenerator article={mockArticle} />);
+    customSWRRender(<TextGenerator article={mockArticle} />);
 
     fetchMock.mockRejectOnce({ name: '', message: 'test error' });
 

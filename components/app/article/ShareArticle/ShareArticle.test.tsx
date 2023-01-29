@@ -1,10 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useSession } from 'next-auth/react';
-import * as fetcher from '@lib/fetcher';
 import { mockArticle } from '@tests/mocks';
 import ShareArticle from './ShareArticle';
-
-const fetch = jest.spyOn(fetcher, 'fetcher');
 
 jest.mock('next-auth/react');
 
