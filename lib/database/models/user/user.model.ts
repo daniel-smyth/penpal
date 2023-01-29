@@ -1,13 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
+import { ObjectId } from 'mongodb';
 import { IArticle } from '@lib/database/models';
 
 export interface IUser {
   id: string;
-  name?: string;
-  email?: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
   emailVerified?: boolean;
-  image?: string;
-  articles: IArticle[];
+  articles: (IArticle | ObjectId)[];
 }
 
 const UserSchema = new Schema<IUser>({

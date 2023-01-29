@@ -8,6 +8,8 @@ import GoogleProvider from 'next-auth/providers/google';
 // import AppleProvider from "next-auth/providers/apple"
 // import EmailProvider from "next-auth/providers/email"
 import clientPromise from '@lib/database/mongodb';
+import { userService } from '@lib/database/services';
+import { IUser, User } from '@lib/database/models';
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -62,13 +64,10 @@ export const authOptions: NextAuthOptions = {
       token.userRole = 'admin';
       return token;
     },
-    session({ session, token, user }) {
+    async session({ session, token, user }) {
       return {
         ...session,
-        user: {
-          ...session.user,
-          id: user.id
-        }
+        user: user as IUser
       };
     }
   }
