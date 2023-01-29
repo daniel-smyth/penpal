@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { articleService } from '@lib/database/services';
+import { articleService, userService } from '@lib/database/services';
 import { dbConnect } from '@lib/database/mongoose';
 import { getUser } from '@lib/auth';
 
@@ -13,14 +13,15 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       try {
-        const getAll = !req.query;
+        const getAll = Object.keys(req.query).length === 0;
         if (getAll) {
           if (!user) {
             return res
               .status(401)
               .json({ message: 'sign in to get your articles' });
           }
-          return res.status(200).json(user.articles);
+          const allArticles = await userService.getArticles(user.id);
+          return res.status(200).json(allArticles);
         }
         const article = await articleService.get(req.query.id as string);
         if (!article) {
