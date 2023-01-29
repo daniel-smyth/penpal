@@ -37,6 +37,10 @@ class ArticleService {
     return this.repository.findOne(query);
   }
 
+  public async findMany(query: object) {
+    return this.repository.find(query);
+  }
+
   public async update(id: string, update: object) {
     return this.repository.update(id, update);
   }

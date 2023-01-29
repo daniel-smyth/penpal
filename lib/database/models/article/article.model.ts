@@ -58,7 +58,7 @@ export const ImageQuerySchema = new Schema<IImageQuery>(
 );
 
 export interface IArticle {
-  _id: string;
+  _id?: string;
   title: string;
   text: {
     current: ITextQuery;

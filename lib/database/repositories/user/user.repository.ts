@@ -1,6 +1,11 @@
 import { Model } from 'mongoose';
 import { IUser } from '@lib/database/models';
 
+interface MongoFindOptions {
+  populate?: string;
+  limit?: number;
+}
+
 export default class UserRepository {
   private user: Model<IUser>;
 
@@ -13,8 +18,13 @@ export default class UserRepository {
     return newUser.save();
   }
 
-  public async findById(id: string): Promise<IUser | null> {
-    return this.user.findById(id);
+  public async findById(id: string, settings?: MongoFindOptions) {
+    if (!settings) {
+      return this.user.findById(id);
+    }
+    if (settings.populate) {
+      return this.user.findById(id).populate(settings.populate);
+    }
   }
 
   public async findOne(query: object) {
