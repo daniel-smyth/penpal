@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { IArticle } from '@lib/database/models';
 import { useSession } from 'next-auth/react';
 
@@ -8,7 +8,7 @@ interface ShareArticleProps {
   article: IArticle;
 }
 
-const ShareArticle: FC<ShareArticleProps> = ({ article }) => {
+const ShareArticle: React.FC<ShareArticleProps> = ({ article }) => {
   const { data } = useSession();
   const [alert, setAlert] = useState('');
 

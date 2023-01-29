@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { fetcher } from '@lib/fetcher';
 import { useArticle } from '@lib/hooks';
 import { IArticle, IImageQuery } from '@lib/database/models';
@@ -9,7 +9,9 @@ interface ImageGeneratorProps {
   article: IArticle;
 }
 
-const ImageGenerator: FC<ImageGeneratorProps> = ({ article: fallbackData }) => {
+const ImageGenerator: React.FC<ImageGeneratorProps> = ({
+  article: fallbackData
+}) => {
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
   const [query, setQuery] = useState({
     input: fallbackData.image.current.input,

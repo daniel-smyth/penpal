@@ -1,8 +1,8 @@
 'use client';
 
+import React from 'react';
+import { mutate } from 'swr';
 import { IArticle } from '@lib/database/models';
-import React, { FC } from 'react';
-import useSWR, { mutate } from 'swr';
 
 interface ArticleListItemProps {
   article: IArticle;
@@ -13,7 +13,7 @@ const fetcher = (id: string) =>
     res.json()
   );
 
-const ArticleListItem: FC<ArticleListItemProps> = ({ article }) => {
+const ArticleListItem: React.FC<ArticleListItemProps> = ({ article }) => {
   const deleteArticle = () => {
     mutate('/api/article', fetcher(article._id), {
       optimisticData: (current: IArticle[]) => {

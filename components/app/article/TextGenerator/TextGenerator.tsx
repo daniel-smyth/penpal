@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { fetcher } from '@lib/fetcher';
 import { useArticle } from '@lib/hooks';
 import { IArticle, ITextQuery } from '@lib/database/models';
@@ -9,7 +9,9 @@ interface TextGeneratorProps {
   article: IArticle;
 }
 
-const TextGenerator: FC<TextGeneratorProps> = ({ article: fallbackData }) => {
+const TextGenerator: React.FC<TextGeneratorProps> = ({
+  article: fallbackData
+}) => {
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
   const [query, setQuery] = useState({
     input: fallbackData.text.current.input,
