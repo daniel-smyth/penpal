@@ -3,19 +3,14 @@
 import React from 'react';
 import { useSWRConfig } from 'swr';
 import { useRouter } from 'next/navigation';
-import { fetcher } from '@lib/fetcher';
+import { fetcher as fetch } from '@lib/fetcher';
 import { IArticle } from '@lib/database/models';
 
-const deleteFetcher = (id: string) =>
-  fetcher({ url: `/api/article?id=${id}`, method: 'DELETE' });
+const fetchDelete = (url: string) => fetch({ url, method: 'DELETE' });
 
-interface ArticleListItemProps {
-  article: IArticle;
-}
-
-const ArticleListItem: React.FC<ArticleListItemProps> = ({ article }) => {
-  const { mutate } = useSWRConfig();
+const ArticleListItem: React.FC<{ article: IArticle }> = ({ article }) => {
   const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   const openArticle = () => {
     router.push(`/article/${article._id}`);
@@ -23,9 +18,9 @@ const ArticleListItem: React.FC<ArticleListItemProps> = ({ article }) => {
 
   const deleteArticle = async () => {
     try {
-      mutate('/api/article', deleteFetcher(article._id || ''), {
-        populateCache: (_r, articles: IArticle[] = []) => {
-          return articles.filter((a) => a._id !== article._id);
+      mutate('/api/article', fetchDelete(`/api/article?id=${article._id}`), {
+        populateCache: (_r, a: IArticle[] = []) => {
+          return a.filter((a) => a._id !== article._id);
         },
         revalidate: false
       });

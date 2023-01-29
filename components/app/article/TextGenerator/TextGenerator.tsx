@@ -27,7 +27,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
     try {
       const { result }: { result: ITextQuery } = await fetcher({
         url: '/api/ai/text',
-        params: { prompt: query.input, articleId: article._id }
+        params: { prompt: query.input, articleId: article._id || '' }
       });
       setQuery(result);
 
@@ -57,7 +57,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
     await fetcher({
       url: '/api/article',
       method: 'PUT',
-      params: { id: article._id },
+      params: { id: article._id || '' },
       body: { ...article, text: { ...article.text, current: query } }
     });
     mutate(newArticle, { optimisticData: newArticle });

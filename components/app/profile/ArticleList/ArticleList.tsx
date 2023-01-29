@@ -5,10 +5,10 @@ import useSWR from 'swr';
 import { IArticle } from '@lib/database/models';
 import { ArticleListItem } from '@components/app/profile';
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetchGet = (url: string) => fetch(url).then((res) => res.json());
 
 const ArticleList: React.FC = () => {
-  const { data: articles } = useSWR<IArticle[]>(`/api/article`, fetcher);
+  const { data: articles } = useSWR<IArticle[]>(`/api/article`, fetchGet);
 
   if (!articles) {
     return <div>Loading...</div>;
