@@ -27,14 +27,17 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ article: fallbackData }) => {
         url: '/api/ai/image',
         params: { prompt: query.input, articleId: article._id }
       });
-      mutate({
+      setQuery(result);
+
+      const newArticle = {
         ...article,
         image: {
           current: { ...result, input: '' },
           history: [result, ...article.image.history]
         }
-      });
-      setQuery(result);
+      };
+
+      mutate(newArticle, { optimisticData: newArticle });
     } catch (err: any) {
       console.log(err);
       setError(err.message);
@@ -43,13 +46,20 @@ const ImageGenerator: FC<ImageGeneratorProps> = ({ article: fallbackData }) => {
 
   const onHistoryClick = async (query: IImageQuery) => {
     setQuery(query);
+
+    const newArticle = {
+      ...article,
+      image: { ...article.image, current: query }
+    };
+
     await fetcher({
       url: '/api/article',
       method: 'PUT',
       params: { id: article._id },
       body: { ...article, image: { ...article.image, current: query } }
     });
-    mutate({ ...article, image: { ...article.image, current: query } });
+
+    mutate(newArticle, { optimisticData: newArticle });
   };
 
   return (

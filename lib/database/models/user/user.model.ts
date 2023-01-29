@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 import { ObjectId } from 'mongodb';
-import { IArticle } from '@lib/database/models';
 
 export interface IUser {
   id: string;
@@ -8,7 +7,7 @@ export interface IUser {
   email?: string | null;
   image?: string | null;
   emailVerified?: boolean;
-  articles: (IArticle | ObjectId)[];
+  articles: ObjectId[];
 }
 
 const UserSchema = new Schema<IUser>({

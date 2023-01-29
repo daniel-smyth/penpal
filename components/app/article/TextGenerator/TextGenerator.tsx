@@ -27,14 +27,17 @@ const TextGenerator: FC<TextGeneratorProps> = ({ article: fallbackData }) => {
         url: '/api/ai/text',
         params: { prompt: query.input, articleId: article._id }
       });
-      mutate({
+      setQuery(result);
+
+      const newArticle = {
         ...article,
         text: {
           current: { ...result, input: '' },
           history: [result, ...article.text.history]
         }
-      });
-      setQuery(result);
+      };
+
+      mutate(newArticle, { optimisticData: newArticle });
     } catch (err: any) {
       console.log(err);
       setError(err.message);
@@ -43,13 +46,19 @@ const TextGenerator: FC<TextGeneratorProps> = ({ article: fallbackData }) => {
 
   const onHistoryClick = async (query: ITextQuery) => {
     setQuery(query);
+
+    const newArticle = {
+      ...article,
+      text: { ...article.text, current: query }
+    };
+
     await fetcher({
       url: '/api/article',
       method: 'PUT',
       params: { id: article._id },
       body: { ...article, text: { ...article.text, current: query } }
     });
-    mutate({ ...article, text: { ...article.text, current: query } });
+    mutate(newArticle, { optimisticData: newArticle });
   };
 
   return (
