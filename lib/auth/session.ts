@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
-import { unstable_getServerSession } from 'next-auth/next';
+import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@pages/api/auth/[...nextauth]';
 
 interface Context {
@@ -7,18 +7,14 @@ interface Context {
   res: GetServerSidePropsContext['res'];
 }
 
-export async function getServerSession(context?: Context) {
-  if (context) {
-    return await unstable_getServerSession(
-      context.req,
-      context.res,
-      authOptions
-    );
-  }
-  return await unstable_getServerSession(authOptions);
-}
-
 export async function getUser(context?: Context) {
-  const session = await getServerSession(context);
+  let session;
+
+  if (context) {
+    session = await getServerSession(context.req, context.res, authOptions);
+  } else {
+    session = await getServerSession(authOptions);
+  }
+
   return session?.user;
 }

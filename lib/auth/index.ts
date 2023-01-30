@@ -1,1 +1,1 @@
-export { getServerSession, getUser } from './session';
+export { getUser } from './session';
