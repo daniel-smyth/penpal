@@ -13,10 +13,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
   article: fallbackData
 }) => {
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
-  const [query, setQuery] = useState({
-    input: fallbackData.image.current.input,
-    output: fallbackData.image.current.output
-  });
+  const [query, setQuery] = useState({ ...fallbackData.image.current });
   const [error, setError] = useState('');
 
   if (!article) {

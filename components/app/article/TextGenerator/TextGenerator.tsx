@@ -13,10 +13,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
   article: fallbackData
 }) => {
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
-  const [query, setQuery] = useState({
-    input: fallbackData.text.current.input,
-    output: fallbackData.text.current.output
-  });
+  const [query, setQuery] = useState({ ...fallbackData.text.current });
   const [error, setError] = useState('');
 
   if (!article) {
