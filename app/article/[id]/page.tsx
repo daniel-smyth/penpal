@@ -9,7 +9,7 @@ import {
 async function getArticle(id: string) {
   try {
     const article: IArticle = await fetcher({
-      url: `http://localhost:3000/api/article`,
+      url: `${process.env.API_URL}/api/article`,
       params: { id }
     });
     return article;
