@@ -1,5 +1,10 @@
 import React from 'react';
-import { act, fireEvent, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  screen,
+  waitForElementToBeRemoved
+} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import { customSWRRender } from '@tests/utils';
 import { fetcher, mockArticle, mockImageQueries } from '@tests/mocks';
@@ -20,11 +25,15 @@ const performInput = (name: string, value: string) => {
 
 beforeEach(async () => {
   fetchMock.resetMocks();
+  fetchMock.mockOnce(JSON.stringify({ result: { ...mockArticle } }));
 });
 
 describe('Image Generator', () => {
-  it('renders image generator input', () => {
+  it('renders image generator input', async () => {
+    // Mock fetch (PUT) response with history item as "current"
     customSWRRender(<ImageGenerator article={mockArticle} />);
+
+    await waitForElementToBeRemoved(() => screen.queryByText('Loading...'));
     const input = screen.getByRole('textbox', {
       name: 'image-generator-input'
     });

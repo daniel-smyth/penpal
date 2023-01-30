@@ -4,11 +4,8 @@ import { customSWRRender } from '@tests/utils';
 import { fetcher, mockArticleList, mockNextRouter } from '@tests/mocks';
 import ArticleList from './ArticleList';
 
-beforeEach(async () => {
-  fetchMock.resetMocks();
-});
-
 beforeEach(() => {
+  fetchMock.resetMocks();
   fetchMock.once(JSON.stringify(mockArticleList));
   mockNextRouter({ pathname: '/profile', asPath: '/profile' });
 });

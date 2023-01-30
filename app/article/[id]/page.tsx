@@ -1,29 +1,23 @@
 import { fetcher } from '@lib/fetcher';
-import { IArticle } from '@lib/database/models';
+import { Article, IArticle } from '@lib/database/models';
 import {
   ImageGenerator,
   ShareArticle,
   TextGenerator
 } from '@components/app/article';
+import { articleService } from '@lib/database/services';
+import { useArticle } from '@lib/hooks';
 
-async function getArticle(id: string) {
-  try {
-    const article: IArticle = await fetcher({
-      url: `${process.env.API_URL}/api/article`,
-      params: { id }
-    });
-    return article;
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-}
-
-export default async function EditArticlePage({
+export default function EditArticlePage({
   params: { id }
 }: {
   params: { id: string };
 }) {
-  const article = await getArticle(id);
+  const { article, mutate } = useArticle(id);
+
+  if (!article) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <main>

@@ -10,10 +10,10 @@ interface ImageGeneratorProps {
 }
 
 const ImageGenerator: React.FC<ImageGeneratorProps> = ({
-  article: fallbackData
+  article: initialData
 }) => {
-  const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
-  const [query, setQuery] = useState({ ...fallbackData.image.current });
+  const { article, mutate } = useArticle(initialData._id || '');
+  const [query, setQuery] = useState({ ...initialData.image.current });
   const [error, setError] = useState('');
 
   if (!article) {
