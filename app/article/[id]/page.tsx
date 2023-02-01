@@ -34,9 +34,9 @@ export default async function EditArticlePage({
 }: {
   params: { id: string };
 }) {
-  const article = JSON.parse((await getArticle(id)) || '');
+  const article = JSON.parse((await getArticle(id)) || '{}');
 
-  if (!article) {
+  if (!article || JSON.stringify(article) === '{}') {
     return <div>Loading...</div>;
   }
 
