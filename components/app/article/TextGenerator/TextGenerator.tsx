@@ -10,10 +10,10 @@ interface TextGeneratorProps {
 }
 
 const TextGenerator: React.FC<TextGeneratorProps> = ({
-  article: initialData
+  article: fallbackData
 }) => {
-  const { article, mutate } = useArticle(initialData._id || '');
-  const [query, setQuery] = useState({ ...initialData.text.current });
+  const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
+  const [query, setQuery] = useState({ ...fallbackData.text.current });
   const [error, setError] = useState('');
 
   if (!article) {

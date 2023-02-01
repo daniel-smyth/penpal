@@ -25,15 +25,11 @@ const performInput = (name: string, value: string) => {
 
 beforeEach(async () => {
   fetchMock.resetMocks();
-  fetchMock.mockOnce(JSON.stringify({ result: { ...mockArticle } }));
 });
 
 describe('Image Generator', () => {
   it('renders image generator input', async () => {
-    // Mock fetch (PUT) response with history item as "current"
     customSWRRender(<ImageGenerator article={mockArticle} />);
-
-    await waitForElementToBeRemoved(() => screen.queryByText('Loading...'));
     const input = screen.getByRole('textbox', {
       name: 'image-generator-input'
     });
@@ -57,10 +53,8 @@ describe('Image Generator', () => {
     // Mock fetch (PUT) response with history item as "current"
     fetchMock.mockOnce(
       JSON.stringify({
-        result: {
-          ...mockArticle,
-          image: { ...mockArticle.image, current: historyItem }
-        }
+        ...mockArticle,
+        image: { ...mockArticle.image, current: historyItem }
       })
     );
     await act(async () => clickButton(historyItem.input));
@@ -72,7 +66,7 @@ describe('Image Generator', () => {
   it('inputs into image generator and fetches output on submit', async () => {
     customSWRRender(<ImageGenerator article={mockArticle} />);
 
-    // Mock query includes a mocked "output" property
+    // Mock response from AI prompt
     fetchMock.mockOnce(JSON.stringify({ result: mockQuery }));
 
     await act(async () => {
@@ -93,8 +87,6 @@ describe('Image Generator', () => {
     customSWRRender(<ImageGenerator article={mockArticle} />);
     for (let i = 0; i < mockImageQueries.length; i++) {
       const mockQuery = mockImageQueries[i];
-
-      // Mock query includes a mocked "output" property
       fetchMock.mockOnce(JSON.stringify({ result: mockQuery }));
 
       await act(async () => {

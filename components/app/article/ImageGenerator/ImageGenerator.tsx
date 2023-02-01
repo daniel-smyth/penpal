@@ -10,10 +10,10 @@ interface ImageGeneratorProps {
 }
 
 const ImageGenerator: React.FC<ImageGeneratorProps> = ({
-  article: initialData
+  article: fallbackData
 }) => {
-  const { article, mutate } = useArticle(initialData._id || '');
-  const [query, setQuery] = useState({ ...initialData.image.current });
+  const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
+  const [query, setQuery] = useState({ ...fallbackData.image.current });
   const [error, setError] = useState('');
 
   if (!article) {
@@ -55,11 +55,14 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
       url: '/api/article',
       method: 'PUT',
       params: { id: article._id || '' },
-      body: { ...article, image: { ...article.image, current: query } }
+      body: newArticle
     });
 
     mutate(newArticle, { optimisticData: newArticle });
   };
+
+  console.log(article);
+  console.log(article.image.current);
 
   return (
     <>

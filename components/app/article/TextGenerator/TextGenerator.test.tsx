@@ -41,7 +41,7 @@ describe('Text Generator', () => {
     const historyItem = mockArticle.text.history[0 + 1];
     const input = screen.getByRole('textbox', { name: 'text-generator-input' });
 
-    // Mock fetch with article's "current" prop set to the history item
+    // Mock fetch (PUT) response with history item as "current"
     fetchMock.mockOnce(
       JSON.stringify({
         result: {
@@ -82,8 +82,6 @@ describe('Text Generator', () => {
     customSWRRender(<TextGenerator article={mockArticle} />);
     for (let i = 0; i < mockTextQueries.length; i++) {
       const mockQuery = mockTextQueries[i];
-
-      // Mock query includes a mocked "output" property
       fetchMock.mockOnce(JSON.stringify({ result: mockQuery }));
 
       await act(async () => {

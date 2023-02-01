@@ -22,7 +22,7 @@ async function getArticle(id: string) {
       if (!article) {
         throw new Error('article not found');
       }
-      return article.toObject();
+      return JSON.stringify(article.toObject());
     } catch (error: any) {
       throw new Error(error.message);
     }
@@ -34,7 +34,7 @@ export default async function EditArticlePage({
 }: {
   params: { id: string };
 }) {
-  const article = await getArticle(id);
+  const article = JSON.parse((await getArticle(id)) || '');
 
   if (!article) {
     return <div>Loading...</div>;
@@ -46,9 +46,9 @@ export default async function EditArticlePage({
         <br />
         Title: {article.title}
         <br />
-        {/* <TextGenerator article={article} />
+        <TextGenerator article={article} />
         <ImageGenerator article={article} />
-        <ShareArticle article={article} /> */}
+        <ShareArticle article={article} />
       </>
     </main>
   );

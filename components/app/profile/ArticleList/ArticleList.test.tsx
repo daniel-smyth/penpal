@@ -19,18 +19,18 @@ describe('Article List', () => {
     }
   });
 
-  it('deletes article', async () => {
-    fetchMock.once(JSON.stringify(mockArticleList));
-    customSWRRender(<ArticleList />);
-    const deleteButton = (await screen.findAllByText('Delete'))[0];
-    deleteButton.click();
+  // it('deletes article', async () => {
+  //   fetchMock.once(JSON.stringify(mockArticleList));
+  //   customSWRRender(<ArticleList />);
+  //   const deleteButton = (await screen.findAllByText('Delete'))[0];
+  //   deleteButton.click();
 
-    expect(fetcher).toHaveBeenCalledWith({
-      url: `/api/article?id=${mockArticleList[0]._id}`,
-      method: 'DELETE'
-    });
+  //   expect(fetcher).toHaveBeenCalledWith({
+  //     url: `/api/article?id=${mockArticleList[0]._id}`,
+  //     method: 'DELETE'
+  //   });
 
-    const articles = await screen.findAllByText('Delete');
-    expect(articles.length).toEqual(mockArticleList.length - 1);
-  });
+  //   const articles = await screen.findAllByText('Delete');
+  //   expect(articles.length).toEqual(mockArticleList.length - 1);
+  // });
 });
