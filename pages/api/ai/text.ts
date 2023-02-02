@@ -15,12 +15,12 @@ export default async function handler(
         if (!articleId) {
           throw new Error('article is required to generate text');
         }
-        const result = await articleService.generateAIText(
+        const generatedText = await articleService.generateAIText(
           input as string,
           articleId as string,
           Number(choiceCount)
         );
-        res.status(200).json({ result });
+        res.status(200).json({ result: generatedText });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }
