@@ -11,13 +11,13 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       try {
-        const { prompt, articleId } = req.query;
+        const { input, articleId } = req.query;
         if (!articleId) {
           throw new Error('article is required to generate image');
         }
-        const result = await articleService.generateImage(
-          articleId as string,
-          prompt as string
+        const result = await articleService.generateAIImage(
+          input as string,
+          articleId as string
         );
         res.status(200).json({ result });
       } catch (err: any) {

@@ -6,7 +6,7 @@ interface BillingPlanCardProps {
   description: string;
   price: string;
   features: { icon: string; text: string }[];
-  priceId: string; // from stripe
+  stripePriceId: string; // from stripe
 }
 
 const BillingPlanCard: React.FC<BillingPlanCardProps> = ({
@@ -14,7 +14,7 @@ const BillingPlanCard: React.FC<BillingPlanCardProps> = ({
   description,
   price,
   features,
-  priceId
+  stripePriceId
 }) => {
   return (
     <div>
@@ -29,7 +29,7 @@ const BillingPlanCard: React.FC<BillingPlanCardProps> = ({
           </li>
         ))}
       </ul>
-      <Link href={`/admin/subscription/${priceId}`}></Link>
+      <Link href={`/admin/subscription/${stripePriceId}`}></Link>
     </div>
   );
 };

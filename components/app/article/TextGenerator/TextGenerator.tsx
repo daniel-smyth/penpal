@@ -22,9 +22,12 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
 
   const generateText = async () => {
     try {
-      const { result }: { result: ITextQuery } = await fetcher({
+      const { result } = await fetcher({
         url: '/api/ai/text',
-        params: { prompt: query.input, articleId: article._id || '' }
+        params: {
+          input: query.input,
+          articleId: article._id || ''
+        }
       });
       setQuery(result);
 

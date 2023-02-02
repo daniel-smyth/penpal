@@ -24,7 +24,10 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
     try {
       const { result } = await fetcher({
         url: '/api/ai/image',
-        params: { prompt: query.input, articleId: article._id || '' }
+        params: {
+          input: query.input,
+          articleId: article._id || ''
+        }
       });
       setQuery(result);
 

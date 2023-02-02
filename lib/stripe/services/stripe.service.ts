@@ -1,51 +1,26 @@
 import Stripe from 'stripe';
 
-let STRIPE_SECRET_KEY = '';
-let STRIPE_WEBHOOK_SECRET_KEY = '';
+let API_VERSION: Stripe.StripeConfig['apiVersion'] = '2022-11-15';
+let STRIPE_SECRET_KEY: string | undefined;
+let STRIPE_WEBHOOK_SECRET_KEY: string | undefined;
 
 if (process.env.NODE_ENV !== 'production') {
-  if (!process.env.STRIPE_SECRET_KEY_TEST) {
-    throw new Error(
-      'STRIPE_SECRET_KEY_TEST is not defined. Please add it to your .env.local file.'
-    );
-  }
   STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY_TEST;
-}
-
-if (process.env.NODE_ENV === 'production') {
-  if (!process.env.STRIPE_SECRET_KEY) {
-    throw new Error(
-      'STRIPE_SECRET_KEY is not defined. Please add it to your .env.local file.'
-    );
-  }
-  STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
-}
-
-if (process.env.NODE_ENV !== 'production') {
-  if (!process.env.STRIPE_WEBHOOK_SECRET_KEY_TEST) {
-    throw new Error(
-      'STRIPE_WEBHOOK_SECRET_KEY_TEST is not defined. Please add it to your .env.local file.'
-    );
-  }
   STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY_TEST;
+} else {
+  STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
+  STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY;
 }
 
-if (process.env.NODE_ENV === 'production') {
-  if (!process.env.STRIPE_WEBHOOK_SECRET_KEY) {
-    throw new Error(
-      'STRIPE_WEBHOOK_SECRET_KEY is not defined. Please add it to your .env.local file.'
-    );
-  }
-  STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY;
+if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET_KEY) {
+  throw new Error('Stripe keys undefined. Please to .env file.');
 }
 
 class StripeService {
   private client: Stripe;
 
   constructor(secretKey: string) {
-    this.client = new Stripe(secretKey, {
-      apiVersion: '2022-11-15'
-    });
+    this.client = new Stripe(secretKey, { apiVersion: API_VERSION });
   }
 
   public async createCustomer(customer: Stripe.CustomerCreateParams) {
@@ -84,7 +59,7 @@ class StripeService {
     return this.client.webhooks.constructEvent(
       payload,
       signature,
-      STRIPE_WEBHOOK_SECRET_KEY
+      STRIPE_WEBHOOK_SECRET_KEY!
     );
   }
 

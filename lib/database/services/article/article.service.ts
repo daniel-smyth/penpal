@@ -17,7 +17,7 @@ class ArticleService {
     }
     const user = await userService.get(userId);
     if (!user) {
-      throw new Error('cannot create article for non-existent user');
+      throw new Error('invalid user id');
     }
     const newArticle = await this.repository.create(article);
     user.articles.push(newArticle);
@@ -49,29 +49,37 @@ class ArticleService {
     return this.repository.delete(id);
   }
 
-  public async generateText(id: string, prompt: string, choiceCount = 1) {
-    const output = await openAiClient.generateText(prompt, choiceCount);
+  public async generateAIText(input: string, id: string, choiceCount = 1) {
     const article = await this.get(id);
     if (!article) {
-      throw new Error('cannot find article to generate text for');
+      throw new Error('invalid article id');
     }
-    const record = { input: prompt, output };
+
+    // Add new input/output to article input history
+    const output = await openAiClient.generateText(input, choiceCount);
+    const record = { input, output };
+
     article.text.current = record;
     article.text.history.unshift(record);
     await article.save();
+
     return record;
   }
 
-  public async generateImage(id: string, prompt: string) {
+  public async generateAIImage(input: string, id: string) {
     const article = await this.get(id);
     if (!article) {
-      throw new Error('cannot find article to generate image for');
+      throw new Error('invalid article id');
     }
-    const output = await openAiClient.generateImage(prompt);
-    const record = { input: prompt, output };
+
+    // Add new input/output to article input history
+    const output = await openAiClient.generateImage(input);
+    const record = { input, output };
+
     article.image.current = record;
     article.image.history.push(record);
     await article.save();
+
     return record;
   }
 }

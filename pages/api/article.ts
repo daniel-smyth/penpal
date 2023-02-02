@@ -13,16 +13,15 @@ export default async function handler(
   switch (req.method) {
     case 'GET':
       try {
-        const getAll = Object.keys(req.query).length === 0;
-        if (getAll) {
+        const getAllArticles = Object.keys(req.query).length === 0;
+        if (getAllArticles) {
           if (!user) {
-            return res
-              .status(401)
-              .json({ message: 'sign in to get your articles' });
+            return res.status(404).json({ message: 'unauthorized' });
           }
           const allArticles = await userService.getArticles(user.id);
           return res.status(200).json(allArticles);
         }
+        // no null check for user - if user is not logged in, they can still create articles
         const article = await articleService.get(req.query.id as string);
         if (!article) {
           return res.status(404).json({ message: 'article not found' });

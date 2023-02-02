@@ -1,2 +1,2 @@
 export { stripeService } from './services';
-export { default as loadStripe } from './loadStripe';
+export { default as getClientSession } from './getClientSession';
