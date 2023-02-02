@@ -4,6 +4,7 @@ import { IArticle } from '@lib/database/models';
 
 export interface IUser {
   id: string;
+  stripeId?: string;
   name?: string | null;
   email?: string | null;
   image?: string | null;

@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 
 let STRIPE_SECRET_KEY = '';
+let STRIPE_WEBHOOK_SECRET_KEY = '';
 
 if (process.env.NODE_ENV !== 'production') {
   if (!process.env.STRIPE_SECRET_KEY_TEST) {
@@ -20,6 +21,24 @@ if (process.env.NODE_ENV === 'production') {
   STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 }
 
+if (process.env.NODE_ENV !== 'production') {
+  if (!process.env.STRIPE_WEBHOOK_SECRET_KEY_TEST) {
+    throw new Error(
+      'STRIPE_WEBHOOK_SECRET_KEY_TEST is not defined. Please add it to your .env.local file.'
+    );
+  }
+  STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY_TEST;
+}
+
+if (process.env.NODE_ENV === 'production') {
+  if (!process.env.STRIPE_WEBHOOK_SECRET_KEY) {
+    throw new Error(
+      'STRIPE_WEBHOOK_SECRET_KEY is not defined. Please add it to your .env.local file.'
+    );
+  }
+  STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY;
+}
+
 class StripeService {
   private client: Stripe;
 
@@ -31,6 +50,10 @@ class StripeService {
 
   public async createCustomer(customer: Stripe.CustomerCreateParams) {
     return await this.client.customers.create(customer);
+  }
+
+  public async findCustomer(customerId: string) {
+    return await this.client.customers.retrieve(customerId);
   }
 
   public async createPaymentIntent(
@@ -51,6 +74,35 @@ class StripeService {
     subscription: Stripe.SubscriptionCreateParams
   ) {
     return await this.client.subscriptions.create(subscription);
+  }
+
+  public async getSubscription(subscriptionId: string) {
+    return await this.client.subscriptions.retrieve(subscriptionId);
+  }
+
+  public constructWebhook(payload: string, signature: string) {
+    return this.client.webhooks.constructEvent(
+      payload,
+      signature,
+      STRIPE_WEBHOOK_SECRET_KEY
+    );
+  }
+
+  public async retrieveUpcomingInvoices(
+    customerId: string,
+    subscription: Stripe.Subscription,
+    priceId: string
+  ) {
+    return await this.client.invoices.retrieveUpcoming({
+      customer: customerId,
+      subscription: subscription.id,
+      subscription_items: [
+        {
+          id: subscription.items.data[0].id,
+          price: priceId
+        }
+      ]
+    });
   }
 }
 
