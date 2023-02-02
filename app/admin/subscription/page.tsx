@@ -1,5 +1,6 @@
 import React from 'react';
 import { getUser } from '@lib/auth';
+import { CheckoutForm } from '@components/app/admin/subscription';
 
 export default async function SubscriptionPage() {
   const user = await getUser();
@@ -32,6 +33,7 @@ export default async function SubscriptionPage() {
       <br />
       ...
       <button>Start Plan</button>
+      <CheckoutForm />
     </main>
   );
 }
