@@ -1,12 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { getUser } from '@lib/auth';
-import Provider from './provider';
+import StripeProvider from './provider';
 
-export default async function SubscriptionLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+async function SubscriptionLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const user = await getUser();
 
@@ -17,8 +13,10 @@ export default async function SubscriptionLayout({
   return (
     <html>
       <body>
-        <Provider>{children}</Provider>
+        <StripeProvider>{children}</StripeProvider>
       </body>
     </html>
   );
 }
+
+export default SubscriptionLayout;

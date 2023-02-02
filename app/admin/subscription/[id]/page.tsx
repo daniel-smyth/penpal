@@ -1,5 +1,4 @@
 import React from 'react';
-import { getUser } from '@lib/auth';
 import { CheckoutForm } from '@components/app/admin/subscription';
 
 export default async function SubscriptionPage() {

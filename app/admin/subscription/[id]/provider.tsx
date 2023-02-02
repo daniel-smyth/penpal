@@ -4,15 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Elements } from '@stripe/react-stripe-js';
 import { fetcher } from '@lib/fetcher';
-import { loadStripe } from '@lib/stripe';
+import { getClientSession } from '@lib/stripe';
 
-const stripePromise = loadStripe();
+const stripePromise = getClientSession();
 
-export default function StripeProvider({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+function StripeProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [clientSecret, setClientSecret] = useState('');
 
@@ -20,7 +16,7 @@ export default function StripeProvider({
     // Create PaymentIntent as soon as the page loads
     const createPaymentIntent = async () => {
       const { clientSecret } = await fetcher({
-        url: '/api/subscription',
+        url: '/api/stripe/subscription',
         method: 'POST',
         body: {
           priceId: router.query.priceId
@@ -49,3 +45,5 @@ export default function StripeProvider({
     <></>
   );
 }
+
+export default StripeProvider;
