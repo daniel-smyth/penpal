@@ -1,3 +1,3 @@
-export default async function EditArticleLoadingPage() {
+export default async function ArticlePageLoading() {
   return <main>Loading</main>;
 }

@@ -9,9 +9,7 @@ import {
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
-  );
+  throw new Error('MONGODB_URI undefined. Please add to .env file');
 }
 
 async function getArticle(id: string) {
@@ -29,11 +27,7 @@ async function getArticle(id: string) {
   }
 }
 
-export default async function EditArticlePage({
-  params: { id }
-}: {
-  params: { id: string };
-}) {
+async function ArticlePage({ params: { id } }: { params: { id: string } }) {
   const article = JSON.parse((await getArticle(id)) || '');
 
   if (!article) {
@@ -53,3 +47,5 @@ export default async function EditArticlePage({
     </main>
   );
 }
+
+export default ArticlePage;
