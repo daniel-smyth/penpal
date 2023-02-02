@@ -14,12 +14,6 @@ export default async function handler(
   }
 
   switch (req.method) {
-    case 'GET':
-      try {
-      } catch (err: any) {
-        res.status(500).json({ message: err.message });
-      }
-      break;
     case 'POST':
       try {
         if (!user.email) {
@@ -34,11 +28,7 @@ export default async function handler(
         // so we can pass it to the front end to confirm the payment
         const { id, latest_invoice } = await stripeService.createSubscription({
           customer: customer.id,
-          items: [
-            {
-              price: req.body.priceId
-            }
-          ],
+          items: [{ price: req.body.priceId }],
           payment_behavior: 'default_incomplete',
           payment_settings: {
             save_default_payment_method: 'on_subscription'
@@ -53,20 +43,8 @@ export default async function handler(
         res.status(500).json({ message: err.message });
       }
       break;
-    case 'PUT':
-      try {
-      } catch (err: any) {
-        res.status(500).json({ message: err.message });
-      }
-      break;
-    case 'DELETE':
-      try {
-      } catch (err: any) {
-        res.status(500).json({ message: err.message });
-      }
-      break;
     default:
-      res.status(400).json({ success: false });
+      res.status(400).json({ success: 'Method not allowed' });
       break;
   }
 }

@@ -42,26 +42,8 @@ export default async function handler(
         res.status(500).json({ message: err.message });
       }
       break;
-    case 'POST':
-      try {
-      } catch (err: any) {
-        res.status(500).json({ message: err.message });
-      }
-      break;
-    case 'PUT':
-      try {
-      } catch (err: any) {
-        res.status(500).json({ message: err.message });
-      }
-      break;
-    case 'DELETE':
-      try {
-      } catch (err: any) {
-        res.status(500).json({ message: err.message });
-      }
-      break;
     default:
-      res.status(400).json({ success: false });
+      res.status(400).json({ success: 'Method not allowed' });
       break;
   }
 }
