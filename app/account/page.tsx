@@ -1,8 +1,8 @@
 import React from 'react';
 import { getUser } from '@lib/auth';
-import { ArticleList, ArticleListItem } from '@components/app/profile';
+import { ArticleList } from '@components/app/profile';
 
-export default async function ProfilePage() {
+export default async function AccountPage() {
   const user = await getUser();
 
   if (!user) {
