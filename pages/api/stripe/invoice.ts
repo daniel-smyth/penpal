@@ -9,34 +9,24 @@ export default async function handler(
   const user = await getUser();
 
   if (!user) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'unauthorized' });
   }
 
-  if (!user?.stripeId) {
-    return res.status(400).json({ success: 'user stripeId is required' });
+  if (!user.stripeId) {
+    return res.status(400).json({ success: 'user not a stripe customer' });
   }
 
   switch (req.method) {
     case 'GET':
       try {
-        const { subscriptionId, newPriceLookupKey } = req.query;
-        const priceId =
-          process.env[(newPriceLookupKey as string).toUpperCase()];
-
-        if (!priceId) {
-          throw new Error('cannot find price id');
-        }
-
         const subscription = await stripeService.getSubscription(
-          subscriptionId as string
+          req.query.subscriptionId as string
         );
-
         const invoice = await stripeService.retrieveUpcomingInvoices(
           user.stripeId,
           subscription,
-          priceId
+          req.query.priceId as string
         );
-
         res.status(200).json({ invoice });
       } catch (err: any) {
         res.status(500).json({ message: err.message });

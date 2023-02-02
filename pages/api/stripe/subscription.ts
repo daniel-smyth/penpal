@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { stripeService } from '@lib/stripe';
+import Stripe from 'stripe';
 import { getUser } from '@lib/auth';
 import { userService } from '@lib/database/services';
+import { stripeService } from '@lib/stripe';
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,27 +18,44 @@ export default async function handler(
     case 'POST':
       try {
         if (!user.email) {
-          throw new Error('user email is required');
+          throw new Error('signed in user must have an email for stripe');
         }
-        const customer = await stripeService.createCustomer({
+
+        const stripeUser = await stripeService.createCustomer({
           email: user.email
         });
-        await userService.update(user.id, { ...user, stripeId: customer.id });
+
+        // Add the Stripe customer ID to the user's record
+        const userWithStripeId = {
+          ...user,
+          stripeId: stripeUser.id
+        };
+        await userService.update(user.id, userWithStripeId);
+
+        // Price ID values can be found on the Stripe dashboard
+        // https://stripe.com/docs/billing/subscriptions/price-and-product-ids
+        const { priceId } = req.body;
+
         // Create the subscription. Note we're expanding the Subscription's
         // latest invoice and that invoice's payment_intent
         // so we can pass it to the front end to confirm the payment
         const { id, latest_invoice } = await stripeService.createSubscription({
-          customer: customer.id,
-          items: [{ price: req.body.priceId }],
+          customer: stripeUser.id,
+          items: [{ price: priceId }],
           payment_behavior: 'default_incomplete',
           payment_settings: {
             save_default_payment_method: 'on_subscription'
           },
           expand: ['latest_invoice.payment_intent']
         });
+
+        // Get expanded invoice's payment_intent to confirm payment on front end
+        const invoice = latest_invoice as Stripe.Invoice;
+        const paymentIntent = invoice.payment_intent as Stripe.PaymentIntent;
+
         res.status(200).json({
           subscriptionId: id,
-          clientSecret: (latest_invoice as any).payment_intent.client_secret
+          clientSecret: paymentIntent.client_secret
         });
       } catch (err: any) {
         res.status(500).json({ message: err.message });
