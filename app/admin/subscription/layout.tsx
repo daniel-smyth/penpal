@@ -1,10 +1,19 @@
+import { getUser } from '@lib/auth';
+import { useRouter } from 'next/navigation';
 import Provider from './provider';
 
-export default function SubscriptionLayout({
+export default async function SubscriptionLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const user = await getUser();
+
+  if (!user) {
+    router.push('/login');
+  }
+
   return (
     <html>
       <body>

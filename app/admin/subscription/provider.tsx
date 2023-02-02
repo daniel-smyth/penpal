@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
+import { fetcher } from '@lib/fetcher';
 import { loadStripe } from '@lib/stripe';
 
 const stripePromise = loadStripe();
@@ -14,28 +15,21 @@ export default function StripeProvider({
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    fetch('/api/subscription', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        items: [
-          { id: 'monthly', price: 30 },
-          { id: 'yearly', price: 300 }
-        ]
-      })
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setClientSecret(data.clientSecret);
-      })
-      .catch((err) => {
-        console.log(err);
+    const createPaymentIntent = async () => {
+      // Create PaymentIntent as soon as the page loads
+      const { clientSecret } = await fetcher({
+        url: '/api/subscription',
+        method: 'POST',
+        body: {
+          items: [
+            { id: 'monthly', price: 30 },
+            { id: 'yearly', price: 300 }
+          ]
+        }
       });
+      setClientSecret(clientSecret);
+    };
+    createPaymentIntent();
   }, []);
 
   const appearance = {
@@ -47,7 +41,7 @@ export default function StripeProvider({
     appearance
   };
 
-  return clientSecret.length > 1 ? (
+  return clientSecret !== '' ? (
     <Elements stripe={stripePromise} options={options}>
       {children}
     </Elements>
