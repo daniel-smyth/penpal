@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Elements } from '@stripe/react-stripe-js';
 import { fetcher } from '@lib/fetcher';
 import { loadStripe } from '@lib/stripe';
@@ -12,29 +13,28 @@ export default function StripeProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
+    // Create PaymentIntent as soon as the page loads
     const createPaymentIntent = async () => {
-      // Create PaymentIntent as soon as the page loads
       const { clientSecret } = await fetcher({
         url: '/api/subscription',
         method: 'POST',
         body: {
-          items: [
-            { id: 'monthly', price: 30 },
-            { id: 'yearly', price: 300 }
-          ]
+          priceId: router.query.priceId
         }
       });
       setClientSecret(clientSecret);
     };
     createPaymentIntent();
-  }, []);
+  }, [router.query.priceId]);
 
   const appearance = {
     theme: 'stripe' as 'stripe' | 'night' | 'flat' | 'none'
   };
+
   const options = {
     // passing the client secret obtained from the server
     clientSecret,

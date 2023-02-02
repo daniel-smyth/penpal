@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { getUser } from '@lib/auth';
 import { BillingPlanCard } from '@components/app/admin/settings/plan';
 
@@ -11,9 +11,10 @@ export default async function ProfilePage() {
 
   return (
     <main>
-      <p>Current Plan: {user.plan}</p>
+      {/* <p>Current Plan: {user.plan}</p> */}
 
       <BillingPlanCard
+        priceId="" // !
         name="Free"
         description="Try out Penpal for free"
         price="Free"
@@ -23,6 +24,7 @@ export default async function ProfilePage() {
         ]}
       />
       <BillingPlanCard
+        priceId="" // !
         name="Unlimited"
         description="Everything you need to create and publish articles"
         price={'9.99'}

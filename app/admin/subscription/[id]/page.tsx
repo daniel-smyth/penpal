@@ -3,12 +3,6 @@ import { getUser } from '@lib/auth';
 import { CheckoutForm } from '@components/app/admin/subscription';
 
 export default async function SubscriptionPage() {
-  const user = await getUser();
-
-  if (!user) {
-    return <main>Not logged in</main>;
-  }
-
   return (
     <main>
       BillingCycle:

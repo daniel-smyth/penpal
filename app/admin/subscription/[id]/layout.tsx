@@ -1,5 +1,5 @@
-import { getUser } from '@lib/auth';
 import { useRouter } from 'next/navigation';
+import { getUser } from '@lib/auth';
 import Provider from './provider';
 
 export default async function SubscriptionLayout({
