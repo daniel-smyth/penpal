@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { getUser } from '@lib/auth';
-import { BillingPlanCard } from '@components/app/billing';
+import { BillingPlanCard } from '@components/app/admin/settings/plan';
 
 export default async function ProfilePage() {
   const user = await getUser();
