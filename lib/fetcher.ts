@@ -11,6 +11,10 @@ export interface IFetcher {
   timeout?: number;
 }
 
+/**
+ * Extension of global `fetch` object. Includes ability to pass
+ * query params via `params` object. `body` parameter is converted to string by default.
+ */
 export const fetcher = async (config: IFetcher) => {
   let { url, body, params, headers, timeout } = config;
 

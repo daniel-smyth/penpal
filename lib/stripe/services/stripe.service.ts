@@ -27,8 +27,8 @@ class StripeService {
     return await this.client.customers.create(customer);
   }
 
-  public async findCustomer(customerId: string) {
-    return await this.client.customers.retrieve(customerId);
+  public async findCustomer(id: string) {
+    return await this.client.customers.retrieve(id);
   }
 
   public async createPaymentIntent(
@@ -51,8 +51,8 @@ class StripeService {
     return await this.client.subscriptions.create(subscription);
   }
 
-  public async getSubscription(subscriptionId: string) {
-    return await this.client.subscriptions.retrieve(subscriptionId);
+  public async getSubscription(id: string) {
+    return await this.client.subscriptions.retrieve(id);
   }
 
   public constructWebhook(payload: string, signature: string) {

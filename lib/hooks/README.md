@@ -31,8 +31,12 @@ import { useArticle } from '@lib/hooks';
 function Profile() {
   const { article, isLoading, isError } = useArticle();
 
-  if (isLoading) return <div>loading...</div>;
-  if (isError) return <div>error!</div>;
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
+  if (isError) {
+    return <div>error!</div>;
+  }
 
   return <div>article title: {article.title}!</div>;
 }

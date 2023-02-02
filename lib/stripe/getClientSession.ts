@@ -14,6 +14,7 @@ if (!STRIPE_PUBLISHABLE_KEY) {
 
 let stripePromise: Promise<Stripe | null>;
 
+/** Client only session. Server session is handled via `stripe.service.ts` */
 const getClientSession = () => {
   if (!stripePromise) {
     stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY!);

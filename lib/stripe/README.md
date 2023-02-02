@@ -1,6 +1,6 @@
 # Stripe
 
-This directory contains all code related to the Stripe payments.
+This directory contains all code related to Stripe payments.
 
 ## Resources
 

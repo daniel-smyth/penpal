@@ -1,6 +1,6 @@
 import React from 'react';
 import { getUser } from '@lib/auth';
-import { ArticleList } from '@components/app/profile';
+import { ArticleList } from '@components/app/admin/account';
 
 export default async function AccountPage() {
   const user = await getUser();

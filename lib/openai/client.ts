@@ -3,9 +3,7 @@ import { fetcher } from '@lib/fetcher';
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 if (!OPENAI_API_KEY) {
-  throw new Error(
-    'Please define the OPENAI_API_KEY environment variable inside .env.local'
-  );
+  throw new Error('OPENAI_API_KEY undefined. Please to .env file.');
 }
 
 // A text response from OpenAI

@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Elements } from '@stripe/react-stripe-js';
 import { fetcher } from '@lib/fetcher';
+import { Elements } from '@stripe/react-stripe-js';
 import { getClientSession } from '@lib/stripe';
 
 const stripePromise = getClientSession();
@@ -31,8 +31,8 @@ function StripeProvider({ children }: { children: React.ReactNode }) {
     theme: 'stripe' as 'stripe' | 'night' | 'flat' | 'none'
   };
 
+  // passing the client secret obtained from the server
   const options = {
-    // passing the client secret obtained from the server
     clientSecret,
     appearance
   };
