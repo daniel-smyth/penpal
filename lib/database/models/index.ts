@@ -1,8 +1,9 @@
+export { default as Article, type IArticle } from './article/article.model';
 export {
-  default as Article,
-  type IArticle,
+  ImageQuerySchema,
+  TextQuerySchema,
   type IImageQuery,
   type IQuery,
   type ITextQuery
-} from './article/article.model';
+} from './query/query.model';
 export { type IUser, default as User } from './user/user.model';
