@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { articleService, userService } from '@lib/database/services';
 import { dbConnect } from '@lib/database/mongoose';
 import { getUser } from '@lib/auth';
+import { articleService, userService } from '@lib/database/services';
 
 export default async function handler(
   req: NextApiRequest,

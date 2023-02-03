@@ -1,5 +1,5 @@
 import { getUser } from '@lib/auth';
-import { stripeService } from '@lib/stripe';
+import { stripeService } from '@lib/stripe/server';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(

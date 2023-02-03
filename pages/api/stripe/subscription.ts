@@ -1,14 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
+import { dbConnect } from '@lib/database/mongoose';
 import { getUser } from '@lib/auth';
 import { userService } from '@lib/database/services';
-import { stripeService } from '@lib/stripe';
+import { stripeService } from '@lib/stripe/server';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const user = await getUser();
+  await dbConnect();
+  const user = await getUser({ req, res });
 
   if (!user) {
     return res.status(401).json({ message: 'Unauthorized' });
