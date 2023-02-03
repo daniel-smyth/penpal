@@ -54,6 +54,7 @@ export default function Home() {
       >
         Sign out
       </Link>
+      <Link href="/admin/settings/plan"> admin/settings/plan </Link>
       <button onClick={createArticle}>Create Article</button>
     </main>
   );
