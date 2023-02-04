@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStripe } from '@stripe/react-stripe-js';
 
-export default function SubscriptionSuccessPage() {
+export default function SubscriptionCompletePage() {
   const stripe = useStripe();
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState('Loading message...');
 
   useEffect(() => {
     if (!stripe) {
@@ -39,5 +39,5 @@ export default function SubscriptionSuccessPage() {
     });
   }, [stripe]);
 
-  return <p>{message}</p>;
+  return <>{message}</>;
 }

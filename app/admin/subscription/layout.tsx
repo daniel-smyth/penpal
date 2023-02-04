@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
-import StripeProvider from './provider';
+import AuthProvider from './provider';
 
 function SubscriptionLayout({ children }: { children: React.ReactNode }) {
-  return <StripeProvider>{children}</StripeProvider>;
+  return <AuthProvider>{children}</AuthProvider>;
 }
 
 export default SubscriptionLayout;

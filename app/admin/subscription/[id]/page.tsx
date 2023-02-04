@@ -13,5 +13,9 @@ if (!NEXT_PUBLIC_APP_URL) {
 export default function SubscriptionPage() {
   const pathname = usePathname();
 
-  return <CheckoutForm redirectUrl={`${NEXT_PUBLIC_APP_URL}${pathname}`} />;
+  return (
+    <CheckoutForm
+      redirectUrl={`${NEXT_PUBLIC_APP_URL}/admin/subscription/complete`}
+    />
+  );
 }
