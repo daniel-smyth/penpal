@@ -69,7 +69,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ redirectUrl }) => {
       elements,
       confirmParams: {
         return_url: redirectUrl,
-        receipt_email: userSession?.user?.email || undefined
+        receipt_email: email
       }
     });
 
