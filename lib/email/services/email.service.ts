@@ -1,5 +1,12 @@
 import nodemailer from 'nodemailer';
 
+const EMAIL_USERNAME = process.env.EMAIL_USERNAME;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
+
+if (!EMAIL_USERNAME || !EMAIL_PASSWORD) {
+  throw new Error('Email keys undefined. Please add to .env file.');
+}
+
 export interface ISendEmail {
   from: string;
   to: string;
@@ -12,12 +19,11 @@ class EmailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.example.com',
-      port: 465,
-      secure: true,
+      service: 'gmail',
+      host: 'smtp.gmail.com',
       auth: {
-        user: 'username',
-        pass: 'password'
+        user: EMAIL_USERNAME,
+        pass: EMAIL_PASSWORD
       }
     });
   }

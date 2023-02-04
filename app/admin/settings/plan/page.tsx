@@ -18,7 +18,7 @@ async function PlanPage() {
 
   return (
     <div>
-      {user && <p>Current Plan: </p>}
+      {user && <p>Current Plan: {user.subscriptionStatus}</p>}
       <BillingPlanCard
         name="Unlimited"
         description="Everything you need to create and publish articles"

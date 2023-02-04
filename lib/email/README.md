@@ -18,9 +18,6 @@ export { EmailService } from '@lib/email';
 Sending an email.
 
 ```typescript
-// somefile.ts
-import { EmailService } from '@lib/email';
-
 const emailService = new EmailService();
 
 const to = 'recipient@example.com';

@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { ObjectId } from 'mongodb';
+import Stripe from 'stripe';
 import { IArticle } from '@lib/database/models';
 
 export interface IUser {
@@ -11,7 +12,7 @@ export interface IUser {
   image?: string | null;
   stripeId?: string;
   subscriptionId?: string;
-  subscriptionStatus?: 'active' | 'past_due' | 'canceled';
+  subscriptionStatus?: Stripe.Subscription.Status;
   articles: (ObjectId | IArticle)[];
 }
 

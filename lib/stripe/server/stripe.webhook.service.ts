@@ -1,7 +1,12 @@
 import { emailService } from '@lib/email';
 import { userService } from '@lib/database/services';
 
+// Documentation:
+// https://stripe.com/docs/billing/subscriptions/webhooks#active-subscriptions
+// https://stripe.com/docs/billing/subscriptions/webhooks#state-changes
+
 class StripeWebhookService {
+  // https://stripe.com/docs/billing/subscriptions/webhooks#payment-failures
   public async onInvoicePaymentFailed(eventObject: { [key: string]: any }) {
     const { customer: customerStripeId } = eventObject;
 
