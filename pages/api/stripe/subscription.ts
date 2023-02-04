@@ -25,7 +25,7 @@ export default async function handler(
 
         let stripeUser;
 
-        if (user.stripeId) {
+        if (user.stripeId && user.stripeId !== '') {
           stripeUser = await stripeService.findCustomer(user.stripeId);
         } else {
           stripeUser = await stripeService.createCustomer({
