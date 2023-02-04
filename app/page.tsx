@@ -6,6 +6,7 @@ import { signIn, signOut } from 'next-auth/react';
 import { fetcher } from '@lib/fetcher';
 
 export default function Home() {
+  console.log('NODE_ENV client', process.env.NODE_ENV);
   const router = useRouter();
 
   const createArticle = async () => {
