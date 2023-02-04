@@ -54,6 +54,10 @@ class StripeService {
     return await this.client.subscriptions.create(subscription);
   }
 
+  public async deleteSubscription(id: string) {
+    return await this.client.subscriptions.del(id);
+  }
+
   public async getSubscription(id: string) {
     return await this.client.subscriptions.retrieve(id);
   }

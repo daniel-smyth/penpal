@@ -23,9 +23,15 @@ export default async function handler(
           throw new Error('signed in user must have an email for stripe');
         }
 
-        const stripeUser = await stripeService.createCustomer({
-          email: user.email
-        });
+        let stripeUser;
+
+        if (user.stripeId) {
+          stripeUser = await stripeService.findCustomer(user.stripeId);
+        } else {
+          stripeUser = await stripeService.createCustomer({
+            email: user.email
+          });
+        }
 
         // Add the Stripe customer ID to the user's record
         const userWithStripeId = {
@@ -63,6 +69,14 @@ export default async function handler(
         res.status(500).json({ message: err.message });
       }
       break;
+
+    case 'DELETE':
+      try {
+        await stripeService.deleteSubscription(req.query.id as string);
+        res.status(200).json({ message: 'Subscription canceled' });
+      } catch (err: any) {
+        res.status(500).json({ message: err.message });
+      }
     default:
       res.status(400).json({ success: 'Method not allowed' });
       break;
