@@ -7,9 +7,10 @@ import {
 } from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import { customSWRRender } from '@tests/utils';
-import { fetcher, mockArticle, mockImageQueries } from '@tests/mocks';
+import { fetcher, mockArticleList, mockImageQueries } from '@tests/mocks';
 import ImageGenerator from './ImageGenerator';
 
+const mockArticle = mockArticleList[0];
 const mockQuery = mockImageQueries[0];
 const mockError = { name: '', message: 'test error' };
 

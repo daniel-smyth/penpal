@@ -18,7 +18,7 @@ export default async function handler(
           if (!user) {
             return res.status(404).json({ message: 'unauthorized' });
           }
-          const allArticles = await userService.getArticles(user.id);
+          const allArticles = await userService.getArticles(user._id as string);
           return res.status(200).json(allArticles);
         }
         // no null check for user - if user is not logged in, they can still create articles
@@ -33,7 +33,10 @@ export default async function handler(
       break;
     case 'POST':
       try {
-        const article = await articleService.create(req.body, user?.id);
+        const article = await articleService.create(
+          req.body,
+          user?._id as string
+        );
         res.status(201).json(article);
       } catch (err: any) {
         res.status(500).json({ message: err.message });

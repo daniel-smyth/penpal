@@ -3,15 +3,16 @@ import { ObjectId } from 'mongodb';
 import { IArticle } from '@lib/database/models';
 
 export interface IUser {
+  id?: string; // next-auth ID, MongoDB ID should always take preference
   _id?: string; // MongoDB ID
   name?: string | null;
   email?: string | null;
   emailVerified?: boolean;
   image?: string | null;
-  articles: (ObjectId | IArticle)[];
   stripeId?: string;
   subscriptionId?: string;
   subscriptionStatus?: 'active' | 'past_due' | 'canceled';
+  articles: (ObjectId | IArticle)[];
 }
 
 const UserSchema = new Schema<IUser>({

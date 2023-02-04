@@ -1,7 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { mockArticleList } from '@tests/mocks';
 import { useSession } from 'next-auth/react';
-import { mockArticle } from '@tests/mocks';
 import ShareArticle from './ShareArticle';
+
+const mockArticle = mockArticleList[0];
 
 jest.mock('next-auth/react');
 

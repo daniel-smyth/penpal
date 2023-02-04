@@ -2,9 +2,10 @@ import React from 'react';
 import { act, fireEvent, screen } from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import { customSWRRender } from '@tests/utils';
-import { fetcher, mockArticle, mockTextQueries } from '@tests/mocks';
+import { fetcher, mockArticleList, mockTextQueries } from '@tests/mocks';
 import TextGenerator from './TextGenerator';
 
+const mockArticle = mockArticleList[0];
 const mockQuery = mockTextQueries[0];
 const mockError = { name: '', message: 'test error' };
 

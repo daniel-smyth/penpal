@@ -1,8 +1,9 @@
 import fetchMock from 'jest-fetch-mock';
 import { render, screen, waitFor } from '@testing-library/react';
-import { fetcher, mockArticle, mockNextRouter } from '@tests/mocks';
+import { fetcher, mockArticleList, mockNextRouter } from '@tests/mocks';
 import ArticleListItem from './ArticleListItem';
 
+const mockArticle = mockArticleList[0];
 const mockError = { name: '', message: 'test error' };
 
 beforeEach(() => {

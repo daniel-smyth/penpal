@@ -38,7 +38,7 @@ export default async function handler(
           ...user,
           stripeId: stripeUser.id
         };
-        await userService.update(user.id, userWithStripeId);
+        await userService.update(user._id as string, userWithStripeId);
 
         // Price ID values can be found on the Stripe dashboard
         // https://stripe.com/docs/billing/subscriptions/price-and-product-ids

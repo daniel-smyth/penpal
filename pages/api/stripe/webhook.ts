@@ -52,7 +52,7 @@ export default async function handler(
             await stripeWebhookService.onSubscriptionUpdated(dataObject);
             break;
           case 'customer.subscription.deleted':
-            // if (event.request != null) { }
+            // if (event.request != null) {}
             await stripeWebhookService.onSubscriptionCancelled(dataObject);
             break;
           default:
