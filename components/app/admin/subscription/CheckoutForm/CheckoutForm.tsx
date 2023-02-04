@@ -8,6 +8,7 @@ import {
   LinkAuthenticationElement
 } from '@stripe/react-stripe-js';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface CheckoutFormProps {
   redirectUrl: string;
@@ -16,6 +17,8 @@ interface CheckoutFormProps {
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ redirectUrl }) => {
   const stripe = useStripe();
   const elements = useElements();
+
+  const { data: userSession } = useSession();
   const pathName = usePathname();
 
   const [email, setEmail] = useState('');
@@ -65,7 +68,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ redirectUrl }) => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: redirectUrl
+        return_url: redirectUrl,
+        receipt_email: userSession?.user?.email || undefined
       }
     });
 
