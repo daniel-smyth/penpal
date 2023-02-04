@@ -9,11 +9,11 @@ import {
 } from '@stripe/react-stripe-js';
 import { usePathname } from 'next/navigation';
 
-interface CheckoutFormProp {
-  callbackUrl: string;
+interface CheckoutFormProps {
+  redirectUrl: string;
 }
 
-const CheckoutForm: React.FC<CheckoutFormProp> = ({ callbackUrl }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({ redirectUrl }) => {
   const stripe = useStripe();
   const elements = useElements();
   const pathName = usePathname();
@@ -65,11 +65,9 @@ const CheckoutForm: React.FC<CheckoutFormProp> = ({ callbackUrl }) => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: callbackUrl
+        return_url: redirectUrl
       }
     });
-
-    console.log(error);
 
     // This point will only be reached if there is an immediate error when
     // confirming the payment. Otherwise, your customer will be redirected to
@@ -88,28 +86,20 @@ const CheckoutForm: React.FC<CheckoutFormProp> = ({ callbackUrl }) => {
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       Address:
       <input type="text" />
       <br />
       {/* aligned to right */}
       Plan Details: {pathName?.split('/').pop()}
       <br />
-      <LinkAuthenticationElement
-        id="link-authentication-element"
-        onChange={(e) => setEmail(e.value.email)}
-      />
-      <PaymentElement
-        id="payment-element"
-        options={paymentElementOptions as any}
-      />
+      <LinkAuthenticationElement onChange={(e) => setEmail(e.value.email)} />
+      <PaymentElement options={paymentElementOptions as any} />
       <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : 'Pay now'}
-        </span>
+        <span>{isLoading ? <div>Loading</div> : 'Pay now'}</span>
       </button>
       {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
+      {message && <div>{message}</div>}
     </form>
   );
 };
