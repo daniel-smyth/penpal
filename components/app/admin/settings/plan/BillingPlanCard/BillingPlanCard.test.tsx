@@ -5,7 +5,13 @@ import BillingPlanCard from './BillingPlanCard';
 describe('Billing Plan Card', () => {
   it('renders billing plan card', () => {
     render(
-      <BillingPlanCard name={''} description={''} price={''} features={[]} />
+      <BillingPlanCard
+        name={''}
+        description={''}
+        price={''}
+        features={[]}
+        stripePriceId={''}
+      />
     );
   });
 });

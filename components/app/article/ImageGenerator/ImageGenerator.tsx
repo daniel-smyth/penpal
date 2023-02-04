@@ -64,9 +64,6 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
     mutate(newArticle, { optimisticData: newArticle });
   };
 
-  console.log(article);
-  console.log(article.image.current);
-
   return (
     <>
       <strong>

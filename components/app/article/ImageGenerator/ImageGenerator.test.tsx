@@ -77,7 +77,10 @@ describe('Image Generator', () => {
 
     expect(fetcher).toHaveBeenCalledWith({
       url: '/api/ai/image',
-      params: { prompt: mockQuery.input, articleId: mockArticle._id }
+      params: {
+        input: mockQuery.input,
+        articleId: mockArticle._id
+      }
     });
     expect(
       await screen.findByText(mockQuery.output.data.url)

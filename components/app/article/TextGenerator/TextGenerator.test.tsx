@@ -72,7 +72,7 @@ describe('Text Generator', () => {
 
     expect(fetcher).toHaveBeenCalledWith({
       url: '/api/ai/text',
-      params: { prompt: mockQuery.input, articleId: mockArticle._id }
+      params: { input: mockQuery.input, articleId: mockArticle._id }
     });
     expect(
       await screen.findByText(mockQuery.output.choices[0].text)

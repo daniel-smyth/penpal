@@ -5,9 +5,7 @@ class StripeWebhookService {
   public async onInvoicePaymentFailed(eventObject: { [key: string]: any }) {
     const { customer: customerStripeId } = eventObject;
 
-    const user = await userService.find({
-      stripeId: customerStripeId
-    });
+    const user = await userService.find({ stripeId: customerStripeId });
 
     await emailService.sendEmail({
       from: '',
@@ -18,11 +16,13 @@ class StripeWebhookService {
   }
 
   public async onSubscriptionCreated(eventObject: { [key: string]: any }) {
-    const { id: subscriptionId, status: subscriptionStatus } = eventObject;
+    const {
+      id: subscriptionId,
+      status: subscriptionStatus,
+      customer: customerStripeId
+    } = eventObject;
 
-    const user = await userService.find({
-      stripeId: eventObject.customer
-    });
+    const user = await userService.find({ stripeId: customerStripeId });
 
     if (subscriptionStatus === 'active') {
       await emailService.sendEmail({
@@ -41,11 +41,14 @@ class StripeWebhookService {
   }
 
   public async onSubscriptionUpdated(eventObject: { [key: string]: any }) {
-    const { id: subscriptionId, status: subscriptionStatus } = eventObject;
+    const {
+      id: subscriptionId,
+      status: subscriptionStatus,
+      customer: customerStripeId
+    } = eventObject;
 
-    const user = await userService.find({
-      stripeId: eventObject.customer
-    });
+    const user = await userService.find({ stripeId: customerStripeId });
+
     if (user) {
       await userService.update(user._id, {
         ...user,
@@ -56,11 +59,13 @@ class StripeWebhookService {
   }
 
   public async onSubscriptionCancelled(eventObject: { [key: string]: any }) {
-    const { id: subscriptionId, status: subscriptionStatus } = eventObject;
+    const {
+      id: subscriptionId,
+      status: subscriptionStatus,
+      customer: customerStripeId
+    } = eventObject;
 
-    const user = await userService.find({
-      stripeId: eventObject.customer
-    });
+    const user = await userService.find({ stripeId: customerStripeId });
 
     await emailService.sendEmail({
       from: '',
