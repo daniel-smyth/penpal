@@ -1,5 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { stripeService } from '@lib/stripe/server';
+import { stripeService, stripeWebhookService } from '@lib/stripe/server';
+import { buffer } from '@lib/buffer';
+
+// Next.JS API config
+// Stripe webhooks need raw request body
+export const config = {
+  api: {
+    bodyParser: false
+  }
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,29 +17,25 @@ export default async function handler(
   switch (req.method) {
     case 'POST':
       try {
-        // Retrieve the event by verifying the signature using the raw body and secret.
+        // Retrieve the event by verifying the signature using the raw body and secret
         let event;
 
         try {
-          event = stripeService.constructWebhook(
-            req.body,
+          const rawBody = await buffer(req);
+          event = stripeService.constructEvent(
+            rawBody,
             req.headers['stripe-signature'] as string
           );
         } catch (err) {
           console.log(err);
-          console.log(`⚠️  Webhook signature verification failed.`);
-          console.log(
-            `⚠️  Check the env file and enter the correct webhook secret.`
-          );
           return res.status(400);
         }
-        // Extract the object from the event.
+        // Extract the object from the event
         const dataObject = event.data.object;
 
         // Handle the event
         // Review important events for Billing webhooks
         // https://stripe.com/docs/billing/webhooks
-        // Remove comment to see the various objects sent for this sample
         switch (event.type) {
           case 'invoice.paid':
             // Used to provision services after the trial has ended.
@@ -38,22 +43,19 @@ export default async function handler(
             // database to reference when a user accesses your service to avoid hitting rate limits.
             break;
           case 'invoice.payment_failed':
-            // If the payment fails or the customer does not have a valid payment method,
-            //  an invoice.payment_failed event is sent, the subscription becomes past_due.
-            // Use this webhook to notify your user that their payment has
-            // failed and to retrieve new card details.
+            await stripeWebhookService.onInvoicePaymentFailed(dataObject);
+            break;
+          case 'customer.subscription.created':
+            await stripeWebhookService.onSubscriptionCreated(dataObject);
+            break;
+          case 'customer.subscription.updated':
+            await stripeWebhookService.onSubscriptionUpdated(dataObject);
             break;
           case 'customer.subscription.deleted':
-            if (event.request != null) {
-              // handle a subscription canceled by your request
-              // from above.
-            } else {
-              // handle subscription canceled automatically based
-              // upon your subscription settings.
-            }
+            // if (event.request != null) { }
+            await stripeWebhookService.onSubscriptionCancelled(dataObject);
             break;
           default:
-          // Unexpected event type
         }
         res.status(200);
       } catch (err: any) {

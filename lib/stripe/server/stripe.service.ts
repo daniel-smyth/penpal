@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-let API_VERSION: Stripe.StripeConfig['apiVersion'] = '2022-11-15';
+export let API_VERSION: Stripe.StripeConfig['apiVersion'] = '2022-11-15';
 let STRIPE_SECRET_KEY: string | undefined;
 let STRIPE_WEBHOOK_SECRET_KEY: string | undefined;
 
@@ -12,10 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
   STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY;
 }
 
-// if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET_KEY) {
-//   throw new Error('Stripe keys undefined. Please add to .env file.');
-// }
-if (!STRIPE_SECRET_KEY) {
+if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET_KEY) {
   throw new Error('Stripe keys undefined. Please add to .env file.');
 }
 
@@ -62,7 +59,7 @@ class StripeService {
     return await this.client.subscriptions.retrieve(id);
   }
 
-  public constructWebhook(payload: string, signature: string) {
+  public constructEvent(payload: Buffer, signature: string) {
     return this.client.webhooks.constructEvent(
       payload,
       signature,
