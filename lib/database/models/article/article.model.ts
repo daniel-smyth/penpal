@@ -1,10 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
 import {
-  type IImageQuery,
-  type ITextQuery,
-  ImageQuerySchema,
-  TextQuerySchema
-} from '@lib/database/models';
+  ITextQuery,
+  IImageQuery,
+  TextQuerySchema,
+  ImageQuerySchema
+} from '../query/query.model';
 
 export interface IArticle {
   _id: string;

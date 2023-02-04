@@ -29,7 +29,7 @@ const BillingPlanCard: React.FC<BillingPlanCardProps> = ({
           </li>
         ))}
       </ul>
-      <Link href={`/admin/subscription/${stripePriceId}`}></Link>
+      <Link href={`/admin/subscription/${stripePriceId}`}>Buy now</Link>
     </div>
   );
 };

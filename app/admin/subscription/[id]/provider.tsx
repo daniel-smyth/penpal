@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { fetcher } from '@lib/fetcher';
+import { usePathname } from 'next/navigation';
 import { Elements } from '@stripe/react-stripe-js';
-import { getClientSession } from '@lib/stripe';
+import { getStripeClientSession } from '@lib/stripe/client';
+import { fetcher } from '@lib/fetcher';
 
-const stripePromise = getClientSession();
+const stripePromise = getStripeClientSession();
 
 function StripeProvider({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+  const pathName = usePathname();
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
@@ -19,13 +19,13 @@ function StripeProvider({ children }: { children: React.ReactNode }) {
         url: '/api/stripe/subscription',
         method: 'POST',
         body: {
-          priceId: router.query.priceId
+          priceId: pathName?.split('/').pop()
         }
       });
       setClientSecret(clientSecret);
     };
     createPaymentIntent();
-  }, [router.query.priceId]);
+  }, [pathName]);
 
   const appearance = {
     theme: 'stripe' as 'stripe' | 'night' | 'flat' | 'none'
@@ -38,11 +38,12 @@ function StripeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return clientSecret !== '' ? (
-    <Elements stripe={stripePromise} options={options}>
+    // `key` is workaround to hide "Unsupported prop change: options.clientSecret is not a mutable property"
+    <Elements stripe={stripePromise} options={options} key={clientSecret}>
       {children}
     </Elements>
   ) : (
-    <></>
+    <>Loading Stripe...</>
   );
 }
 

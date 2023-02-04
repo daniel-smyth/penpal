@@ -13,26 +13,12 @@ if (!PRICE_ID_SUBSCRIPTION_MONTHLY || !PRICE_ID_SUBSCRIPTION_YEARLY) {
   );
 }
 
-export default async function PlanPage() {
+async function PlanPage() {
   const user = await getUser();
 
-  if (!user) {
-    return <main>Not logged in</main>; // Handle this redirect in the layout
-  }
-
   return (
-    <main>
-      {/* <p>Current Plan: {user.plan}</p> */}
-      <BillingPlanCard
-        stripePriceId=""
-        name="Free"
-        description="Try out Penpal for free"
-        price="Free"
-        features={[
-          { icon: 'newspaper', text: '1 article per week' },
-          { icon: 'image', text: '1 image per week' }
-        ]}
-      />
+    <div>
+      {user && <p>Current Plan: </p>}
       <BillingPlanCard
         name="Unlimited"
         description="Everything you need to create and publish articles"
@@ -55,6 +41,8 @@ export default async function PlanPage() {
         ]}
         stripePriceId={PRICE_ID_SUBSCRIPTION_YEARLY!}
       />
-    </main>
+    </div>
   );
 }
+
+export default PlanPage;
