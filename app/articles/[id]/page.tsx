@@ -20,7 +20,7 @@ async function getArticle(id: string) {
       if (!article) {
         throw new Error('article not found');
       }
-      return JSON.stringify(article.toObject());
+      return article.toObject();
     } catch (error: any) {
       throw new Error(error.message);
     }
@@ -28,7 +28,7 @@ async function getArticle(id: string) {
 }
 
 async function ArticlePage({ params: { id } }: { params: { id: string } }) {
-  const article = JSON.parse((await getArticle(id)) || '');
+  const article = await getArticle(id);
 
   if (!article) {
     return <div>Loading...</div>;
@@ -40,9 +40,9 @@ async function ArticlePage({ params: { id } }: { params: { id: string } }) {
         <br />
         Title: {article.title}
         <br />
-        <TextGenerator article={article} />
-        <ImageGenerator article={article} />
-        <ShareArticle article={article} />
+        <TextGenerator article={JSON.parse(JSON.stringify(article))} />
+        <ImageGenerator article={JSON.parse(JSON.stringify(article))} />
+        <ShareArticle article={JSON.parse(JSON.stringify(article))} />
       </>
     </main>
   );
