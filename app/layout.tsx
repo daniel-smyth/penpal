@@ -6,7 +6,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log('NODE_ENV server', process.env.NODE_ENV);
   return (
     <html>
       <body>

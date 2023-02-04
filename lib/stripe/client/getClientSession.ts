@@ -1,12 +1,6 @@
 import { Stripe, loadStripe } from '@stripe/stripe-js';
 
-let STRIPE_PUBLISHABLE_KEY: string | undefined;
-
-if (process.env.NODE_ENV !== 'production') {
-  STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST;
-} else {
-  STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-}
+const STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
 if (!STRIPE_PUBLISHABLE_KEY) {
   throw new Error('Stripe keys undefined. Please add to .env file.');

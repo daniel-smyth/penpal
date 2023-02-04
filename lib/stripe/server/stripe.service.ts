@@ -1,16 +1,8 @@
 import Stripe from 'stripe';
 
-export let API_VERSION: Stripe.StripeConfig['apiVersion'] = '2022-11-15';
-let STRIPE_SECRET_KEY: string | undefined;
-let STRIPE_WEBHOOK_SECRET_KEY: string | undefined;
-
-if (process.env.NODE_ENV !== 'production') {
-  STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY_TEST;
-  STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY_TEST;
-} else {
-  STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
-  STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY;
-}
+export const API_VERSION: Stripe.StripeConfig['apiVersion'] = '2022-11-15';
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
+const STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY;
 
 if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET_KEY) {
   throw new Error('Stripe keys undefined. Please add to .env file.');
