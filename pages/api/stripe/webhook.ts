@@ -2,10 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { stripeService, stripeWebhookService } from '@lib/stripe/server';
 import { buffer } from '@lib/buffer';
 
-// Webhooks Documentation:
-// https://stripe.com/docs/billing/subscriptions/webhooks#active-subscriptions
-// https://stripe.com/docs/billing/subscriptions/webhooks#state-changes
-
 // Next.JS API config
 // Stripe webhooks need raw request body
 export const config = {
@@ -29,6 +25,8 @@ export default async function handler(
           rawBody,
           req.headers['stripe-signature'] as string
         );
+
+        res.status(200);
 
         // Extract the object from the event
         const dataObject = event.data.object;
@@ -57,7 +55,6 @@ export default async function handler(
             break;
           default:
         }
-        res.status(200);
       } catch (err: any) {
         res.status(500).json({ message: err.message });
       }

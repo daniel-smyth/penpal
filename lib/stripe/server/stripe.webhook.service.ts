@@ -1,19 +1,14 @@
 import { emailService } from '@lib/email';
 import { userService } from '@lib/database/services';
 
-// Documentation:
-// https://stripe.com/docs/billing/subscriptions/webhooks#active-subscriptions
-// https://stripe.com/docs/billing/subscriptions/webhooks#state-changes
-
 class StripeWebhookService {
-  // https://stripe.com/docs/billing/subscriptions/webhooks#payment-failures
   public async onInvoicePaymentFailed(eventObject: { [key: string]: any }) {
     const { customer: customerStripeId } = eventObject;
 
     const user = await userService.find({ stripeId: customerStripeId });
 
     await emailService.sendEmail({
-      from: '',
+      from: 'penpal',
       to: user?.email as string,
       subject: 'Payment failed',
       html: 'Your payment has failed. Please update your payment method.'
@@ -31,7 +26,7 @@ class StripeWebhookService {
 
     if (subscriptionStatus === 'active') {
       await emailService.sendEmail({
-        from: '',
+        from: 'penpal',
         to: user?.email as string,
         subject: 'Welcome to our service!',
         html: 'Thank you for subscribing to our service.'
@@ -73,7 +68,7 @@ class StripeWebhookService {
     const user = await userService.find({ stripeId: customerStripeId });
 
     await emailService.sendEmail({
-      from: '',
+      from: 'penpal',
       to: user?.email as string,
       subject: 'Sad to see you go!',
       html: 'We are sad to see you go. Please let us know if there is anything we can do to improve our service.'

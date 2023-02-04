@@ -15,7 +15,7 @@ export interface ISendEmail {
 }
 
 class EmailService {
-  private transporter: any;
+  private transporter: nodemailer.Transporter;
 
   constructor() {
     this.transporter = nodemailer.createTransport({
