@@ -12,8 +12,11 @@ if (process.env.NODE_ENV !== 'production') {
   STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY;
 }
 
-if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET_KEY) {
-  throw new Error('Stripe keys undefined. Please to .env file.');
+// if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET_KEY) {
+//   throw new Error('Stripe keys undefined. Please add to .env file.');
+// }
+if (!STRIPE_SECRET_KEY) {
+  throw new Error('Stripe keys undefined. Please add to .env file.');
 }
 
 class StripeService {

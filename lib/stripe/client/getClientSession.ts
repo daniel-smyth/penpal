@@ -9,17 +9,17 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (!STRIPE_PUBLISHABLE_KEY) {
-  throw new Error('Stripe keys undefined. Please to .env file.');
+  throw new Error('Stripe keys undefined. Please add to .env file.');
 }
 
 let stripePromise: Promise<Stripe | null>;
 
 /** Client only session. Server session is handled via `stripe.service.ts` */
-const getClientSession = () => {
+const getStripeClientSession = () => {
   if (!stripePromise) {
     stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY!);
   }
   return stripePromise;
 };
 
-export default getClientSession;
+export default getStripeClientSession;
