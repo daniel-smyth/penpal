@@ -1,8 +1,10 @@
 import { IArticle } from '@lib/database/models';
 
-const mockArticle: IArticle = {
-  _id: '123',
-  title: 'Test Title',
+let articleCount = 0;
+
+const makeArticle = (): IArticle => ({
+  _id: `${articleCount}`,
+  title: `Test Title ${articleCount}`,
   text: {
     current: {
       input: '',
@@ -49,6 +51,6 @@ const mockArticle: IArticle = {
       }
     ]
   }
-};
+});
 
-export default mockArticle;
+export default makeArticle;

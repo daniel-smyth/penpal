@@ -29,9 +29,6 @@ export function createMockRouter(overrides: Partial<any>) {
   };
 }
 
-/**
- * Mock the `useRouter()` hook and return the mocked router instance.
- */
 export default function mockNextRouter(overrides: Partial<any> = {}) {
   const mockRouter = createMockRouter(overrides);
   mockUseNextRouter.mockReturnValue(mockRouter);

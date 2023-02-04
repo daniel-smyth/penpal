@@ -1,10 +1,11 @@
 ## Tests
 
-This folder contains all the test files for the Next.js project. Tests are run using the Jest testing framework.
+This folder contains all the test files. Tests are run using the Jest testing framework.
 
 ### Directories
 
-- `mocks`: This folder contains mock implementations for modules used in the tests.
+- `helpers`: Contains mock creator function.
+- `mocks`: Contains mock implementations for modules used in the tests.
 
 ### Examples of Usage
 
