@@ -22,7 +22,7 @@ class StripeWebhookService {
         case 'active':
           await emailService.sendEmail({
             from: 'danielsmyth2011@gmail.com',
-            to: user?.email as string,
+            to: user.email as string,
             subject: 'Subscription active',
             html: ''
           });
@@ -48,7 +48,7 @@ class StripeWebhookService {
         case 'canceled':
           await emailService.sendEmail({
             from: 'danielsmyth2011@gmail.com',
-            to: user?.email as string,
+            to: user.email as string,
             subject: 'Subscription cancelled',
             html: ''
           });
@@ -71,10 +71,11 @@ class StripeWebhookService {
 
     const user = await userService.find({ stripeId: customerStripeId });
     if (user) {
-      delete user.subscriptionId;
-      delete user.subscriptionStatus;
+      const updatedUser = { ...user };
+      delete updatedUser.subscriptionId;
+      delete updatedUser.subscriptionStatus;
 
-      await userService.update(user.id, { ...user });
+      await userService.update(user.id, { ...updatedUser });
 
       await emailService.sendEmail({
         from: 'danielsmyth2011@gmail.com',

@@ -26,7 +26,7 @@ export default function Home() {
         method: 'POST',
         body: article
       });
-      router.push(`/article/${_id}`);
+      router.push(`/articles/${_id}`);
     } catch (err: any) {
       console.log(err);
       throw new Error(err);
