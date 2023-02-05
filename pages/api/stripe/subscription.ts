@@ -46,11 +46,7 @@ export default async function handler(
             email: user.email
           });
           // Add new Stripe customer ID to user's record
-          const userWithStripeId = {
-            ...user,
-            stripeId: stripeCustomer.id
-          };
-          await userService.update(user.id as string, userWithStripeId);
+          user.stripeId = stripeCustomer.id;
         }
 
         // Price ID values can be found on the Stripe dashboard
@@ -71,13 +67,9 @@ export default async function handler(
         });
 
         const { payment_intent } = latest_invoice as Stripe.Invoice;
+        user.subscriptionId = id;
 
-        // Add the Stripe subscription ID to the user's record
-        const userWithSubscriptionId = {
-          ...user,
-          subscriptionId: id
-        };
-        await userService.update(user.id as string, userWithSubscriptionId);
+        await userService.update(user.id as string, { ...user });
 
         res.status(200).json({
           subscriptionId: id,

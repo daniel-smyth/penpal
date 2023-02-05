@@ -8,10 +8,8 @@ class StripeWebhookService {
 
     const user = await userService.find({ stripeId: customerStripeId });
     if (user) {
-      await userService.update(user.id, {
-        ...user,
-        subscriptionStatus
-      });
+      user.subscriptionStatus = subscriptionStatus;
+      await user.save();
 
       switch (subscriptionStatus) {
         case 'trialing':
@@ -71,11 +69,9 @@ class StripeWebhookService {
 
     const user = await userService.find({ stripeId: customerStripeId });
     if (user) {
-      const updatedUser = { ...user };
-      delete updatedUser.subscriptionId;
-      delete updatedUser.subscriptionStatus;
-
-      await userService.update(user.id, { ...updatedUser });
+      delete user.subscriptionId;
+      delete user.subscriptionStatus;
+      await user.save();
 
       await emailService.sendEmail({
         from: 'danielsmyth2011@gmail.com',
