@@ -22,7 +22,7 @@ class StripeService {
   }
 
   public async findCustomer(id: string) {
-    return await this.client.customers.retrieve(id);
+    return (await this.client.customers.retrieve(id)) as Stripe.Customer;
   }
 
   public async createPaymentIntent(
@@ -49,8 +49,8 @@ class StripeService {
     return await this.client.subscriptions.del(id);
   }
 
-  public async getSubscription(id: string) {
-    return await this.client.subscriptions.retrieve(id);
+  public async getSubscription(id: string, expand?: string[]) {
+    return await this.client.subscriptions.retrieve(id, { expand });
   }
 
   public constructEvent(payload: Buffer, signature: string) {

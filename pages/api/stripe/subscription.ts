@@ -20,25 +20,38 @@ export default async function handler(
     case 'POST':
       try {
         if (!user.email) {
-          throw new Error('signed in user must have an email for stripe');
+          throw new Error('email required for Stripe subscription');
         }
 
-        let stripeUser;
+        // User already has subscription. Get its latest_invoice to confirm payment
+        if (user.subscriptionId) {
+          const { latest_invoice } = await stripeService.getSubscription(
+            user.subscriptionId,
+            ['latest_invoice.payment_intent'] // `expand` latest_invoice's payment_intent
+          );
+          const { payment_intent } = latest_invoice as Stripe.Invoice;
 
-        if (user.stripeId && user.stripeId !== '') {
-          stripeUser = await stripeService.findCustomer(user.stripeId);
-        } else {
-          stripeUser = await stripeService.createCustomer({
-            email: user.email
+          return res.status(200).json({
+            subscriptionId: user.subscriptionId,
+            clientSecret: (payment_intent as Stripe.PaymentIntent).client_secret
           });
         }
 
-        // Add the Stripe customer ID to the user's record
-        const userWithStripeId = {
-          ...user,
-          stripeId: stripeUser.id
-        };
-        await userService.update(user._id as string, userWithStripeId);
+        let stripeCustomer: Stripe.Customer;
+
+        if (user.stripeId && user.stripeId !== '') {
+          stripeCustomer = await stripeService.findCustomer(user.stripeId);
+        } else {
+          stripeCustomer = await stripeService.createCustomer({
+            email: user.email
+          });
+          // Add new Stripe customer ID to user's record
+          const userWithStripeId = {
+            ...user,
+            stripeId: stripeCustomer.id
+          };
+          await userService.update(user.id as string, userWithStripeId);
+        }
 
         // Price ID values can be found on the Stripe dashboard
         // https://stripe.com/docs/billing/subscriptions/price-and-product-ids
@@ -48,7 +61,7 @@ export default async function handler(
         // latest invoice and that invoice's payment_intent
         // so we can pass it to the front end to confirm the payment
         const { id, latest_invoice } = await stripeService.createSubscription({
-          customer: stripeUser.id,
+          customer: stripeCustomer.id,
           items: [{ price: priceId }],
           payment_behavior: 'default_incomplete',
           payment_settings: {
@@ -57,22 +70,32 @@ export default async function handler(
           expand: ['latest_invoice.payment_intent']
         });
 
-        // Get expanded invoice's payment_intent to confirm payment on front end
-        const invoice = latest_invoice as Stripe.Invoice;
-        const paymentIntent = invoice.payment_intent as Stripe.PaymentIntent;
+        const { payment_intent } = latest_invoice as Stripe.Invoice;
+
+        // Add the Stripe subscription ID to the user's record
+        const userWithSubscriptionId = {
+          ...user,
+          subscriptionId: id
+        };
+        await userService.update(user.id as string, userWithSubscriptionId);
 
         res.status(200).json({
           subscriptionId: id,
-          clientSecret: paymentIntent.client_secret
+          clientSecret: (payment_intent as Stripe.PaymentIntent).client_secret
         });
-      } catch (err: any) {
-        res.status(500).json({ message: err.message });
+      } catch (error: any) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
       }
       break;
-
     case 'DELETE':
       try {
-        await stripeService.deleteSubscription(req.query.id as string);
+        const { subscriptionId } = user;
+        await stripeService.deleteSubscription(subscriptionId as string);
+
+        delete user.subscriptionId;
+        delete user.subscriptionStatus;
+
         res.status(200).json({ message: 'Subscription canceled' });
       } catch (err: any) {
         res.status(500).json({ message: err.message });

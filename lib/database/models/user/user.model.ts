@@ -4,8 +4,7 @@ import Stripe from 'stripe';
 import { IArticle } from '@lib/database/models';
 
 export interface IUser {
-  id?: string; // next-auth ID, MongoDB ID should always take preference
-  _id?: string; // MongoDB ID
+  id?: string;
   name?: string | null;
   email?: string | null;
   emailVerified?: boolean;
