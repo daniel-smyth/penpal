@@ -26,8 +26,6 @@ export default async function handler(
           req.headers['stripe-signature'] as string
         );
 
-        res.status(200);
-
         // Extract the object from the event
         const dataObject = event.data.object;
 
@@ -36,27 +34,47 @@ export default async function handler(
         // https://stripe.com/docs/billing/webhooks
         switch (event.type) {
           case 'invoice.paid':
-            // Used to provision services after the trial has ended.
-            // The status of the invoice will show up as paid. Store the status in your
-            // database to reference when a user accesses your service to avoid hitting rate limits.
-            break;
-          case 'invoice.payment_failed':
-            await stripeWebhookService.onInvoicePaymentFailed(dataObject);
-            break;
-          case 'customer.subscription.created':
-            await stripeWebhookService.onSubscriptionCreated(dataObject);
+            // Sent when the invoice is successfully paid. You can
+            // provision access to your product when you receive this
+            // event and the subscription status is active.
             break;
           case 'customer.subscription.updated':
-            await stripeWebhookService.onSubscriptionUpdated(dataObject);
+            // Sent when the subscription is successfully started, after
+            // the payment is confirmed. Also sent whenever a subscription
+            // is changed. For example, adding a coupon, applying a
+            // discount, adding an invoice item, and changing plans all
+            // trigger this event.
+
+            // When a subscription changes to past_due, notify the customer
+            // directly and ask them to update their payment details.
+            // Stripe offers several features that help automate this
+            // process-read more about revenue recovery.
+
+            // When a subscription changes to canceled or unpaid,
+            // revoke access to your product.
+            stripeWebhookService.onSubscriptionUpdated(dataObject);
             break;
           case 'customer.subscription.deleted':
-            // if (event.request != null) {}
-            await stripeWebhookService.onSubscriptionCancelled(dataObject);
+            // Sent when the subscription is successfully started, after
+            // the payment is confirmed. Also sent whenever a subscription
+            // is changed. For example, adding a coupon, applying a
+            // discount, adding an invoice item, and changing plans all
+            // trigger this event.
+
+            // When a subscription changes to past_due, notify the customer
+            // directly and ask them to update their payment details.
+            // Stripe offers several features that help automate this
+            // process-read more about revenue recovery.
+
+            // When a subscription changes to canceled or unpaid,
+            // revoke access to your product.
+            stripeWebhookService.onSubscriptionDeleted(dataObject);
             break;
-          default:
         }
-      } catch (err: any) {
-        res.status(500).json({ message: err.message });
+        res.status(200);
+      } catch (error: any) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
       }
       break;
     default:
