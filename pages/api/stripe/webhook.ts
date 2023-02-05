@@ -54,7 +54,7 @@ export default async function handler(
 
             // When a subscription changes to canceled or unpaid,
             // revoke access to your product.
-            stripeWebhookService.onSubscriptionUpdated(dataObject);
+            await stripeWebhookService.onSubscriptionUpdated(dataObject);
             break;
           case 'customer.subscription.deleted':
             // Sent when the subscription is successfully started, after
@@ -70,7 +70,7 @@ export default async function handler(
 
             // When a subscription changes to canceled or unpaid,
             // revoke access to your product.
-            stripeWebhookService.onSubscriptionDeleted(dataObject);
+            await stripeWebhookService.onSubscriptionDeleted(dataObject);
             break;
         }
       } catch (error: any) {
