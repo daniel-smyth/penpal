@@ -69,8 +69,8 @@ class StripeWebhookService {
 
     const user = await userService.find({ stripeId: customerStripeId });
     if (user) {
-      delete user.subscriptionId;
-      delete user.subscriptionStatus;
+      user.subscriptionId = undefined;
+      user.subscriptionStatus = undefined;
       await user.save();
 
       await emailService.sendEmail({
