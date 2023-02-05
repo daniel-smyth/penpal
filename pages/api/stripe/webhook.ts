@@ -17,8 +17,6 @@ export default async function handler(
   switch (req.method) {
     case 'POST':
       try {
-        res.status(200).json({ received: true });
-
         let event;
 
         // Retrieve the event by verifying the signature using the raw body and secret
@@ -73,6 +71,7 @@ export default async function handler(
             await stripeWebhookService.onSubscriptionDeleted(dataObject);
             break;
         }
+        res.status(200).json({ received: true });
       } catch (error: any) {
         console.error(error);
         res.status(500).json({ message: error.message });
