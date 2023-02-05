@@ -17,7 +17,7 @@ export default async function handler(
   switch (req.method) {
     case 'POST':
       try {
-        res.status(200);
+        res.status(200).json({ received: true });
 
         let event;
 
