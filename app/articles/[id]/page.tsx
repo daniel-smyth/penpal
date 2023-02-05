@@ -30,7 +30,7 @@ async function getArticle(id: string) {
 async function ArticlePage({ params: { id } }: { params: { id: string } }) {
   const article = await getArticle(id);
 
-  if (!article) {
+  if (!article || JSON.stringify(article) === '{}') {
     return <div>Loading...</div>;
   }
 
