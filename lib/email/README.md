@@ -12,7 +12,7 @@ Using the email service.
 
 ```typescript
 // somefile.ts
-export { EmailService } from '@lib/email';
+export { EmailService } from "@lib/email";
 ```
 
 Sending an email.
@@ -20,10 +20,10 @@ Sending an email.
 ```typescript
 const emailService = new EmailService();
 
-const to = 'recipient@example.com';
-const from = 'sender@example.com';
-const subject = 'Example Email';
-const html = '<p>This is an example email.</p>';
+const to = "recipient@example.com";
+const from = "sender@example.com";
+const subject = "Example Email";
+const html = "<p>This is an example email.</p>";
 
 emailService.sendEmail({ to, from, subject, html });
 ```

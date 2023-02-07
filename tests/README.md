@@ -13,14 +13,14 @@ Creating a test file:
 
 ```typescript
 // example.test.tsx
-import React from 'react';
-import { render, cleanup } from '@testing-library/react';
-import Example from '../components/Example';
+import React from "react";
+import { render, cleanup } from "@testing-library/react";
+import Example from "../components/Example";
 
 afterEach(cleanup);
 
-describe('Example', () => {
-  it('renders correctly', () => {
+describe("Example", () => {
+  it("renders correctly", () => {
     const { asFragment } = render(<Example />);
     expect(asFragment()).toMatchSnapshot();
   });

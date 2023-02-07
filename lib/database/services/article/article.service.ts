@@ -1,8 +1,8 @@
-import { Model } from 'mongoose';
-import { IArticle, Article } from '@lib/database/models';
-import { ArticleRepository } from '@lib/database/repositories';
-import { userService } from '@lib/database/services';
-import { openAiClient } from '@lib/openai';
+import { Model } from "mongoose";
+import { IArticle, Article } from "@lib/database/models";
+import { ArticleRepository } from "@lib/database/repositories";
+import { userService } from "@lib/database/services";
+import { openAiClient } from "@lib/openai";
 
 class ArticleService {
   private repository: ArticleRepository;
@@ -17,7 +17,7 @@ class ArticleService {
     }
     const user = await userService.get(userId);
     if (!user) {
-      throw new Error('invalid user id');
+      throw new Error("invalid user id");
     }
     const newArticle = await this.repository.create(article);
     user.articles.push(newArticle);
@@ -52,7 +52,7 @@ class ArticleService {
   public async generateAIText(input: string, id: string, choiceCount = 1) {
     const article = await this.get(id);
     if (!article) {
-      throw new Error('invalid article id');
+      throw new Error("invalid article id");
     }
 
     // Add new input/output to article input history
@@ -69,7 +69,7 @@ class ArticleService {
   public async generateAIImage(input: string, id: string) {
     const article = await this.get(id);
     if (!article) {
-      throw new Error('invalid article id');
+      throw new Error("invalid article id");
     }
 
     // Add new input/output to article input history

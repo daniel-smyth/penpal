@@ -1,1 +1,1 @@
-export { default as getStripeClientSession } from './getClientSession';
+export { default as getStripeClientSession } from "./getClientSession";

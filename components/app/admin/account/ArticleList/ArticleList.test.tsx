@@ -1,17 +1,17 @@
-import fetchMock from 'jest-fetch-mock';
-import { screen } from '@testing-library/react';
-import { customSWRRender } from '@tests/utils';
-import { fetcher, mockArticleList, mockNextRouter } from '@tests/mocks';
-import ArticleList from './ArticleList';
+import fetchMock from "jest-fetch-mock";
+import { screen } from "@testing-library/react";
+import { customSWRRender } from "@tests/utils";
+import { fetcher, mockArticleList, mockNextRouter } from "@tests/mocks";
+import ArticleList from "./ArticleList";
 
 beforeEach(() => {
   fetchMock.resetMocks();
   fetchMock.once(JSON.stringify(mockArticleList));
-  mockNextRouter({ pathname: '/profile', asPath: '/profile' });
+  mockNextRouter({ pathname: "/profile", asPath: "/profile" });
 });
 
-describe('Article List', () => {
-  it('renders all articles', async () => {
+describe("Article List", () => {
+  it("renders all articles", async () => {
     customSWRRender(<ArticleList />);
     for (let i = 0; i < mockArticleList.length; i++) {
       const article = mockArticleList[i];

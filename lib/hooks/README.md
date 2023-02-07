@@ -7,7 +7,7 @@ This directory contains reusable custom hooks. These hooks should be built with 
 You can import any hook from this directory and use them in your components.
 
 ```javascript
-import { useCounter } from '@lib/hooks';
+import { useCounter } from "@lib/hooks";
 
 const MyComponent = () => {
   const { count, setCount } = useCounter(0);
@@ -26,7 +26,7 @@ const MyComponent = () => {
 We also have custom SWR hooks defined for easy data management and reusability. The example below demonstrates how to use the useArticle hook in a component.
 
 ```javascript
-import { useArticle } from '@lib/hooks';
+import { useArticle } from "@lib/hooks";
 
 function Profile() {
   const { article, isLoading, isError } = useArticle();

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { IArticle } from '@lib/database/models';
-import { useSession } from 'next-auth/react';
+import React, { useState } from "react";
+import { IArticle } from "@lib/database/models";
+import { useSession } from "next-auth/react";
 
 interface ShareArticleProps {
   article: IArticle;
@@ -10,13 +10,13 @@ interface ShareArticleProps {
 
 const ShareArticle: React.FC<ShareArticleProps> = ({ article }) => {
   const { data } = useSession();
-  const [alert, setAlert] = useState('');
+  const [alert, setAlert] = useState("");
 
   const emailArticle = () => {
     if (!data?.user) {
-      setAlert('Create an account to email this article');
+      setAlert("Create an account to email this article");
     } else {
-      setAlert('Enter an optional email to send to');
+      setAlert("Enter an optional email to send to");
     }
   };
 

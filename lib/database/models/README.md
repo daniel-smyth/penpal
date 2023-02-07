@@ -5,12 +5,12 @@ This directory contains all the Mongoose models for the project.
 ### Usage
 
 ```typescript
-import { IUser, User } from '@lib/db/models';
+import { IUser, User } from "@lib/db/models";
 
 const newUser: IUser = new User({
-  name: 'John Doe',
-  email: 'johndoe@example.com',
-  password: 'password'
+  name: "John Doe",
+  email: "johndoe@example.com",
+  password: "password",
 });
 ```
 

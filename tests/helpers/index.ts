@@ -1,2 +1,2 @@
-export { default as makeArticle } from './makeArticle';
-export { default as makeQuery } from './makeQuery';
+export { default as makeArticle } from "./makeArticle";
+export { default as makeQuery } from "./makeQuery";

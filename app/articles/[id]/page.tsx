@@ -1,15 +1,15 @@
-import mongoose from 'mongoose';
-import { articleService } from '@lib/database/services';
+import mongoose from "mongoose";
+import { articleService } from "@lib/database/services";
 import {
   ImageGenerator,
   ShareArticle,
-  TextGenerator
-} from '@components/app/article';
+  TextGenerator,
+} from "@components/app/article";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error('MONGODB_URI undefined. Please add to .env file');
+  throw new Error("MONGODB_URI undefined. Please add to .env file");
 }
 
 async function getArticle(id: string) {
@@ -18,7 +18,7 @@ async function getArticle(id: string) {
       mongoose.connect(MONGODB_URI!);
       const article = await articleService.get(id);
       if (!article) {
-        throw new Error('article not found');
+        throw new Error("article not found");
       }
       return article.toObject();
     } catch (error: any) {
@@ -30,7 +30,7 @@ async function getArticle(id: string) {
 async function ArticlePage({ params: { id } }: { params: { id: string } }) {
   const article = await getArticle(id);
 
-  if (!article || JSON.stringify(article) === '{}') {
+  if (!article || JSON.stringify(article) === "{}") {
     return <div>Loading...</div>;
   }
 

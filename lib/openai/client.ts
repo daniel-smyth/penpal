@@ -1,9 +1,9 @@
-import { fetcher } from '@lib/fetcher';
+import { fetcher } from "@lib/fetcher";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 if (!OPENAI_API_KEY) {
-  throw new Error('OPENAI_API_KEY undefined. Please add to .env file.');
+  throw new Error("OPENAI_API_KEY undefined. Please add to .env file.");
 }
 
 // A text response from OpenAI
@@ -28,21 +28,21 @@ class OpenAIClient {
 
   public async generateText(prompt: string, choiceCount = 1) {
     const mockResponse: ITextResponse = {
-      choices: [{ text: prompt + ' I am AI output' }]
+      choices: [{ text: prompt + " I am AI output" }],
     };
 
     return mockResponse;
 
     const response: ITextResponse = await fetcher({
-      url: 'https://api.openai.com/v1/completions',
-      method: 'POST',
+      url: "https://api.openai.com/v1/completions",
+      method: "POST",
       body: {
-        model: 'text-davinci-003',
-        prompt
+        model: "text-davinci-003",
+        prompt,
       },
       headers: {
-        Authorization: `Bearer ${this.apiKey}`
-      }
+        Authorization: `Bearer ${this.apiKey}`,
+      },
     });
 
     response.choices = response.choices.slice(0, choiceCount);
@@ -52,21 +52,21 @@ class OpenAIClient {
 
   public async generateImage(prompt: string) {
     const mockResponse: IImageResponse = {
-      data: { url: prompt + ' I am AI output' }
+      data: { url: prompt + " I am AI output" },
     };
 
     return mockResponse;
 
     const response: IImageResponse = await fetcher({
-      url: 'https://api.openai.com/v1/images/generations',
-      method: 'POST',
+      url: "https://api.openai.com/v1/images/generations",
+      method: "POST",
       body: {
-        model: 'image-alpha-001',
-        prompt
+        model: "image-alpha-001",
+        prompt,
       },
       headers: {
-        Authorization: `Bearer ${this.apiKey}`
-      }
+        Authorization: `Bearer ${this.apiKey}`,
+      },
     });
 
     return response;
