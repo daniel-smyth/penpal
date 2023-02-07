@@ -1,5 +1,3 @@
-import Head from "next/head";
-
 const DOMAIN = process.env.APP_URL;
 
 interface MetaProps {
@@ -9,12 +7,12 @@ interface MetaProps {
 }
 
 const Meta: React.FC<MetaProps> = ({
-  title = "Penpal - Change the way you work",
+  title = "Penpal",
   description = "Penpal is a powerful tool that can enhance the quality and fluency of your written content, regardless of your profession or level of expertise.",
   image = `${DOMAIN}/api/og`,
 }) => {
   return (
-    <Head>
+    <>
       <title>{title}</title>
       <meta name="description" content={description} />
       <link rel="icon" href="/favicon.ico" />
@@ -33,7 +31,7 @@ const Meta: React.FC<MetaProps> = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-    </Head>
+    </>
   );
 };
 

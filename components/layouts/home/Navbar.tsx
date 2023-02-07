@@ -1,18 +1,50 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
+import { fetcher } from "@lib/fetcher";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { useScroll } from "@lib/hooks";
+import { LoadingButton } from "@components/ui";
 import { useSignInModal } from "./SignInModal";
 import UserDropdown from "./UserDropdown";
 
 const Navbar: React.FC = () => {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const { SignInModal, setShowSignInModal } = useSignInModal();
   const scrolled = useScroll(50);
+  const [loading, setLoading] = useState(false);
+
+  const handleCreatePostClick = async () => {
+    try {
+      setLoading(true);
+      const article = {
+        title: "",
+        text: {
+          current: { input: "", output: { choices: [{ text: "" }] } },
+          history: [],
+        },
+        image: {
+          current: { input: "", output: { data: { url: "" } } },
+          history: [],
+        },
+      };
+      const { _id } = await fetcher({
+        url: "/api/article",
+        method: "POST",
+        body: article,
+      });
+      router.push(`/articles/${_id}`);
+    } catch (err: any) {
+      console.log(err);
+      setLoading(false);
+      throw new Error(err);
+    }
+  };
 
   return (
     <>
@@ -26,21 +58,43 @@ const Navbar: React.FC = () => {
         } z-30 transition-all`}
       >
         <div className="mx-5 flex h-16 max-w-screen-xl items-center justify-between xl:mx-auto">
-          <Link href="/" className="flex items-center font-display text-2xl">
-            {/* <Image
-              src="/logo.png"
-              alt="Precedent logo"
-              width="30"
-              height="30"
-              className="mr-2 rounded-sm"
-            ></Image> */}
-            <p>Penpal</p>
-          </Link>
-          <div>
+          <div className="flex flex-wrap gap-4">
+            <Link
+              href="/"
+              className="flex items-center px-4 font-display text-2xl"
+            >
+              <p>Penpal</p>
+            </Link>
             <AnimatePresence>
               {!session && status !== "loading" ? (
                 <motion.button
-                  className="rounded-lg border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"
+                  className="rounded-lg p-1.5 px-4 text-sm text-black transition-all hover:bg-stone-200 hover:text-black"
+                  {...FADE_IN_ANIMATION_SETTINGS}
+                >
+                  Why Penpal?
+                </motion.button>
+              ) : (
+                <UserDropdown />
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
+              {!session && status !== "loading" ? (
+                <motion.button
+                  className="rounded-lg p-1.5 px-4 text-sm text-black transition-all hover:bg-stone-200 hover:text-black"
+                  {...FADE_IN_ANIMATION_SETTINGS}
+                >
+                  Tools & Guides
+                </motion.button>
+              ) : (
+                <UserDropdown />
+              )}
+            </AnimatePresence>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <AnimatePresence>
+              {!session && status !== "loading" ? (
+                <motion.button
+                  className="rounded-lg p-1.5 px-4 text-sm text-black transition-all hover:bg-stone-200 hover:text-black"
                   onClick={() => setShowSignInModal(true)}
                   {...FADE_IN_ANIMATION_SETTINGS}
                 >
@@ -49,6 +103,15 @@ const Navbar: React.FC = () => {
               ) : (
                 <UserDropdown />
               )}
+            </AnimatePresence>
+            <AnimatePresence>
+              <LoadingButton
+                {...FADE_IN_ANIMATION_SETTINGS}
+                loading={loading}
+                onClick={handleCreatePostClick}
+              >
+                Create Article
+              </LoadingButton>
             </AnimatePresence>
           </div>
         </div>
