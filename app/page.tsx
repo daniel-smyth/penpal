@@ -1,5 +1,4 @@
-import { HomeLayout } from "@components/layouts";
-import { Hero } from "@components/app/home";
+import { Hero, HomeLayout } from "@components/app/home";
 
 export default function Home() {
   return (

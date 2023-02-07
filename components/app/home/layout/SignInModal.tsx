@@ -70,7 +70,7 @@ const SignInModal = ({
               });
               const result = response?.ok
                 ? "Check your email for a link to sign in"
-                : "An unknown error error occurred";
+                : "An unknown error occurred";
               setEmailSignIn((current) => ({ ...current, result }));
               setSignInClicked({ email: false });
             }}
