@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { Sidebar } from '@components/common';
+// import { Sidebar } from "@components/common";
 
 function SettingsLayout({ children }: { children: React.ReactNode }) {
-  return <Sidebar>{children}</Sidebar>;
+  return children;
+  // return <Sidebar>{children}</Sidebar>;
 }
 
 export default SettingsLayout;

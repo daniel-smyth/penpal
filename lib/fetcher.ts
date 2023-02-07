@@ -1,4 +1,6 @@
-export interface IFetcher extends Request {
+export interface IFetcher extends RequestInit {
+  url: string;
+  body?: any;
   params?: {
     [key: string]: string;
   };
