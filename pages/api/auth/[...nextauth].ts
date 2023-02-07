@@ -6,7 +6,7 @@ import GithubProvider from "next-auth/providers/github";
 import TwitterProvider from "next-auth/providers/twitter";
 // import Auth0Provider from 'next-auth/providers/auth0';
 import AppleProvider from "next-auth/providers/apple";
-// import EmailProvider from "next-auth/providers/email"
+import EmailProvider from "next-auth/providers/email";
 import clientPromise from "@lib/database/mongodb";
 import { userService } from "@lib/database/services";
 import { IUser, User } from "@lib/database/models";
@@ -28,6 +28,17 @@ export const authOptions: NextAuthOptions = {
     //   clientId: process.env.APPLE_ID,
     //   clientSecret: process.env.APPLE_SECRET,
     // }),
+    EmailProvider({
+      server: {
+        service: process.env.EMAIL_SERVICE!,
+        host: process.env.EMAIL_HOST!,
+        auth: {
+          user: process.env.EMAIL_USERNAME!,
+          pass: process.env.EMAIL_PASSWORD!,
+        },
+      },
+      from: process.env.EMAIL_FROM,
+    }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_ID!,
       clientSecret: process.env.FACEBOOK_SECRET!,

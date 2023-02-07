@@ -1,5 +1,5 @@
+import cn from "classnames";
 import { HTMLMotionProps, motion } from "framer-motion";
-import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 
 interface LoadingButtonProps extends HTMLMotionProps<"button"> {
   loading?: boolean;
@@ -7,14 +7,17 @@ interface LoadingButtonProps extends HTMLMotionProps<"button"> {
 
 const LoadingButton: React.FC<LoadingButtonProps> = ({
   loading,
+  className,
   children,
   ...rest
 }) => {
+  const rootClassName = cn(
+    className,
+    "inline-flex items-center justify-center rounded-lg border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:bg-emerald-700 hover:border-emerald-600",
+  );
+
   return (
-    <motion.button
-      {...rest}
-      className="inline-flex min-w-[150px] items-center justify-center rounded-lg border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:bg-emerald-800 "
-    >
+    <motion.button {...rest} className={rootClassName}>
       <>
         {loading && (
           <span

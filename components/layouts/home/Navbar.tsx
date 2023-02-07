@@ -109,6 +109,7 @@ const Navbar: React.FC = () => {
                 {...FADE_IN_ANIMATION_SETTINGS}
                 loading={loading}
                 onClick={handleCreatePostClick}
+                className="min-w-[150px]"
               >
                 Create Article
               </LoadingButton>
