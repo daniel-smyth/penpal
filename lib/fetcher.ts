@@ -1,48 +1,45 @@
-export interface IFetcher {
-  url: string;
-  method?: string;
-  body?: any;
+export interface IFetcher extends Request {
   params?: {
-    [key: string]: string;
-  };
-  headers?: {
     [key: string]: string;
   };
   timeout?: number;
 }
 
-/**
- * Extension of global `fetch` object. Includes ability to pass
- * query params via `params` object. `body` parameter is converted to string by default.
- */
 export const fetcher = async (config: IFetcher) => {
-  let { url, body, params, headers, timeout } = config;
+  const { url, body, params, headers, timeout } = config;
 
   let abortController: AbortController | null = null;
-
   if (timeout) {
     abortController = new AbortController();
     setTimeout(() => abortController?.abort(), timeout);
   }
 
-  if (params) {
-    url += `?${new URLSearchParams(params).toString()}`;
-  }
-
-  let response: any = await fetch(url, {
-    ...config,
-    body: body ? JSON.stringify(body) : undefined,
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers
+  const response = await fetch(
+    params ? url + `?${new URLSearchParams(params).toString()}` : url,
+    {
+      ...config,
+      body: body && JSON.stringify(body),
+      headers: {
+        ...(body && { "Content-Type": "application/json" }),
+        ...headers,
+      },
+      signal: abortController && abortController.signal,
     },
-    signal: abortController?.signal || undefined
-  });
+  );
 
   if (response?.ok) {
-    return await response.json();
+    const json = await response.json();
+    return json;
   } else {
-    response = await response.json();
-    throw new Error(response.message || response.error.message);
+    const json = await response.json();
+    if (json.error) {
+      const error = new Error(json.error) as Error & {
+        status: number;
+      };
+      error.status = response.status;
+      throw error;
+    } else {
+      throw new Error("An unexpected error occurred");
+    }
   }
 };

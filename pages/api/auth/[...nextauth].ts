@@ -1,15 +1,15 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
-import GoogleProvider from 'next-auth/providers/google';
-// import FacebookProvider from 'next-auth/providers/facebook';
-// import GithubProvider from 'next-auth/providers/github';
-// import TwitterProvider from 'next-auth/providers/twitter';
+import NextAuth, { NextAuthOptions } from "next-auth";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
+import GithubProvider from "next-auth/providers/github";
+import TwitterProvider from "next-auth/providers/twitter";
 // import Auth0Provider from 'next-auth/providers/auth0';
-// import AppleProvider from "next-auth/providers/apple"
+import AppleProvider from "next-auth/providers/apple";
 // import EmailProvider from "next-auth/providers/email"
-import clientPromise from '@lib/database/mongodb';
-import { userService } from '@lib/database/services';
-import { IUser, User } from '@lib/database/models';
+import clientPromise from "@lib/database/mongodb";
+import { userService } from "@lib/database/services";
+import { IUser, User } from "@lib/database/models";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -23,33 +23,27 @@ export const authOptions: NextAuthOptions = {
        }),
     // Temporarily removing the Apple provider from the demo site as the
     // callback URL for it needs updating due to Vercel changing domains
-
-    Providers.Apple({
-      clientId: process.env.APPLE_ID,
-      clientSecret: {
-        appleId: process.env.APPLE_ID,
-        teamId: process.env.APPLE_TEAM_ID,
-        privateKey: process.env.APPLE_PRIVATE_KEY,
-        keyId: process.env.APPLE_KEY_ID,
-      },
-    }),
     */
-    // FacebookProvider({
-    //   clientId: process.env.FACEBOOK_ID,
-    //   clientSecret: process.env.FACEBOOK_SECRET
+    // AppleProvider({
+    //   clientId: process.env.APPLE_ID,
+    //   clientSecret: process.env.APPLE_SECRET,
     // }),
-    // GithubProvider({
-    //   clientId: process.env.GITHUB_ID,
-    //   clientSecret: process.env.GITHUB_SECRET
-    // }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID!,
+      clientSecret: process.env.FACEBOOK_SECRET!,
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
-      clientSecret: process.env.GOOGLE_SECRET!
-    })
-    // TwitterProvider({
-    //   clientId: process.env.TWITTER_ID,
-    //   clientSecret: process.env.TWITTER_SECRET
-    // }),
+      clientSecret: process.env.GOOGLE_SECRET!,
+    }),
+    TwitterProvider({
+      clientId: process.env.TWITTER_ID!,
+      clientSecret: process.env.TWITTER_SECRET!,
+    }),
     // Auth0Provider({
     //   clientId: process.env.AUTH0_ID,
     //   clientSecret: process.env.AUTH0_SECRET,
@@ -57,20 +51,20 @@ export const authOptions: NextAuthOptions = {
     // })
   ],
   theme: {
-    colorScheme: 'light'
+    colorScheme: "light",
   },
   callbacks: {
     async jwt({ token }) {
-      token.userRole = 'admin';
+      token.userRole = "admin";
       return token;
     },
     async session({ session, token, user }) {
       return {
         ...session,
-        user: user as IUser
+        user: user as IUser,
       };
-    }
-  }
+    },
+  },
 };
 
 export default NextAuth(authOptions);
