@@ -1,11 +1,12 @@
-import { Hero } from '@components/app/home';
-import { Navbar } from '@components/common';
+import { HomeLayout } from "@components/layouts";
+import { Hero } from "@components/app/home";
 
 export default function Home() {
   return (
     <main>
-      <Navbar />
-      <Hero />
+      <HomeLayout>
+        <Hero />
+      </HomeLayout>
     </main>
   );
 }

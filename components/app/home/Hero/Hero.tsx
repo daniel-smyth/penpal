@@ -1,9 +1,5 @@
-import HeroButton from './Button';
+import HeroButton from "./Button";
 
 export default function Hero() {
-  return (
-    <>
-      <HeroButton>Create Article</HeroButton>
-    </>
-  );
+  return <HeroButton>Create Article</HeroButton>;
 }
