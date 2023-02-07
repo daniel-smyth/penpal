@@ -2,15 +2,17 @@ import Head from "next/head";
 
 const DOMAIN = process.env.APP_URL;
 
-export default function Meta({
-  title = "Precedent - Building blocks for your Next.js project",
-  description = "Precedent is the all-in-one solution for your Next.js project. It includes a design system, authentication, analytics, and more.",
-  image = `${DOMAIN}/api/og`,
-}: {
+interface MetaProps {
   title?: string;
   description?: string;
   image?: string;
-}) {
+}
+
+const Meta: React.FC<MetaProps> = ({
+  title = "Penpal - Change the way you work",
+  description = "Penpal is a powerful tool that can enhance the quality and fluency of your written content, regardless of your profession or level of expertise.",
+  image = `${DOMAIN}/api/og`,
+}) => {
   return (
     <Head>
       <title>{title}</title>
@@ -33,4 +35,6 @@ export default function Meta({
       <meta name="twitter:image" content={image} />
     </Head>
   );
-}
+};
+
+export default Meta;
