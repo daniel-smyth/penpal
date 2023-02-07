@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { signIn, signOut } from 'next-auth/react';
-import { useSearchParams } from 'next/navigation';
+import Link from "next/link";
+import { signIn, signOut } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 export default function SignInPage() {
   const searchParams = useSearchParams();
 
   const options = {
-    callbackUrl: searchParams.get('callbackUrl') || undefined
+    callbackUrl: searchParams.get("callbackUrl") || undefined,
   };
 
   return (

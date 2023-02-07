@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { fetcher } from '@lib/fetcher';
-import { useArticle } from '@lib/hooks';
-import { IArticle, ITextQuery } from '@lib/database/models';
+import React, { useState } from "react";
+import { fetcher } from "@lib/fetcher";
+import { useArticle } from "@lib/hooks";
+import { IArticle, ITextQuery } from "@lib/database/models";
 
 interface TextGeneratorProps {
   article: IArticle;
 }
 
 const TextGenerator: React.FC<TextGeneratorProps> = ({
-  article: fallbackData
+  article: fallbackData,
 }) => {
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
   const [query, setQuery] = useState({ ...fallbackData.text.current });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   if (!article) {
     return <div>Loading...</div>;
@@ -23,20 +23,20 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
   const generateText = async () => {
     try {
       const { result } = await fetcher({
-        url: '/api/ai/text',
+        url: "/api/ai/text",
         params: {
           input: query.input,
-          articleId: article._id || ''
-        }
+          articleId: article._id || "",
+        },
       });
       setQuery(result);
 
       const newArticle = {
         ...article,
         text: {
-          current: { ...result, input: '' },
-          history: [result, ...article.text.history]
-        }
+          current: { ...result, input: "" },
+          history: [result, ...article.text.history],
+        },
       };
 
       mutate(newArticle, { optimisticData: newArticle });
@@ -51,14 +51,14 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
 
     const newArticle = {
       ...article,
-      text: { ...article.text, current: query }
+      text: { ...article.text, current: query },
     };
 
     await fetcher({
-      url: '/api/article',
-      method: 'PUT',
-      params: { id: article._id || '' },
-      body: { ...article, text: { ...article.text, current: query } }
+      url: "/api/article",
+      method: "PUT",
+      params: { id: article._id || "" },
+      body: { ...article, text: { ...article.text, current: query } },
     });
     mutate(newArticle, { optimisticData: newArticle });
   };

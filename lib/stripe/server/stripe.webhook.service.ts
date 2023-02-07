@@ -1,5 +1,5 @@
-import { emailService } from '@lib/email';
-import { userService } from '@lib/database/services';
+import { emailService } from "@lib/email";
+import { userService } from "@lib/database/services";
 
 class StripeWebhookService {
   public async onSubscriptionUpdated(eventObject: { [key: string]: any }) {
@@ -12,22 +12,22 @@ class StripeWebhookService {
       await user.save();
 
       switch (subscriptionStatus) {
-        case 'trialing':
+        case "trialing":
           // The subscription is currently in a trial period and it’s safe to
           // provision your product for your customer. The subscription
           // transitions automatically to active when the first payment is made.
           break;
-        case 'active':
+        case "active":
           await emailService.sendEmail({
-            from: 'danielsmyth2011@gmail.com',
+            from: "danielsmyth2011@gmail.com",
             to: user.email as string,
-            subject: 'Subscription active',
-            html: ''
+            subject: "Subscription active",
+            html: "",
           });
           // The subscription is in good standing and the most recent payment
           // is successful. It’s safe to provision your product for your customer.
           break;
-        case 'incomplete':
+        case "incomplete":
           // 	A successful payment needs to be made within 23 hours to activate
           // the subscription. Or the payment requires action, like customer
           // authentication. Read more about payments that require action.
@@ -35,24 +35,24 @@ class StripeWebhookService {
           // In that case, the invoice status would be open_payment_pending and
           // the PaymentIntent status would be processing.
           break;
-        case 'incomplete_expired':
+        case "incomplete_expired":
           // The initial payment on the subscription failed and no successful
           // payment was made within 23 hours of creating the subscription. These
           // subscriptions don’t bill customers. This status exists so you can track
           // customers that failed to activate their subscriptions.
           break;
-        case 'past_due':
+        case "past_due":
           break;
-        case 'canceled':
+        case "canceled":
           await emailService.sendEmail({
-            from: 'danielsmyth2011@gmail.com',
+            from: "danielsmyth2011@gmail.com",
             to: user.email as string,
-            subject: 'Subscription cancelled',
-            html: ''
+            subject: "Subscription cancelled",
+            html: "",
           });
           // The subscription has been canceled.
           break;
-        case 'unpaid':
+        case "unpaid":
           // The latest invoice hasn’t been paid but the subscription remains in
           // place. The latest invoice remains open and invoices continue to be
           // generated but payments aren’t attempted. You should revoke access to
@@ -74,10 +74,10 @@ class StripeWebhookService {
       await user.save();
 
       await emailService.sendEmail({
-        from: 'danielsmyth2011@gmail.com',
+        from: "danielsmyth2011@gmail.com",
         to: user.email as string,
-        subject: 'Subscription cancelled',
-        html: ''
+        subject: "Subscription cancelled",
+        html: "",
       });
     }
   }

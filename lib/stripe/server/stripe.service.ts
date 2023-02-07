@@ -1,13 +1,13 @@
-import Stripe from 'stripe';
+import Stripe from "stripe";
 
-export const API_VERSION: Stripe.StripeConfig['apiVersion'] = '2022-11-15';
+export const API_VERSION: Stripe.StripeConfig["apiVersion"] = "2022-11-15";
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const STRIPE_WEBHOOK_SECRET_KEY = process.env.STRIPE_WEBHOOK_SECRET_KEY;
 // const STRIPE_WEBHOOK_SECRET_KEY =
 //   process.env.STRIPE_WEBHOOK_SECRET_KEY_LOCAL_CLI;
 
 if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET_KEY) {
-  throw new Error('Stripe keys undefined. Please add to .env file.');
+  throw new Error("Stripe keys undefined. Please add to .env file.");
 }
 
 class StripeService {
@@ -26,7 +26,7 @@ class StripeService {
   }
 
   public async createPaymentIntent(
-    paymentIntent: Stripe.PaymentIntentCreateParams
+    paymentIntent: Stripe.PaymentIntentCreateParams,
   ) {
     return await this.client.paymentIntents.create(paymentIntent);
   }
@@ -40,7 +40,7 @@ class StripeService {
   }
 
   public async createSubscription(
-    subscription: Stripe.SubscriptionCreateParams
+    subscription: Stripe.SubscriptionCreateParams,
   ) {
     return await this.client.subscriptions.create(subscription);
   }
@@ -57,14 +57,14 @@ class StripeService {
     return this.client.webhooks.constructEvent(
       payload,
       signature,
-      STRIPE_WEBHOOK_SECRET_KEY!
+      STRIPE_WEBHOOK_SECRET_KEY!,
     );
   }
 
   public async retrieveUpcomingInvoices(
     customerId: string,
     subscription: Stripe.Subscription,
-    priceId: string
+    priceId: string,
   ) {
     return await this.client.invoices.retrieveUpcoming({
       customer: customerId,
@@ -72,9 +72,9 @@ class StripeService {
       subscription_items: [
         {
           id: subscription.items.data[0].id,
-          price: priceId
-        }
-      ]
+          price: priceId,
+        },
+      ],
     });
   }
 }

@@ -1,24 +1,24 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { articleService } from '@lib/database/services';
-import { dbConnect } from '@lib/database/mongoose';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { articleService } from "@lib/database/services";
+import { dbConnect } from "@lib/database/mongoose";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   await dbConnect();
 
   switch (req.method) {
-    case 'GET':
+    case "GET":
       try {
         const { input, articleId, choiceCount = 1 } = req.query;
         if (!articleId) {
-          throw new Error('article is required to generate text');
+          throw new Error("article is required to generate text");
         }
         const generatedText = await articleService.generateAIText(
           input as string,
           articleId as string,
-          Number(choiceCount)
+          Number(choiceCount),
         );
         res.status(200).json({ result: generatedText });
       } catch (err: any) {

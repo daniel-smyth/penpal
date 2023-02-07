@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import { SessionProvider, useSession } from 'next-auth/react';
+import React from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { SessionProvider, useSession } from "next-auth/react";
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -10,11 +10,11 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const { status: authStatus } = useSession({
     required: true, // means `status` can only be "loading" or "authenticated"
     onUnauthenticated() {
-      router.push('/signin?callbackUrl=' + pathname);
-    }
+      router.push("/signin?callbackUrl=" + pathname);
+    },
   });
 
-  if (authStatus === 'loading') {
+  if (authStatus === "loading") {
     return <div>Authenticating...</div>;
   }
 

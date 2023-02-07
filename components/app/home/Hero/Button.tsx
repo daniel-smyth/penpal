@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { fetcher } from '@lib/fetcher';
-import React from 'react';
+import { useRouter } from "next/navigation";
+import { fetcher } from "@lib/fetcher";
+import React from "react";
 
 const HeroButton: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
@@ -10,20 +10,20 @@ const HeroButton: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const handleClick = async () => {
     try {
       const article = {
-        title: '',
+        title: "",
         text: {
-          current: { input: '', output: { choices: [{ text: '' }] } },
-          history: []
+          current: { input: "", output: { choices: [{ text: "" }] } },
+          history: [],
         },
         image: {
-          current: { input: '', output: { data: { url: '' } } },
-          history: []
-        }
+          current: { input: "", output: { data: { url: "" } } },
+          history: [],
+        },
       };
       const { _id } = await fetcher({
-        url: '/api/article',
-        method: 'POST',
-        body: article
+        url: "/api/article",
+        method: "POST",
+        body: article,
       });
       router.push(`/articles/${_id}`);
     } catch (err: any) {

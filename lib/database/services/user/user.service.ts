@@ -1,7 +1,7 @@
-import { Model } from 'mongoose';
-import { User, IUser } from '@lib/database/models';
-import { UserRepository } from '@lib/database/repositories';
-import articleService from '../article/article.service';
+import { Model } from "mongoose";
+import { User, IUser } from "@lib/database/models";
+import { UserRepository } from "@lib/database/repositories";
+import articleService from "../article/article.service";
 
 class UserService {
   private repository: UserRepository;
@@ -35,9 +35,9 @@ class UserService {
   }
 
   public async getArticles(id: string, limit = 100) {
-    const user = await this.repository.findById(id, { populate: 'articles' });
+    const user = await this.repository.findById(id, { populate: "articles" });
     const allArticles = await articleService.findMany({
-      _id: { $in: user?.articles.slice(0, limit) }
+      _id: { $in: user?.articles.slice(0, limit) },
     });
     return allArticles;
   }

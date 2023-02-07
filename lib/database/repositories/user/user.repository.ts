@@ -1,5 +1,5 @@
-import { Model } from 'mongoose';
-import { IUser } from '@lib/database/models';
+import { Model } from "mongoose";
+import { IUser } from "@lib/database/models";
 
 interface MongoFindOptions {
   populate?: string;

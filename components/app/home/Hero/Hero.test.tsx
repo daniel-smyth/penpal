@@ -1,5 +1,5 @@
-import React from 'react';
+import React from "react";
 
-describe('Hero', () => {
-  it('renders create article button', () => {});
+describe("Hero", () => {
+  it("renders create article button", () => {});
 });

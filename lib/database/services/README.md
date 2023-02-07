@@ -5,13 +5,13 @@ This directory contains all the Service classes for Paypal. They contain the bus
 ### Usage
 
 ```typescript
-import { userService } from '@lib/mongoose/services';
+import { userService } from "@lib/mongoose/services";
 
-const user = await userService.getUser('userId');
+const user = await userService.getUser("userId");
 
-await userService.updateUser('userId', { email: 'newEmail@example.com' });
+await userService.updateUser("userId", { email: "newEmail@example.com" });
 
-await userService.deleteUser('userId');
+await userService.deleteUser("userId");
 ```
 
 Each class has methods that correspond to the CRUD operations. Ex: create, get, update, delete, etc.

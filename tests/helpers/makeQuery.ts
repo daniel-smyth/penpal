@@ -1,4 +1,4 @@
-import { IQuery } from '@lib/database/models';
+import { IQuery } from "@lib/database/models";
 
 let inputCount = 0;
 let outputCount = 0;
@@ -9,9 +9,9 @@ const makeQuery = () => {
     output: {
       choices: [
         { text: `test text output ${outputCount}` },
-        { text: `test text output ${outputCount + 1}` }
-      ]
-    }
+        { text: `test text output ${outputCount + 1}` },
+      ],
+    },
   };
 
   inputCount += 1;

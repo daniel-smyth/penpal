@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose';
-import { ITextResponse, IImageResponse } from '@lib/openai';
+import { Schema } from "mongoose";
+import { ITextResponse, IImageResponse } from "@lib/openai";
 
 export interface IQuery {
   input: string;
@@ -20,15 +20,15 @@ export const TextQuerySchema = new Schema<ITextQuery>(
     input: {
       type: String,
       required: true,
-      minlength: 1
+      minlength: 1,
     },
     output: {
-      choices: [{ text: String }]
-    }
+      choices: [{ text: String }],
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 export interface IImageQuery {
@@ -43,16 +43,16 @@ export const ImageQuerySchema = new Schema<IImageQuery>(
     input: {
       type: String,
       required: true,
-      minlength: 1
+      minlength: 1,
     },
     output: {
       data: {
-        url: String
+        url: String,
       },
-      errors: []
-    }
+      errors: [],
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );

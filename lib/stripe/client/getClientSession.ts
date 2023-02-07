@@ -1,9 +1,9 @@
-import { Stripe, loadStripe } from '@stripe/stripe-js';
+import { Stripe, loadStripe } from "@stripe/stripe-js";
 
 const STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
 if (!STRIPE_PUBLISHABLE_KEY) {
-  throw new Error('Stripe keys undefined. Please add to .env file.');
+  throw new Error("Stripe keys undefined. Please add to .env file.");
 }
 
 let stripePromise: Promise<Stripe | null>;

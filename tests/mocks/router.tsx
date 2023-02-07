@@ -1,14 +1,14 @@
-const useRouter = jest.spyOn(require('next/navigation'), 'useRouter');
+const useRouter = jest.spyOn(require("next/navigation"), "useRouter");
 
 const mockUseNextRouter = useRouter;
 
 export function createMockRouter(overrides: Partial<any>) {
   return {
-    basePath: '',
-    pathname: '/',
-    route: '/',
+    basePath: "",
+    pathname: "/",
+    route: "/",
     query: {},
-    asPath: '/',
+    asPath: "/",
     back: jest.fn(),
     beforePopState: jest.fn(),
     prefetch: jest.fn(),
@@ -18,14 +18,14 @@ export function createMockRouter(overrides: Partial<any>) {
     events: {
       on: jest.fn(),
       off: jest.fn(),
-      emit: jest.fn()
+      emit: jest.fn(),
     },
     isFallback: false,
     isLocaleDomain: false,
     isReady: true,
-    defaultLocale: 'en',
+    defaultLocale: "en",
     isPreview: false,
-    ...overrides
+    ...overrides,
   };
 }
 

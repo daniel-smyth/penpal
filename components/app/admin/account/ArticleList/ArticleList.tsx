@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import useSWR from 'swr';
-import { IArticle } from '@lib/database/models';
-import { ArticleListItem } from '@components/app/admin/account';
+import React from "react";
+import useSWR from "swr";
+import { IArticle } from "@lib/database/models";
+import { ArticleListItem } from "@components/app/admin/account";
 
 const fetchGet = (url: string) => fetch(url).then((res) => res.json());
 

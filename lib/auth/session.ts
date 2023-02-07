@@ -1,10 +1,10 @@
-import { GetServerSidePropsContext } from 'next';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@pages/api/auth/[...nextauth]';
+import { GetServerSidePropsContext } from "next";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@pages/api/auth/[...nextauth]";
 
 interface Context {
-  req: GetServerSidePropsContext['req'];
-  res: GetServerSidePropsContext['res'];
+  req: GetServerSidePropsContext["req"];
+  res: GetServerSidePropsContext["res"];
 }
 
 export async function getUser(context?: Context) {

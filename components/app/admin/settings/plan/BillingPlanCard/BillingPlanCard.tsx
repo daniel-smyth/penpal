@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import React from 'react';
+import Link from "next/link";
+import React from "react";
 
 interface BillingPlanCardProps {
   name: string;
@@ -14,7 +14,7 @@ const BillingPlanCard: React.FC<BillingPlanCardProps> = ({
   description,
   price,
   features,
-  stripePriceId
+  stripePriceId,
 }) => {
   return (
     <div>

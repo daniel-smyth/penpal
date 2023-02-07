@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { fetcher } from '@lib/fetcher';
-import { useArticle } from '@lib/hooks';
-import { IArticle, IImageQuery } from '@lib/database/models';
+import React, { useState } from "react";
+import { fetcher } from "@lib/fetcher";
+import { useArticle } from "@lib/hooks";
+import { IArticle, IImageQuery } from "@lib/database/models";
 
 interface ImageGeneratorProps {
   article: IArticle;
 }
 
 const ImageGenerator: React.FC<ImageGeneratorProps> = ({
-  article: fallbackData
+  article: fallbackData,
 }) => {
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
   const [query, setQuery] = useState({ ...fallbackData.image.current });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   if (!article) {
     return <div>Loading...</div>;
@@ -23,20 +23,20 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
   const generateImage = async () => {
     try {
       const { result } = await fetcher({
-        url: '/api/ai/image',
+        url: "/api/ai/image",
         params: {
           input: query.input,
-          articleId: article._id || ''
-        }
+          articleId: article._id || "",
+        },
       });
       setQuery(result);
 
       const newArticle = {
         ...article,
         image: {
-          current: { ...result, input: '' },
-          history: [result, ...article.image.history]
-        }
+          current: { ...result, input: "" },
+          history: [result, ...article.image.history],
+        },
       };
 
       mutate(newArticle, { optimisticData: newArticle });
@@ -51,14 +51,14 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
 
     const newArticle = {
       ...article,
-      image: { ...article.image, current: query }
+      image: { ...article.image, current: query },
     };
 
     await fetcher({
-      url: '/api/article',
-      method: 'PUT',
-      params: { id: article._id || '' },
-      body: newArticle
+      url: "/api/article",
+      method: "PUT",
+      params: { id: article._id || "" },
+      body: newArticle,
     });
 
     mutate(newArticle, { optimisticData: newArticle });

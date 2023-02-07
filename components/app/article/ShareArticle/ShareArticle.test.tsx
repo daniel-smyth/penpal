@@ -1,60 +1,60 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { mockArticleList } from '@tests/mocks';
-import { useSession } from 'next-auth/react';
-import ShareArticle from './ShareArticle';
+import { fireEvent, render, screen } from "@testing-library/react";
+import { mockArticleList } from "@tests/mocks";
+import { useSession } from "next-auth/react";
+import ShareArticle from "./ShareArticle";
 
 const mockArticle = mockArticleList[0];
 
-jest.mock('next-auth/react');
+jest.mock("next-auth/react");
 
 beforeEach(async () => {
   jest.clearAllMocks();
 });
 
-describe('Share Article', () => {
-  describe('Un-authenticated user', () => {
-    it('displays option to email article', () => {
+describe("Share Article", () => {
+  describe("Un-authenticated user", () => {
+    it("displays option to email article", () => {
       (useSession as jest.Mock).mockImplementation(() => ({
-        data: { user: null }
+        data: { user: null },
       }));
       render(<ShareArticle article={mockArticle} />);
-      const emailBtn = screen.getByText('Email article');
+      const emailBtn = screen.getByText("Email article");
       expect(emailBtn).toBeInTheDocument();
     });
 
-    it('prompts user to create account on button click', async () => {
+    it("prompts user to create account on button click", async () => {
       (useSession as jest.Mock).mockImplementation(() => ({
-        data: { user: null }
+        data: { user: null },
       }));
       render(<ShareArticle article={mockArticle} />);
-      const emailBtn = screen.getByText('Email article');
+      const emailBtn = screen.getByText("Email article");
       fireEvent.click(emailBtn);
       expect(
-        screen.getByText('Create an account to email this article')
+        screen.getByText("Create an account to email this article"),
       ).toBeInTheDocument();
     });
   });
 
-  describe('Authenticated user', () => {
-    it('prompts user to enter optional email', () => {
+  describe("Authenticated user", () => {
+    it("prompts user to enter optional email", () => {
       (useSession as jest.Mock).mockImplementation(() => ({
         data: {
-          user: { email: 'testuser@test.com' }
-        }
+          user: { email: "testuser@test.com" },
+        },
       }));
       render(<ShareArticle article={mockArticle} />);
-      const emailBtn = screen.getByText('Email article');
+      const emailBtn = screen.getByText("Email article");
       fireEvent.click(emailBtn);
       expect(
-        screen.getByText('Enter an optional email to send to')
+        screen.getByText("Enter an optional email to send to"),
       ).toBeInTheDocument();
     });
 
-    it('prompts user to send to their email if signed in', () => {
+    it("prompts user to send to their email if signed in", () => {
       render(<ShareArticle article={mockArticle} />);
-      const emailBtn = screen.getByText('Email article');
+      const emailBtn = screen.getByText("Email article");
       fireEvent.click(emailBtn);
-      expect(screen.getByText('Email article to my email')).toBeInTheDocument();
+      expect(screen.getByText("Email article to my email")).toBeInTheDocument();
     });
 
     //   it('sends email of article to given email address', () => {
