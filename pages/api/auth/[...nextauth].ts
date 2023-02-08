@@ -4,26 +4,15 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import GithubProvider from "next-auth/providers/github";
 import TwitterProvider from "next-auth/providers/twitter";
-// import Auth0Provider from 'next-auth/providers/auth0';
-import AppleProvider from "next-auth/providers/apple";
+// import AppleProvider from "next-auth/providers/apple";
 import EmailProvider from "next-auth/providers/email";
-import clientPromise from "@lib/database/mongodb";
-import { userService } from "@lib/database/services";
-import { IUser, User } from "@lib/database/models";
+import mongoPromise from "@lib/database/mongodb";
+import { IUser } from "@lib/database/models";
+import { emailService } from "@lib/email";
 
-// For more information on each option (and a full list of options) go to
-// https://next-auth.js.org/configuration/options
 export const authOptions: NextAuthOptions = {
-  adapter: MongoDBAdapter(clientPromise),
-  // https://next-auth.js.org/configuration/providers/oauth
+  adapter: MongoDBAdapter(mongoPromise),
   providers: [
-    /* EmailProvider({
-         server: process.env.EMAIL_SERVER,
-         from: process.env.EMAIL_FROM,
-       }),
-    // Temporarily removing the Apple provider from the demo site as the
-    // callback URL for it needs updating due to Vercel changing domains
-    */
     // AppleProvider({
     //   clientId: process.env.APPLE_ID,
     //   clientSecret: process.env.APPLE_SECRET,
@@ -38,6 +27,9 @@ export const authOptions: NextAuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM,
+      sendVerificationRequest({ identifier, url }) {
+        emailService.sendVerificationRequest({ identifier, url });
+      },
     }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_ID!,
@@ -55,25 +47,13 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.TWITTER_ID!,
       clientSecret: process.env.TWITTER_SECRET!,
     }),
-    // Auth0Provider({
-    //   clientId: process.env.AUTH0_ID,
-    //   clientSecret: process.env.AUTH0_SECRET,
-    //   issuer: process.env.AUTH0_ISSUER
-    // })
   ],
-  theme: {
-    colorScheme: "light",
-  },
   pages: {
     signIn: "/auth/sign-in",
-    error: "/?showSignInModal=true", // Error code passed in query string as ?error=
+    error: "/auth/sign-in", // Error code passed in query string as ?error=
   },
   callbacks: {
-    async jwt({ token }) {
-      token.userRole = "admin";
-      return token;
-    },
-    async session({ session, token, user }) {
+    async session({ session, user }) {
       return {
         ...session,
         user: user as IUser,
