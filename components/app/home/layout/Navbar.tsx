@@ -24,8 +24,8 @@ function classNames(...classes: string[]) {
 }
 
 const Navbar: React.FC = () => {
-  const { SignInModal, setShowSignInModal } = useSignInModal();
   const { data: session, status } = useSession();
+  const { SignInModal, setShowSignInModal } = useSignInModal();
   const [loading, setLoading] = useState(false);
   const scrolled = useScroll(50);
   const router = useRouter();
@@ -111,19 +111,21 @@ const Navbar: React.FC = () => {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  {/* Sign in button */}
-                  {!session && status !== "loading" ? (
-                    <motion.button
-                      className="rounded-2xl border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700 hover:text-white sm:bg-transparent sm:text-black sm:hover:bg-stone-200 sm:hover:text-black"
-                      onClick={() => setShowSignInModal(true)}
-                      {...FADE_IN_ANIMATION_SETTINGS}
-                    >
-                      Sign In
-                    </motion.button>
-                  ) : (
-                    <UserDropdown />
-                  )}
-                  <div className="hidden md:block">
+                  <AnimatePresence>
+                    {/* Sign in button */}
+                    {!session && status !== "loading" ? (
+                      <motion.button
+                        className="rounded-2xl border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700 hover:text-white sm:bg-transparent sm:text-black sm:hover:bg-stone-200 sm:hover:text-black"
+                        onClick={() => setShowSignInModal(true)}
+                        {...FADE_IN_ANIMATION_SETTINGS}
+                      >
+                        Sign In
+                      </motion.button>
+                    ) : (
+                      <UserDropdown />
+                    )}
+                  </AnimatePresence>
+                  <div className="hidden sm:block">
                     {/* Create article button */}
                     <AnimatePresence>
                       <LoadingButton
