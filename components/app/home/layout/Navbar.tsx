@@ -9,8 +9,7 @@ import { Disclosure } from "@headlessui/react";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { AnimatePresence, motion } from "framer-motion";
 import { X as XIcon, Menu as MenuIcon } from "lucide-react";
-import { useScroll } from "@lib/hooks";
-import { LoadingButton } from "@components/ui";
+import { useScroll, useWindowSize } from "@lib/hooks";
 import { useSignInModal } from "./SignInModal";
 import UserDropdown from "./UserDropdown";
 
@@ -27,6 +26,7 @@ const Navbar: React.FC = () => {
   const { data: session, status } = useSession();
   const { SignInModal, setShowSignInModal } = useSignInModal();
   const [loading, setLoading] = useState(false);
+  const { isMobile, isDesktop } = useWindowSize();
   const scrolled = useScroll(50);
   const router = useRouter();
 
@@ -62,7 +62,7 @@ const Navbar: React.FC = () => {
       <SignInModal />
       <div className="fixed h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100" />
       <Disclosure
-        as="nav"
+        as="div"
         className={`fixed top-0 w-full ${
           scrolled
             ? "border-b border-gray-200 bg-white/50 backdrop-blur-xl"
@@ -95,18 +95,17 @@ const Navbar: React.FC = () => {
                   {/* Desktop Navbar links */}
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
-                      {navigation.map((item) => (
-                        <Link href={item.href} key={item.name}>
-                          <AnimatePresence>
-                            <motion.button
-                              className="rounded-2xl p-1.5 px-4 text-sm text-black transition-all hover:bg-stone-200 hover:text-black"
-                              {...FADE_IN_ANIMATION_SETTINGS}
-                            >
-                              {item.name}
-                            </motion.button>
-                          </AnimatePresence>
-                        </Link>
-                      ))}
+                      <AnimatePresence>
+                        {navigation.map((item) => (
+                          <motion.button
+                            key={item.name}
+                            className="rounded-2xl p-1.5 px-4 text-sm text-black transition-all hover:bg-stone-200 hover:text-black"
+                            {...FADE_IN_ANIMATION_SETTINGS}
+                          >
+                            <Link href={item.href}>{item.name}</Link>
+                          </motion.button>
+                        ))}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </div>
@@ -115,6 +114,7 @@ const Navbar: React.FC = () => {
                     {/* Sign in button */}
                     {!session && status !== "loading" ? (
                       <motion.button
+                        key="sign-in-button"
                         className="rounded-2xl border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700 hover:text-white sm:bg-transparent sm:text-black sm:hover:bg-stone-200 sm:hover:text-black"
                         onClick={() => setShowSignInModal(true)}
                         {...FADE_IN_ANIMATION_SETTINGS}
@@ -124,20 +124,44 @@ const Navbar: React.FC = () => {
                     ) : (
                       <UserDropdown />
                     )}
-                  </AnimatePresence>
-                  <div className="hidden sm:block">
                     {/* Create article button */}
-                    <AnimatePresence>
-                      <LoadingButton
-                        {...FADE_IN_ANIMATION_SETTINGS}
-                        loading={loading}
-                        onClick={handleCreatePostClick}
-                        className="min-w-[150px]"
+                    {isDesktop && (
+                      <motion.button
+                        key="create-article-button"
+                        className="inline-flex min-w-[150px] items-center justify-center rounded-2xl border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700"
                       >
+                        {loading && (
+                          <span
+                            className="spinner-grow spinner-sm mr-2 inline-block"
+                            role="status"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              className="mr- -ml-1 h-4 w-4 animate-spin text-white"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                stroke-width="4"
+                              ></circle>
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                              ></path>
+                            </svg>
+                          </span>
+                        )}
                         Create Article
-                      </LoadingButton>
-                    </AnimatePresence>
-                  </div>
+                      </motion.button>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
             </div>
