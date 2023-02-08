@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
   const { data: session, status } = useSession();
   const { SignInModal, setShowSignInModal } = useSignInModal();
   const [loading, setLoading] = useState(false);
-  const { isMobile, isDesktop } = useWindowSize();
+  const { isDesktop } = useWindowSize();
   const scrolled = useScroll(50);
   const router = useRouter();
 

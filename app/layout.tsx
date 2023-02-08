@@ -1,7 +1,7 @@
 import "../styles/globals.css";
-import cx from "classnames";
 import localFont from "@next/font/local";
 import { Inter } from "@next/font/google";
+import cx from "classnames";
 import Providers from "./providers";
 
 const sfPro = localFont({
