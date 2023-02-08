@@ -99,7 +99,7 @@ const Navbar: React.FC = () => {
                         <Link href={item.href} key={item.name}>
                           <AnimatePresence>
                             <motion.button
-                              className="rounded-lg p-1.5 px-4 text-sm text-black transition-all hover:bg-stone-200 hover:text-black"
+                              className="rounded-2xl p-1.5 px-4 text-sm text-black transition-all hover:bg-stone-200 hover:text-black"
                               {...FADE_IN_ANIMATION_SETTINGS}
                             >
                               {item.name}
@@ -114,7 +114,7 @@ const Navbar: React.FC = () => {
                   {/* Sign in button */}
                   {!session && status !== "loading" ? (
                     <motion.button
-                      className="rounded-lg p-1.5 px-4 text-sm text-black transition-all hover:bg-stone-200 hover:text-black"
+                      className="rounded-2xl border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700 hover:text-white sm:bg-transparent sm:text-black sm:hover:bg-stone-200 sm:hover:text-black"
                       onClick={() => setShowSignInModal(true)}
                       {...FADE_IN_ANIMATION_SETTINGS}
                     >
