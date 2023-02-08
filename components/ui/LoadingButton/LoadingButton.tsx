@@ -13,7 +13,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
 }) => {
   const rootClassName = cn(
     className,
-    "inline-flex items-center justify-center rounded-lg border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:bg-emerald-700 hover:border-emerald-600",
+    "inline-flex items-center justify-center rounded-2xl border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:bg-emerald-700 hover:border-emerald-600",
   );
 
   return (
