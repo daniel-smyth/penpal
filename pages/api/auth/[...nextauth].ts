@@ -64,6 +64,11 @@ export const authOptions: NextAuthOptions = {
   theme: {
     colorScheme: "light",
   },
+  pages: {
+    signIn:
+      "/?showSignInModal=true&error=Use sign in method originally used to create account",
+    error: "/?showSignInModal=true", // Error code passed in query string as ?error=
+  },
   callbacks: {
     async jwt({ token }) {
       token.userRole = "admin";

@@ -4,6 +4,8 @@ import React, {
   SetStateAction,
   useCallback,
   useMemo,
+  FormEvent,
+  useEffect,
 } from "react";
 import { signIn } from "next-auth/react";
 import {
@@ -14,6 +16,7 @@ import {
   Github,
 } from "@components/icons";
 import { LoadingButton, Modal } from "@components/ui";
+import { useSearchParams } from "next/navigation";
 
 const PROVIDERS = [
   { name: "Google", icon: Google },
@@ -32,20 +35,35 @@ const SignInModal: React.FC<SignInModalProps> = ({
   setShowSignInModal,
 }) => {
   const [email, setEmail] = useState("");
-  const [response, setResponse] = useState<string | undefined>();
   const [signInClicked, setSignInClicked] = useState<{ [k: string]: boolean }>({
     ...PROVIDERS.reduce((acc, p) => ({ ...acc, [p.name]: false }), {}),
     email: false,
   });
+  const [btnText, setBtnText] = useState<"Sign In" | "Create Account">(
+    "Sign In",
+  );
+  const searchParams = useSearchParams();
+  const [response, setResponse] = useState<string | null>(
+    searchParams.get("error"),
+  );
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setSignInClicked({ email: true });
     const res = await signIn("email", { email, redirect: false });
     res?.ok
-      ? setResponse("Check your email for a link to sign in")
+      ? setResponse("Check email for sign in link")
       : setResponse("An unknown error occurred");
     setSignInClicked({ email: false });
   };
+
+  useEffect(() => {
+    () =>
+      setSignInClicked({
+        ...PROVIDERS.reduce((acc, p) => ({ ...acc, [p.name]: false }), {}),
+        email: false,
+      });
+  });
 
   return (
     <Modal showModal={showSignInModal} setShowModal={setShowSignInModal}>
@@ -56,7 +74,7 @@ const SignInModal: React.FC<SignInModalProps> = ({
         <div className="min-h-[35px] bg-gray-50 dark:bg-gray-900">
           {response && (
             <div
-              className=" rounded-lg bg-emerald-100 py-2 px-6 text-center text-sm text-emerald-700"
+              className="bg-emerald-100 py-2 px-6 text-center text-sm text-emerald-700"
               role="alert"
             >
               {response}
@@ -91,10 +109,13 @@ const SignInModal: React.FC<SignInModalProps> = ({
               className="h-10"
               loading={signInClicked.email}
             >
-              Sign In
+              {btnText}
             </LoadingButton>
           </form>
-          <button className="text-center">
+          <button
+            className="text-center"
+            onClick={() => setBtnText("Create Account")}
+          >
             <p className="text-sm text-gray-500 underline">
               I don&apos;t have an account
             </p>
@@ -104,7 +125,7 @@ const SignInModal: React.FC<SignInModalProps> = ({
               disabled={signInClicked[provider.name]}
               className={`${
                 signInClicked[provider.name]
-                  ? "cursor-not-allowed border-gray-200 bg-gray-100"
+                  ? "cursor-not-allowed border-gray-200 bg-gray-100 dark:border-gray-600 dark:bg-gray-900"
                   : "border border-gray-200 bg-white text-black hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:hover:bg-gray-900"
               } flex h-10 w-full items-center justify-center space-x-3 rounded-md border text-sm shadow-sm transition-all duration-75 focus:outline-none`}
               onClick={() => {
@@ -130,7 +151,9 @@ const SignInModal: React.FC<SignInModalProps> = ({
 };
 
 export function useSignInModal() {
-  const [showSignInModal, setShowSignInModal] = useState(false);
+  const searchParams = useSearchParams();
+  const isOpen = searchParams.get("showSignInModal");
+  const [showSignInModal, setShowSignInModal] = useState(isOpen === "true");
 
   const SignInModalCallback = useCallback(() => {
     return (

@@ -37,7 +37,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
                 cy="12"
                 r="10"
                 stroke="currentColor"
-                stroke-width="4"
+                strokeWidth="4"
               ></circle>
               <path
                 className="opacity-75"
