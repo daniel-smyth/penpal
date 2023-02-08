@@ -65,6 +65,7 @@ export const authOptions: NextAuthOptions = {
     colorScheme: "light",
   },
   pages: {
+    signIn: "/auth/sign-in",
     error: "/?showSignInModal=true", // Error code passed in query string as ?error=
   },
   callbacks: {
