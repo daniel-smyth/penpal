@@ -65,8 +65,8 @@ export const authOptions: NextAuthOptions = {
     colorScheme: "light",
   },
   pages: {
-    signIn:
-      "/?showSignInModal=true&error=Use sign in method originally used to create account",
+    // signIn:
+    //   "/?showSignInModal=true&error=Use sign in method originally used to create account",
     error: "/?showSignInModal=true", // Error code passed in query string as ?error=
   },
   callbacks: {
