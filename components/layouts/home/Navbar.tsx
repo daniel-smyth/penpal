@@ -2,37 +2,34 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { fetcher } from "@lib/fetcher";
 import { Disclosure } from "@headlessui/react";
-import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
-import { AnimatePresence, motion } from "framer-motion";
 import { X as XIcon, Menu as MenuIcon } from "lucide-react";
-import { useScroll, useWindowSize } from "@lib/hooks";
+import { AnimatePresence, motion } from "framer-motion";
+import cn from "classnames";
+import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
+import { useScroll } from "@lib/hooks";
 import { useSignInModal } from "./SignInModal";
 import UserDropdown from "./UserDropdown";
 
 const navigation = [
-  { name: "Why Penpal?", href: "#", current: false },
-  { name: "Tools & Guides", href: "#", current: false },
+  { name: "Why Penpal?", href: "#" },
+  { name: "Tools & Guides", href: "#" },
 ];
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 const Navbar: React.FC = () => {
   const { data: session, status } = useSession();
   const { SignInModal, setShowSignInModal } = useSignInModal();
-  const [loading, setLoading] = useState(false);
-  const { isDesktop } = useWindowSize();
+  const [fetching, setFetching] = useState(false);
   const scrolled = useScroll(50);
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleCreatePostClick = async () => {
     try {
-      setLoading(true);
+      setFetching(true);
       const article = {
         title: "",
         text: {
@@ -52,7 +49,7 @@ const Navbar: React.FC = () => {
       router.push(`/articles/${_id}`);
     } catch (err: any) {
       console.log(err);
-      setLoading(false);
+      setFetching(false);
       throw new Error(err);
     }
   };
@@ -124,46 +121,44 @@ const Navbar: React.FC = () => {
                     ) : (
                       <UserDropdown />
                     )}
-                    {/* Create article button */}
-                    {isDesktop && (
-                      <motion.button
-                        key="create-article-button"
-                        onClick={handleCreatePostClick}
-                        className="inline-flex min-w-[150px] items-center justify-center rounded-2xl border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700"
-                        {...FADE_IN_ANIMATION_SETTINGS}
-                      >
-                        {loading && (
-                          <span
-                            className="spinner-grow spinner-sm mr-2 inline-block"
-                            role="status"
-                            aria-hidden="true"
-                          >
-                            <svg
-                              className="mr- -ml-1 h-4 w-4 animate-spin text-white"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <circle
-                                className="opacity-25"
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                stroke-width="4"
-                              ></circle>
-                              <path
-                                className="opacity-75"
-                                fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                              ></path>
-                            </svg>
-                          </span>
-                        )}
-                        Create Article
-                      </motion.button>
-                    )}
                   </AnimatePresence>
+                  {/* Create article button */}
+                  <motion.button
+                    key="create-article-button"
+                    onClick={handleCreatePostClick}
+                    className="hidden min-w-[150px] items-center justify-center rounded-2xl border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700 sm:inline-flex"
+                    {...FADE_IN_ANIMATION_SETTINGS}
+                  >
+                    {fetching && (
+                      <span
+                        className="spinner-grow spinner-sm mr-2 inline-block"
+                        role="status"
+                        aria-hidden="true"
+                      >
+                        <svg
+                          className="mr- -ml-1 h-4 w-4 animate-spin text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                      </span>
+                    )}
+                    Create Article
+                  </motion.button>
                 </div>
               </div>
             </div>
@@ -175,13 +170,15 @@ const Navbar: React.FC = () => {
                     key={item.name}
                     as="a"
                     href={item.href}
-                    className={classNames(
-                      item.current
+                    className={cn(
+                      pathname?.includes(item.href)
                         ? "bg-gray-300 text-black"
                         : "text-gray-500 hover:bg-gray-700 hover:text-white",
                       "block rounded-md px-3 py-2 text-base font-medium",
                     )}
-                    aria-current={item.current ? "page" : undefined}
+                    aria-current={
+                      pathname?.includes(item.href) ? "page" : undefined
+                    }
                   >
                     {item.name}
                   </Disclosure.Button>

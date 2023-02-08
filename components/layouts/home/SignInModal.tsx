@@ -16,63 +16,55 @@ import {
 import { LoadingButton, Modal } from "@components/ui";
 
 const PROVIDERS = [
-  { name: "Google", component: Google },
-  { name: "Facebook", component: Facebook },
-  { name: "Twitter", component: Twitter },
-  { name: "Github", component: Github },
+  { name: "Google", icon: Google },
+  { name: "Facebook", icon: Facebook },
+  { name: "Twitter", icon: Twitter },
+  { name: "Github", icon: Github },
 ];
 
-const SignInModal = ({
-  showSignInModal,
-  setShowSignInModal,
-}: {
+interface SignInModalProps {
   showSignInModal: boolean;
   setShowSignInModal: Dispatch<SetStateAction<boolean>>;
+}
+
+const SignInModal: React.FC<SignInModalProps> = ({
+  showSignInModal,
+  setShowSignInModal,
 }) => {
-  const [emailSignIn, setEmailSignIn] = useState({
-    address: "",
-    result: undefined as string | undefined,
-    buttonText: "Sign In",
-  });
+  const [email, setEmail] = useState("");
+  const [response, setResponse] = useState<string | undefined>();
   const [signInClicked, setSignInClicked] = useState<{ [k: string]: boolean }>({
     ...PROVIDERS.reduce((acc, p) => ({ ...acc, [p.name]: false }), {}),
     email: false,
   });
 
+  const onSubmit = async () => {
+    setSignInClicked({ email: true });
+    const res = await signIn("email", { email, redirect: false });
+    res?.ok
+      ? setResponse("Check your email for a link to sign in")
+      : setResponse("An unknown error occurred");
+    setSignInClicked({ email: false });
+  };
+
   return (
     <Modal showModal={showSignInModal} setShowModal={setShowSignInModal}>
       <div className="w-full overflow-hidden shadow-xl md:max-w-md md:rounded-2xl md:border md:border-gray-200">
         <div className="flex flex-col items-center justify-center border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center dark:border-gray-500 dark:bg-gray-800 dark:text-white md:px-16">
-          <h3 className="font-display text-2xl font-bold">
-            {emailSignIn.buttonText}
-          </h3>
+          <h3 className="font-display text-2xl font-bold">Sign In</h3>
         </div>
         <div className="min-h-[35px] bg-gray-50 dark:bg-gray-900">
-          {emailSignIn.result && (
+          {response && (
             <div
               className=" rounded-lg bg-emerald-100 py-2 px-6 text-center text-sm text-emerald-700"
               role="alert"
             >
-              {emailSignIn.result}
+              {response}
             </div>
           )}
         </div>
         <div className="flex flex-col space-y-4 bg-gray-50 px-4 pb-12 pt-2 dark:bg-gray-900 md:px-16">
-          <form
-            className="flex flex-col space-y-4"
-            onSubmit={async () => {
-              setSignInClicked({ email: true });
-              const response = await signIn("email", {
-                email: emailSignIn.address,
-                redirect: false,
-              });
-              const result = response?.ok
-                ? "Check your email for a link to sign in"
-                : "An unknown error occurred";
-              setEmailSignIn((current) => ({ ...current, result }));
-              setSignInClicked({ email: false });
-            }}
-          >
+          <form className="flex flex-col space-y-4" onSubmit={onSubmit}>
             <div className="relative">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg
@@ -90,12 +82,7 @@ const SignInModal = ({
                 type="email"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900 outline-none focus:border-emerald-600 focus:ring-emerald-600  dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:focus:border-emerald-600 dark:focus:ring-emerald-600"
                 placeholder="name@penpal.com"
-                onChange={(e) =>
-                  setEmailSignIn((current) => ({
-                    ...current,
-                    address: e.target.value,
-                  }))
-                }
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -104,18 +91,10 @@ const SignInModal = ({
               className="h-10"
               loading={signInClicked.email}
             >
-              {emailSignIn.buttonText}
+              Sign In
             </LoadingButton>
           </form>
-          <button
-            className="text-center"
-            onClick={() =>
-              setEmailSignIn((current) => ({
-                ...current,
-                buttonText: "Sign Up",
-              }))
-            }
-          >
+          <button className="text-center">
             <p className="text-sm text-gray-500 underline">
               I don&apos;t have an account
             </p>
@@ -138,7 +117,7 @@ const SignInModal = ({
                 <LoadingDots color="#808080" />
               ) : (
                 <>
-                  <provider.component className="h-5 w-5" />
+                  <provider.icon className="h-5 w-5" />
                   <p>Sign In with {provider.name}</p>
                 </>
               )}

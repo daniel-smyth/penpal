@@ -1,14 +1,18 @@
 import React, { Fragment } from "react";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
+import { Menu, Transition } from "@headlessui/react";
+import { LayoutDashboard, LogOut, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
-import { LayoutDashboard, LogOut, User } from "lucide-react";
-import { Menu, Transition } from "@headlessui/react";
 
 export default function UserDropdown() {
   const { data: session } = useSession();
   const { email, image } = session?.user || {};
+
+  if (!email) {
+    return null;
+  }
 
   return (
     <motion.div
@@ -21,7 +25,7 @@ export default function UserDropdown() {
             <span className="sr-only">Open user menu</span>
             <Image
               className="h-8 w-8 rounded-full"
-              alt={email || ""}
+              alt={email}
               src={
                 image || `https://avatars.dicebear.com/api/micah/${email}.svg`
               }
