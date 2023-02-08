@@ -128,7 +128,9 @@ const Navbar: React.FC = () => {
                     {isDesktop && (
                       <motion.button
                         key="create-article-button"
+                        onClick={handleCreatePostClick}
                         className="inline-flex min-w-[150px] items-center justify-center rounded-2xl border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700"
+                        {...FADE_IN_ANIMATION_SETTINGS}
                       >
                         {loading && (
                           <span
