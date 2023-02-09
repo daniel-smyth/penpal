@@ -34,7 +34,7 @@ const SignInForm: React.FC = () => {
   const error = searchParams.get("error");
   const [response, setResponse] = useState({
     type: (error ? "error" : "success") as "error" | "success",
-    message: error || "Success",
+    message: error || "",
   });
 
   const onEmailSignInSubmit = async (e: FormEvent<HTMLFormElement>) => {
