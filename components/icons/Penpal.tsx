@@ -9,7 +9,7 @@ const Penpal: React.FC<PenpalProps> = ({ className }) => {
   return (
     <Link
       href="/"
-      className={cn("flex items-center px-3 font-display text-2xl", className)}
+      className={cn("flex items-center font-display text-2xl", className)}
     >
       <p>Penpal</p>
     </Link>
