@@ -1,3 +1,5 @@
+"use client";
+
 import React, { Fragment } from "react";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
@@ -6,7 +8,7 @@ import { LayoutDashboard, LogOut, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 
-export default function UserDropdown() {
+const UserDropdown: React.FC = () => {
   const { data: session } = useSession();
   const { email, image } = session?.user || {};
 
@@ -79,4 +81,6 @@ export default function UserDropdown() {
       </Menu>
     </motion.div>
   );
-}
+};
+
+export default UserDropdown;

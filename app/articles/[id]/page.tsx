@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { articleService } from "@lib/database/services";
 import {
   ImageGenerator,
+  ArticleNavbar,
   ShareArticle,
   TextGenerator,
 } from "@components/app/article";
@@ -30,12 +31,13 @@ async function getArticle(id: string) {
 async function ArticlePage({ params: { id } }: { params: { id: string } }) {
   const article = await getArticle(id);
 
-  if (!article || JSON.stringify(article) === "{}") {
+  if (!article) {
     return <div>Loading...</div>;
   }
 
   return (
     <main>
+      <ArticleNavbar />
       <>
         <br />
         Title: {article.title}

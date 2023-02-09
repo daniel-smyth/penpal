@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { fetcher } from "@lib/fetcher";
 import { Disclosure } from "@headlessui/react";
 import { X as XIcon, Menu as MenuIcon } from "lucide-react";
@@ -11,8 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import cn from "classnames";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { useScroll } from "@lib/hooks";
-import { useSignInModal } from "./SignInModal";
-import UserDropdown from "./UserDropdown";
+import { SignInButton } from "@components/auth";
 
 const navigation = [
   { name: "Why Penpal?", href: "#" },
@@ -20,14 +18,12 @@ const navigation = [
 ];
 
 const Navbar: React.FC = () => {
-  const { data: session, status } = useSession();
-  const { SignInModal, setShowSignInModal } = useSignInModal();
   const [fetching, setFetching] = useState(false);
   const scrolled = useScroll(50);
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleCreatePostClick = async () => {
+  const handleCreateArticleClick = async () => {
     try {
       setFetching(true);
       const article = {
@@ -56,7 +52,6 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <SignInModal />
       <div className="fixed h-screen w-full bg-gradient-to-br from-indigo-50 via-white to-cyan-100" />
       <Disclosure
         as="div"
@@ -107,25 +102,11 @@ const Navbar: React.FC = () => {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <AnimatePresence>
-                    {/* Sign in button */}
-                    {!session && status !== "loading" ? (
-                      <motion.button
-                        key="sign-in-button"
-                        className="rounded-2xl border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700 hover:text-white sm:bg-transparent sm:text-black sm:hover:bg-stone-200 sm:hover:text-black"
-                        onClick={() => setShowSignInModal(true)}
-                        {...FADE_IN_ANIMATION_SETTINGS}
-                      >
-                        Sign In
-                      </motion.button>
-                    ) : (
-                      <UserDropdown />
-                    )}
-                  </AnimatePresence>
+                  <SignInButton />
                   {/* Create article button */}
                   <motion.button
                     key="create-article-button"
-                    onClick={handleCreatePostClick}
+                    onClick={handleCreateArticleClick}
                     className="hidden min-w-[150px] items-center justify-center rounded-2xl border border-emerald-600 bg-emerald-600 p-1.5 px-4 text-sm text-white transition-all hover:border-emerald-600 hover:bg-emerald-700 sm:inline-flex"
                     {...FADE_IN_ANIMATION_SETTINGS}
                   >
@@ -164,7 +145,15 @@ const Navbar: React.FC = () => {
             </div>
             {/* Mobile Navbar menu links */}
             <Disclosure.Panel className="sm:hidden">
-              <div className="space-y-1 px-2 pt-2 pb-3">
+              <div className="space-y-1 border-b border-gray-200 bg-white px-2 pt-2 pb-3">
+                <Disclosure.Button
+                  key="Create Article"
+                  as="a"
+                  onClick={handleCreateArticleClick}
+                  className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-700 hover:text-white "
+                >
+                  Create Article
+                </Disclosure.Button>
                 {navigation.map((item) => (
                   <Disclosure.Button
                     key={item.name}

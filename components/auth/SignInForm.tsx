@@ -3,7 +3,6 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import cn from "classnames";
 import {
   Facebook,
   Github,
@@ -35,7 +34,7 @@ const SignInForm: React.FC = () => {
   const error = searchParams.get("error");
   const [response, setResponse] = useState({
     type: (error ? "error" : "success") as "error" | "success",
-    message: error || "",
+    message: error || "Success",
   });
 
   const onEmailSignInSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -76,7 +75,7 @@ const SignInForm: React.FC = () => {
               <Alert
                 type={response.type}
                 className="max-h-[2.4rem]"
-                onCloseClick={() =>
+                onClose={() =>
                   setResponse((current) => ({
                     ...current,
                     message: "",

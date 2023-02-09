@@ -1,3 +1,5 @@
+"use client";
+
 import React, {
   useState,
   Dispatch,
@@ -30,7 +32,7 @@ const SignInModal: React.FC<SignInModalProps> = ({
   );
 };
 
-export function useSignInModal() {
+const useSignInModal = () => {
   const searchParams = useSearchParams();
   const isOpen = searchParams.get("showSignInModal");
   const [showSignInModal, setShowSignInModal] = useState(isOpen === "true");
@@ -48,4 +50,6 @@ export function useSignInModal() {
     () => ({ setShowSignInModal, SignInModal: SignInModalCallback }),
     [setShowSignInModal, SignInModalCallback],
   );
-}
+};
+
+export default useSignInModal;
