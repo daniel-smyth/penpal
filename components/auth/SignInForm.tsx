@@ -65,7 +65,7 @@ const SignInForm: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col space-y-3 rounded-2xl bg-gray-50 px-4 pt-3 pb-12 dark:bg-gray-900 md:px-16">
+      <div className="flex flex-col space-y-3 rounded-b-2xl bg-gray-50 px-4 pt-3 pb-12 dark:bg-gray-900 md:px-16">
         <form
           className="flex flex-col space-y-3"
           onSubmit={onEmailSignInSubmit}

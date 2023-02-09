@@ -10,11 +10,12 @@ import {
   Share as ShareIcon,
   X as XIcon,
   Menu as MenuIcon,
+  ChevronDown as ChevronDownIcon,
+  LucideIcon,
 } from "lucide-react";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { useScroll } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
-import SidebarItem from "./SidebarItem";
 
 const navigation = [
   { name: "Why Penpal?", href: "#" },
@@ -26,6 +27,52 @@ const sidebar = [
   { name: "Image", Icon: ImageIcon },
   { name: "Share", Icon: ShareIcon },
 ];
+
+interface SidebarItemProps {
+  title: string;
+  Icon: LucideIcon;
+  children?: { name: string; href: string }[];
+}
+
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  title,
+  Icon,
+  children = [],
+}) => {
+  return (
+    <li>
+      <button
+        type="button"
+        className="group flex w-full items-center rounded-lg p-3 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+      >
+        <Icon className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
+        <span
+          className="ml-3 flex-1 whitespace-nowrap text-left"
+          sidebar-toggle-item
+        >
+          {title}
+        </span>
+        {children.length > 0 && (
+          <ChevronDownIcon sidebar-toggle-item className="h-6 w-6" />
+        )}
+      </button>
+      {children.length > 0 && (
+        <ul id="dropdown-item" className="hidden space-y-2 py-2">
+          {children.map((item) => (
+            <li key={item.name}>
+              <a
+                href={item.href}
+                className="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              >
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+};
 
 const ArticleLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
@@ -85,8 +132,9 @@ const ArticleLayout: React.FC<{ children?: React.ReactNode }> = ({
                 </div>
               </div>
             </div>
+
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-              <aside className="fixed top-16 left-0 z-40 h-screen w-64 -translate-x-full border border-gray-300 transition-transform dark:border-gray-600 sm:translate-x-0">
+              <aside className="fixed top-16 left-0 h-screen w-64 -translate-x-full border border-gray-300 transition-transform dark:border-gray-600 sm:translate-x-0">
                 <div className="h-full overflow-y-auto bg-gray-50 px-3 py-3 dark:bg-gray-800">
                   <ul className="space-y-4">
                     {sidebar.map((item) => (
@@ -111,7 +159,7 @@ const ArticleLayout: React.FC<{ children?: React.ReactNode }> = ({
               leaveTo="left-0 opacity-0"
             >
               <Disclosure.Panel className="sm:hidden">
-                <aside className="fixed top-16 left-64 z-40 h-screen w-64 -translate-x-full border-t border-r border-gray-200 bg-white pt-4 transition-transform dark:border-gray-700 dark:bg-gray-800 sm:translate-x-0">
+                <aside className="fixed top-16 left-64 h-screen w-64 -translate-x-full border-t border-r border-gray-200 bg-white pt-4 transition-transform dark:border-gray-700 dark:bg-gray-800 sm:translate-x-0">
                   <div className="h-full overflow-y-auto bg-gray-50 px-3 dark:bg-gray-800">
                     <ul className="space-y-4">
                       {sidebar.map((item) => (
@@ -129,7 +177,9 @@ const ArticleLayout: React.FC<{ children?: React.ReactNode }> = ({
           </>
         )}
       </Disclosure>
-      {children}
+      <main className="flex w-full flex-col items-center justify-center py-32 sm:pl-64">
+        {children}
+      </main>
     </>
   );
 };
