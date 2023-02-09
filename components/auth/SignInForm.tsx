@@ -11,7 +11,9 @@ import {
   LoadingDots,
   Twitter,
 } from "@components/icons";
-import { LoadingButton } from "@components/ui";
+import { Alert, LoadingButton } from "@components/ui";
+import { AnimatePresence, motion } from "framer-motion";
+import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 
 const PROVIDERS = [
   { name: "Google", icon: Google },
@@ -32,7 +34,7 @@ const SignInForm: React.FC = () => {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   const [response, setResponse] = useState({
-    type: error ? "error" : "success",
+    type: (error ? "error" : "success") as "error" | "success",
     message: error || "",
   });
 
@@ -64,37 +66,37 @@ const SignInForm: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col space-y-4 rounded-2xl bg-gray-50 px-4 pt-4 pb-10 dark:bg-gray-900 md:px-16">
+      <div className="flex flex-col space-y-3 rounded-2xl bg-gray-50 px-4 pt-3 pb-12 dark:bg-gray-900 md:px-16">
         <form
-          className="flex flex-col space-y-4"
+          className="flex flex-col space-y-3"
           onSubmit={onEmailSignInSubmit}
         >
-          {response.message.length > 1 ? (
-            <div className="min-h-[40px]">
-              <div
-                className={cn(
-                  response.type === "success"
-                    ? "bg-green-200 text-emerald-700"
-                    : "bg-rose-600 text-rose-900",
-                  "rounded-xl px-3 py-2 text-center text-base",
-                )}
-                role="alert"
+          <AnimatePresence>
+            {response.message.length > 1 ? (
+              <Alert
+                type={response.type}
+                className="max-h-[2.4rem]"
+                onCloseClick={() =>
+                  setResponse((current) => ({
+                    ...current,
+                    message: "",
+                  }))
+                }
               >
                 {response.type === "success"
                   ? response.message
                   : `Error: ${response.message}`}
-              </div>
-            </div>
-          ) : (
-            <div className="flex min-h-[40px] items-end px-2">
-              <label
+              </Alert>
+            ) : (
+              <motion.label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-500 dark:text-white"
+                className="flex min-h-[2.4rem] items-end text-sm font-medium text-gray-500 dark:text-white"
+                {...FADE_IN_ANIMATION_SETTINGS}
               >
                 Enter email address
-              </label>
-            </div>
-          )}
+              </motion.label>
+            )}
+          </AnimatePresence>
           <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <svg
