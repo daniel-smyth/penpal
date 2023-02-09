@@ -6,7 +6,7 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
       <Navbar />
-      <main className="flex w-full flex-col items-center justify-center py-32">
+      <main className="flex w-full flex-col items-center justify-center py-14">
         {children}
       </main>
       <Footer />
