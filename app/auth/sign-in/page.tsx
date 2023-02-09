@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { HomeLayout } from "@components/layouts";
+import { PresentationLayout } from "@components/layouts";
 import { SignInForm } from "@components/auth";
 
 export default function SignInPage() {
   return (
-    <HomeLayout>
+    <PresentationLayout>
       <div className="w-full md:max-w-md">
         <div className="relative py-6 text-center dark:text-white">
           <h3 className="font-display text-2xl font-bold">Sign In</h3>
@@ -15,6 +15,6 @@ export default function SignInPage() {
           <SignInForm />
         </div>
       </div>
-    </HomeLayout>
+    </PresentationLayout>
   );
 }

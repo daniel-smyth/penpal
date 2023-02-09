@@ -2,7 +2,9 @@ import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const PresentationLayout: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   return (
     <>
       <Navbar />
@@ -14,4 +16,4 @@ const HomeLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-export default HomeLayout;
+export default PresentationLayout;
