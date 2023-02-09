@@ -19,7 +19,6 @@ class StripeWebhookService {
           break;
         case "active":
           await emailService.sendEmail({
-            from: "danielsmyth2011@gmail.com",
             to: user.email as string,
             subject: "Subscription active",
             html: "",
@@ -45,7 +44,6 @@ class StripeWebhookService {
           break;
         case "canceled":
           await emailService.sendEmail({
-            from: "danielsmyth2011@gmail.com",
             to: user.email as string,
             subject: "Subscription cancelled",
             html: "",
@@ -74,7 +72,6 @@ class StripeWebhookService {
       await user.save();
 
       await emailService.sendEmail({
-        from: "danielsmyth2011@gmail.com",
         to: user.email as string,
         subject: "Subscription cancelled",
         html: "",
