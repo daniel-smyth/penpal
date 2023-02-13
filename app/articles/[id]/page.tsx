@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
 import { articleService } from "@lib/database/services";
-import { TextGenerator } from "@components/app/articles";
-import { Hero } from "@components/app/home";
-import { makeArticle } from "@tests/helpers";
 import { Input } from "@components/ui/server";
 import { SendIcon } from "lucide-react";
 
@@ -36,8 +33,7 @@ async function ArticlePage({ params: { id } }: { params: { id: string } }) {
 
   return (
     <div>
-      <div className="flex h-full align-bottom"></div>
-      <div className="fixed bottom-0 left-64 right-0 z-0 flex h-48 items-center justify-center bg-gray-900 text-center">
+      <div className="fixed bottom-0 left-0 right-0 z-0 flex h-32 items-center justify-center bg-gray-900 text-center sm:left-64">
         <Input type="email" width="w-8/12" Icon={SendIcon} />
       </div>
     </div>
