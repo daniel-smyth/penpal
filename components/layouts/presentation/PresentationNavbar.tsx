@@ -132,6 +132,7 @@ const PresentationNavbar: React.FC = () => {
                 <Disclosure.Panel>
                   <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
                     <Button
+                      loading={fetching}
                       variant="outline"
                       className="w-full text-base"
                       onClick={handleCreateArticleClick}
