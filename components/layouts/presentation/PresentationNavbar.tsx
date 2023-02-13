@@ -108,8 +108,8 @@ const PresentationNavbar: React.FC = () => {
 
                   <Button
                     animated
-                    loading={fetching}
-                    className="hidden min-w-[150px] sm:block"
+                    loading={true}
+                    className="hidden min-w-[150px] sm:flex"
                     onClick={handleCreateArticleClick}
                     {...FADE_IN_ANIMATION_SETTINGS}
                   >
