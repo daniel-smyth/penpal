@@ -10,7 +10,7 @@ import {
   LoadingDots,
   Twitter,
 } from "@components/icons";
-import { Alert, LoadingButton } from "@components/ui";
+import { Alert, Button } from "@components/ui/client";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 
@@ -118,13 +118,9 @@ const SignInForm: React.FC = () => {
               required
             />
           </div>
-          <LoadingButton
-            type="submit"
-            className="h-10"
-            loading={signInClicked.email}
-          >
+          <Button type="submit" loading={signInClicked.email}>
             {btnText}
-          </LoadingButton>
+          </Button>
         </form>
         <button
           className="text-center"

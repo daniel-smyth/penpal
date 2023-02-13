@@ -7,9 +7,9 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { Modal } from "@components/ui";
 import { useSearchParams } from "next/navigation";
 import { SignInForm } from "@components/auth";
+import { Modal } from "@components/ui/client";
 
 interface SignInModalProps {
   showSignInModal: boolean;
