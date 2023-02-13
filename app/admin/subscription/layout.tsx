@@ -1,5 +1,3 @@
-"use client";
-
 import AuthProvider from "./provider";
 
 function SubscriptionLayout({ children }: { children: React.ReactNode }) {
