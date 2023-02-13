@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { fetcher } from "@lib/fetcher";
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, Transition } from "@headlessui/react";
 import { X as XIcon, Menu as MenuIcon } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import cn from "classnames";
@@ -120,33 +120,39 @@ const PresentationNavbar: React.FC = () => {
             </div>
 
             {isMobile && (
-              <Disclosure.Panel>
-                <div className="space-y-1 border-b border-gray-200 bg-white px-2 pt-2 pb-3">
-                  <Button
-                    onClick={handleCreateArticleClick}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-700 hover:text-white "
-                  >
-                    Create Article
-                  </Button>
-
-                  {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      className={cn(
-                        pathname?.includes(item.href)
-                          ? "bg-gray-300 text-black"
-                          : "text-gray-500 hover:bg-gray-700 hover:text-white",
-                        "block rounded-md px-3 py-2 text-base font-medium",
-                      )}
-                      aria-current={
-                        pathname?.includes(item.href) ? "page" : undefined
-                      }
+              <Transition
+                show={open}
+                enter="transition duration-150 ease-out"
+                enterFrom="top-0 opacity-0"
+                enterTo="top-100 opacity-100"
+                leave="transition duration-150 ease-out"
+                leaveFrom="top-100 opacity-100"
+                leaveTo="top-0 opacity-0"
+              >
+                <Disclosure.Panel>
+                  <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                    <Button
+                      variant="outline"
+                      className="w-full text-base"
+                      onClick={handleCreateArticleClick}
                     >
-                      <Link href={item.href}>{item.name}</Link>
-                    </Disclosure.Button>
-                  ))}
-                </div>
-              </Disclosure.Panel>
+                      Create Article
+                    </Button>
+
+                    {navigation.map((item) => (
+                      <Button
+                        key={item.name}
+                        variant="outline"
+                        className="w-full text-base"
+                      >
+                        <Disclosure.Button>
+                          <Link href={item.href}>{item.name}</Link>
+                        </Disclosure.Button>
+                      </Button>
+                    ))}
+                  </div>
+                </Disclosure.Panel>
+              </Transition>
             )}
           </>
         )}

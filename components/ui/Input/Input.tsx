@@ -5,7 +5,6 @@ import React from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   width?: string;
-  Icon?: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
 const Input: React.FC<InputProps> = (props) => {

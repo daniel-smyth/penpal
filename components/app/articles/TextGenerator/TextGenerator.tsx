@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { fetcher } from "@lib/fetcher";
 import { useArticle } from "@lib/hooks";
 import { IArticle, ITextQuery } from "@lib/database/models";
+import { Input } from "@components/ui/server";
+import { SendIcon } from "lucide-react";
 
 interface TextGeneratorProps {
   article: IArticle;
@@ -67,7 +69,19 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
 
   return (
     <>
-      <strong>
+      ASS
+      <div className="fixed bottom-0 left-0 right-0 z-0 flex h-32 items-center justify-center bg-gray-900 text-center sm:left-64">
+        <Input
+          id="text-generator-input"
+          type="email"
+          width="w-8/12"
+          value={query.input}
+          onChange={(e) =>
+            setQuery((query) => ({ ...query, input: e.target.value }))
+          }
+        />
+      </div>
+      {/* <strong>
         Error: <p>{error}</p>
       </strong>
 
@@ -101,7 +115,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
         <li key={i}>
           <button onClick={() => onHistoryClick(query)}>{query.input}</button>
         </li>
-      ))}
+      ))} */}
     </>
   );
 };
