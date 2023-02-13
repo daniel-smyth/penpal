@@ -63,6 +63,8 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
     mutate(newArticle, { optimisticData: newArticle });
   };
 
+  console.log(article);
+
   return (
     <>
       <strong>
