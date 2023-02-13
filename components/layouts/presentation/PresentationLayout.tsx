@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "./Navbar";
+import PresentationNavbar from "./PresentationNavbar";
 import Footer from "./Footer";
 
 const PresentationLayout: React.FC<{ children: React.ReactNode }> = ({
@@ -7,8 +7,8 @@ const PresentationLayout: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   return (
     <>
-      <Navbar />
-      <main className="flex w-full flex-col items-center justify-center py-14">
+      <PresentationNavbar />
+      <main className="flex w-full flex-col items-center justify-center py-32">
         {children}
       </main>
       <Footer />
