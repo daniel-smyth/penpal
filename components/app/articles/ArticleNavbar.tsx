@@ -12,7 +12,6 @@ import {
   ChevronDown as ChevronDownIcon,
 } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
-import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { useScroll, useWindowSize } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
 import { Button } from "@components/ui/server";
@@ -29,17 +28,17 @@ const sidebar = [
 ];
 
 const ArticleNavbar: React.FC = () => {
-  const { isDesktop, isMobile } = useWindowSize();
+  const { isMobile } = useWindowSize();
   const scrolled = useScroll(50);
 
   return (
     <Disclosure
       as="div"
-      className={`fixed top-0 w-full transition-all ${
+      className={`fixed top-0 w-full ${
         scrolled
           ? "border-b border-gray-200 bg-white/50 backdrop-blur-xl"
           : "bg-white/0"
-      }`}
+      } z-40 transition-all`}
     >
       {({ open }) => (
         <>

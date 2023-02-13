@@ -61,11 +61,11 @@ const PresentationNavbar: React.FC = () => {
           scrolled
             ? "border-b border-gray-200 bg-white/50 backdrop-blur-xl"
             : "bg-white/0"
-        } z-30 transition-all`}
+        } z-40 transition-all`}
       >
         {({ open }) => (
           <>
-            <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-2 dark:border-gray-600 dark:bg-gray-800 dark:text-white sm:px-6 lg:px-8">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -109,7 +109,7 @@ const PresentationNavbar: React.FC = () => {
                   <Button
                     animated
                     loading={fetching}
-                    className="min-w-[150px]"
+                    className="hidden min-w-[150px] sm:block"
                     onClick={handleCreateArticleClick}
                     {...FADE_IN_ANIMATION_SETTINGS}
                   >
