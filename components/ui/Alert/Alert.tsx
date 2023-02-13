@@ -3,7 +3,7 @@ import cn from "classnames";
 import { motion } from "framer-motion";
 import { Info as InfoIcon, X as XIcon } from "lucide-react";
 
-export interface AlertProps {
+interface AlertProps {
   type: "success" | "error";
   className?: string;
   onClose?: () => void;
