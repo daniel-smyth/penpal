@@ -21,7 +21,8 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
     return <div>Loading...</div>;
   }
 
-  const generateText = async () => {
+  const generateText = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       const { result } = await fetcher({
         url: "/api/ai/text",
