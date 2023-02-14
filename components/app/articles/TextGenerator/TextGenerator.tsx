@@ -70,12 +70,16 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
       {article.text.history.map((query, i) => (
         <li key={i}>
           <button onClick={() => onHistoryClick(query)}>{query.input}</button>
+          <button onClick={() => onHistoryClick(query)}>
+            {query.output.choices[0].text}
+          </button>
         </li>
       ))}
-      <div className="fixed bottom-0 left-0 right-0 flex h-32 items-center justify-center border-t border-gray-300 bg-gray-50 text-center dark:bg-gray-900 sm:left-64">
+      <div className="fixed bottom-0 left-0 right-0 flex h-44 items-center justify-center border-t border-gray-300 bg-gray-50 text-center dark:bg-gray-900 sm:left-64">
         <form onSubmit={generateText} className="w-8/12">
           <Input
             id="text-generator-input"
+            label="Enter Prompt"
             type="text"
             value={query.input}
             onChange={(e) =>

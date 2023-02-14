@@ -1,7 +1,11 @@
-import React, { MouseEventHandler } from "react";
-import { ChevronDown as ChevronDownIcon, LucideIcon } from "lucide-react";
+import React, { MouseEventHandler, useState } from "react";
+import {
+  ChevronDown as ChevronDownIcon,
+  ChevronUp as ChevronUpIcon,
+  LucideIcon,
+} from "lucide-react";
 
-interface DropdownItem {
+export interface DropdownItem {
   text: string;
   href: string;
 }
@@ -21,6 +25,8 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
   children,
   ...rest
 }) => {
+  const [dropdown, setDropdown] = useState(false);
+
   return (
     <>
       <button
@@ -57,12 +63,26 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
             </span>
           )}
         </span>
-        {items && items.length > 0 && <ChevronDownIcon className="h-6 w-6" />}
+        {items.length > 0 &&
+          (!dropdown ? (
+            <ChevronDownIcon
+              onClick={() => setDropdown((value) => !value)}
+              className="h-6 w-6"
+            />
+          ) : (
+            <ChevronUpIcon
+              onClick={() => setDropdown((value) => !value)}
+              className="h-6 w-6"
+            />
+          ))}
       </button>
-      {items && items.length > 0 && (
-        <ul id="dropdown-item" className="hidden space-y-2 py-2">
-          {items.map((item) => (
-            <li key={item.text}>
+      {items.length > 0 &&
+        items.map((item) => (
+          <ul
+            key={item.text}
+            className={`${!dropdown && `hidden`} space-y-2 py-2`}
+          >
+            <li>
               <a
                 href={item.href}
                 className="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -70,9 +90,8 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
                 {item.text}
               </a>
             </li>
-          ))}
-        </ul>
-      )}
+          </ul>
+        ))}
     </>
   );
 };

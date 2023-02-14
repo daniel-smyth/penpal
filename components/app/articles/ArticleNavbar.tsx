@@ -21,8 +21,16 @@ const navbar = [
 ];
 
 const sidebar = [
-  { text: "Text", Icon: PencilIcon, children: [] },
-  { text: "Image", Icon: ImageIcon, children: [] },
+  {
+    text: "Text",
+    Icon: PencilIcon,
+    children: [{ text: "History", href: "hello" }],
+  },
+  {
+    text: "Image",
+    Icon: ImageIcon,
+    children: [{ text: "History", href: "hello" }],
+  },
   { text: "Share", Icon: ShareIcon, children: [] },
 ];
 
