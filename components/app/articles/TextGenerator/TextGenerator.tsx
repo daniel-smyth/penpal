@@ -80,7 +80,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
 
   return (
     <div className="flex h-screen flex-col">
-      <ul ref={ulRef} className="flex-[0.7] overflow-y-auto">
+      <ul ref={ulRef} className="mb-60 flex-auto overflow-y-auto">
         <AnimatePresence>
           {article.text.history.map((query, i) => (
             <motion.li
@@ -121,18 +121,20 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
           ))}
         </AnimatePresence>
       </ul>
-      <div className="flex flex-[0.2] items-center justify-center border-t border-gray-300 bg-gray-50 text-center dark:bg-gray-900 sm:left-64 sm:flex-[0.22]">
-        <form onSubmit={generateText} className="w-8/12">
-          <Input
-            id="text-generator-input"
-            label="Enter Prompt"
-            type="text"
-            value={query.input}
-            onChange={(e) =>
-              setQuery((query) => ({ ...query, input: e.target.value }))
-            }
-          />
-        </form>
+      <div className="flex-none">
+        <div className="fixed bottom-0 left-0 right-0 flex h-44 items-center justify-center border-t border-gray-300 bg-gray-50 text-center dark:bg-gray-900 sm:left-64 sm:flex-[0.22]">
+          <form onSubmit={generateText} className="w-8/12">
+            <Input
+              id="text-generator-input"
+              label="Enter Prompt"
+              type="text"
+              value={query.input}
+              onChange={(e) =>
+                setQuery((query) => ({ ...query, input: e.target.value }))
+              }
+            />
+          </form>
+        </div>
       </div>
     </div>
   );
