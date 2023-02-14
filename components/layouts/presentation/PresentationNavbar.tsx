@@ -14,7 +14,7 @@ import { AnimatePresence } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { useScroll } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
-import { Button, SidebarButton, Popover } from "@components/ui/client";
+import { Button, NavigationButton, Popover } from "@components/ui/client";
 
 const navbar = [
   { name: "Why Penpal?", Icon: CheckCircleIcon, href: "#" },
@@ -120,17 +120,17 @@ const PresentationNavbar: React.FC = () => {
         <Popover
           content={
             <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-              <SidebarButton
+              <NavigationButton
+                Icon={PlusCircleIcon}
                 loading={fetching}
                 onClick={createArticle}
-                Icon={PlusCircleIcon}
               >
                 Create Article
-              </SidebarButton>
+              </NavigationButton>
               {navbar.map((item) => (
-                <SidebarButton key={item.name} Icon={item.Icon}>
+                <NavigationButton key={item.name} Icon={item.Icon}>
                   <Link href={item.href}>{item.name}</Link>
-                </SidebarButton>
+                </NavigationButton>
               ))}
             </div>
           }
