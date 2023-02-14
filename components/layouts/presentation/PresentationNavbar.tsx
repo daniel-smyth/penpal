@@ -4,18 +4,22 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fetcher } from "@lib/fetcher";
-import { Disclosure, Transition } from "@headlessui/react";
-import { X as XIcon, Menu as MenuIcon, ChevronDown } from "lucide-react";
+import {
+  Menu as MenuIcon,
+  Plus as PlusIcon,
+  BookOpen as BookOpenIcon,
+  CheckCircle as CheckCircleIcon,
+} from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
-import { useScroll, useWindowSize } from "@lib/hooks";
+import { useScroll } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
 import { Button, Popover } from "@components/ui/client";
 import { SidebarButton } from "@components/ui/server";
 
 const navigation = [
-  { name: "Why Penpal?", href: "#" },
-  { name: "Tools & Guides", href: "#" },
+  { name: "Why Penpal?", Icon: CheckCircleIcon, href: "#" },
+  { name: "Tools & Guides", Icon: BookOpenIcon, href: "#" },
 ];
 
 const PresentationNavbar: React.FC = () => {
@@ -52,138 +56,90 @@ const PresentationNavbar: React.FC = () => {
   };
 
   return (
-    <Disclosure
-      as="div"
+    <div
       className={`fixed top-0 w-full ${
         scrolled
           ? "border-b border-gray-200 bg-white/50 backdrop-blur-xl"
           : "bg-white/0"
       } z-40 transition-all`}
     >
-      {({ open }) => (
-        <>
-          <div className="mx-auto px-4 dark:bg-gray-800 dark:text-white sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                <Disclosure.Button
-                  onClick={() => setOpenPopover(!openPopover)}
-                  className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                >
-                  {/* {open ? (
-                    <XIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : ( */}
-                  <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                  {/* )} */}
-                </Disclosure.Button>
-              </div>
+      <div className="mx-auto px-4 dark:bg-gray-800 dark:text-white sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between">
+          <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <button
+              onClick={() => setOpenPopover(!openPopover)}
+              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            >
+              <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
 
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <Link
-                  href="/"
-                  className="flex items-center px-3 font-display text-2xl"
-                >
-                  <p>Penpal</p>
-                </Link>
+          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+            <Link
+              href="/"
+              className="flex items-center px-3 font-display text-2xl"
+            >
+              <p>Penpal</p>
+            </Link>
 
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    <AnimatePresence>
-                      {navigation.map((item) => (
-                        <Button
-                          animated
-                          variant="flat"
-                          key={item.name}
-                          {...FADE_IN_ANIMATION_SETTINGS}
-                        >
-                          <Link href={item.href}>{item.name}</Link>
-                        </Button>
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </div>
-
-              <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <SignInButton />
-
-                <div className="hidden sm:block">
-                  <Button
-                    animated
-                    loading={fetching}
-                    onClick={createArticle}
-                    {...FADE_IN_ANIMATION_SETTINGS}
-                  >
-                    Create Article
-                  </Button>
-                </div>
+            <div className="hidden sm:ml-6 sm:block">
+              <div className="flex space-x-4">
+                <AnimatePresence>
+                  {navigation.map((item) => (
+                    <Button
+                      animated
+                      variant="flat"
+                      key={item.name}
+                      {...FADE_IN_ANIMATION_SETTINGS}
+                    >
+                      <Link href={item.href}>{item.name}</Link>
+                    </Button>
+                  ))}
+                </AnimatePresence>
               </div>
             </div>
           </div>
 
-          <div className="sm:hidden">
-            {/* <Disclosure.Panel> */}
-            <Popover
-              content={
-                <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-                  <SidebarButton loading={fetching} onClick={createArticle}>
-                    Create Article
-                  </SidebarButton>
+          <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <SignInButton />
 
-                  {navigation.map((item) => (
-                    <SidebarButton key={item.name}>
-                      <Disclosure.Button>
-                        <Link href={item.href}>{item.name}</Link>
-                      </Disclosure.Button>
-                    </SidebarButton>
-                  ))}
-                </div>
-              }
-              openPopover={openPopover}
-              setOpenPopover={setOpenPopover}
-            >
-              <></>
-              {/* <button
-                onClick={() => setOpenPopover(!openPopover)}
-                className="flex w-40 items-center justify-between rounded-md border border-gray-300 px-4 py-2 transition-all duration-75 hover:border-gray-800 focus:outline-none active:bg-gray-100"
+            <div className="hidden sm:block">
+              <Button
+                animated
+                loading={fetching}
+                onClick={createArticle}
+                {...FADE_IN_ANIMATION_SETTINGS}
               >
-                <p className="text-gray-600">Popover</p>
-                <ChevronDown
-                  className={`h-4 w-4 text-gray-600 transition-all ${
-                    openPopover ? "rotate-180" : ""
-                  }`}
-                />
-              </button> */}
-            </Popover>
-            {/* </Disclosure.Panel> */}
-            {/* <Transition
-              show={open}
-              enter="transition duration-150 ease-out"
-              enterFrom="top-0 opacity-0"
-              enterTo="top-100 opacity-100"
-              leave="transition duration-150 ease-out"
-              leaveFrom="top-100 opacity-100"
-              leaveTo="top-0 opacity-0"
-            >
-              <Disclosure.Panel>
-                <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-                  <SidebarButton loading={fetching} onClick={createArticle}>
-                    Create Article
-                  </SidebarButton>
-
-                  {navigation.map((item) => (
-                    <SidebarButton key={item.name}>
-                      <Disclosure.Button>
-                        <Link href={item.href}>{item.name}</Link>
-                      </Disclosure.Button>
-                    </SidebarButton>
-                  ))}
-                </div>
-              </Disclosure.Panel>
-            </Transition> */}
+                Create Article
+              </Button>
+            </div>
           </div>
-        </>
-      )}
-    </Disclosure>
+        </div>
+      </div>
+
+      <div className="sm:hidden">
+        <Popover
+          content={
+            <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+              <SidebarButton
+                loading={fetching}
+                onClick={createArticle}
+                Icon={PlusIcon}
+              >
+                Create Article
+              </SidebarButton>
+              {navigation.map((item) => (
+                <SidebarButton key={item.name} Icon={item.Icon}>
+                  <Link href={item.href}>{item.name}</Link>
+                </SidebarButton>
+              ))}
+            </div>
+          }
+          openPopover={openPopover}
+          setOpenPopover={setOpenPopover}
+        />
+      </div>
+    </div>
   );
 };
 

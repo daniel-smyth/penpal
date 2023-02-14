@@ -4,7 +4,7 @@ import { useWindowSize } from "@lib/hooks";
 import { Leaflet } from "../Leaflet";
 
 interface PopoverProps {
-  children: ReactNode;
+  children?: ReactNode;
   content: ReactNode | string;
   align?: "center" | "start" | "end";
   openPopover: boolean;
