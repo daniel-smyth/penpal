@@ -28,7 +28,7 @@ class OpenAIClient {
 
   public async generateText(prompt: string, choiceCount = 1) {
     const mockResponse: ITextResponse = {
-      choices: [{ text: prompt + " I am AI output" }],
+      choices: [{ text: prompt + " I am AI output " }],
     };
 
     return mockResponse;

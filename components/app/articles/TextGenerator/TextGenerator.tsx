@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { fetcher } from "@lib/fetcher";
 import { useArticle } from "@lib/hooks";
 import { IArticle, ITextQuery } from "@lib/database/models";
 import { Input } from "@components/ui/server";
+import Balancer from "react-wrap-balancer";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface TextGeneratorProps {
   article: IArticle;
@@ -16,6 +18,13 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
   const [query, setQuery] = useState({ ...fallbackData.text.current });
   const [error, setError] = useState("");
+  const ulRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    if (ulRef.current) {
+      ulRef.current.scrollTop = ulRef.current.scrollHeight;
+    }
+  }, [article?.text.history]);
 
   if (!article) {
     return <div>Loading...</div>;
@@ -37,7 +46,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
         ...article,
         text: {
           current: { ...result, input: "" },
-          history: [result, ...article.text.history],
+          history: [...article.text.history, result],
         },
       };
 
@@ -66,16 +75,38 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
   };
 
   return (
-    <div className="z-40">
-      {article.text.history.map((query, i) => (
-        <li key={i}>
-          {/* <button onClick={() => onHistoryClick(query)}>{query.input}</button>
-          <button onClick={() => onHistoryClick(query)}>
-            {query.output.choices[0].text}
-          </button> */}
-        </li>
-      ))}
-      <div className="fixed bottom-0 left-0 right-0 flex h-44 items-center justify-center border-t border-gray-300 bg-gray-50 text-center dark:bg-gray-900 sm:left-64">
+    <div className="flex h-screen flex-col">
+      <ul ref={ulRef} className="flex-[0.6] overflow-y-auto">
+        <AnimatePresence>
+          {article.text.history.map((query, i) => (
+            <motion.li
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.3 }}
+                className="bg-gray-200 p-6 text-gray-500"
+              >
+                <Balancer>{query.input}</Balancer>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+                className="bg-gray-100 p-6 text-gray-500"
+              >
+                <Balancer>{query.output.choices[0].text}</Balancer>
+              </motion.div>
+            </motion.li>
+          ))}
+        </AnimatePresence>
+      </ul>
+      <div className="flex flex-[0.3] items-center justify-center border-t border-gray-300 bg-gray-50 text-center dark:bg-gray-900 sm:left-64">
         <form onSubmit={generateText} className="w-8/12">
           <Input
             id="text-generator-input"
@@ -88,41 +119,6 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
           />
         </form>
       </div>
-      {/* <strong>
-        Error: <p>{error}</p>
-      </strong>
-
-      <br />
-
-      <strong>
-        Current Output
-        <p>{article.text.current.output.choices[0].text}</p>
-      </strong>
-
-      <br />
-
-      <label htmlFor="text-generator-input">text-generator-input</label>
-      <input
-        id="text-generator-input"
-        type="text"
-        value={query.input}
-        onChange={(e) =>
-          setQuery((query) => ({ ...query, input: e.target.value }))
-        }
-      />
-
-      <br />
-
-      <button onClick={generateText}>Generate Text</button>
-
-      <br />
-
-      <strong>History</strong>
-      {article.text.history.map((query, i) => (
-        <li key={i}>
-          <button onClick={() => onHistoryClick(query)}>{query.input}</button>
-        </li>
-      ))} */}
     </div>
   );
 };

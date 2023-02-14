@@ -60,7 +60,7 @@ class ArticleService {
     const record = { input, output };
 
     article.text.current = record;
-    article.text.history.unshift(record);
+    article.text.history.push(record);
     await article.save();
 
     return record;
