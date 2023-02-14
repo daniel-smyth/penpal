@@ -1,20 +1,20 @@
-import React from "react";
-import { HTMLMotionProps, motion } from "framer-motion";
+import React, { MouseEventHandler } from "react";
+import { motion } from "framer-motion";
 import cn from "classnames";
-import { LoadingSpinner } from "@components/icons";
 
-interface ButtonProps extends HTMLMotionProps<"button"> {
+interface ButtonProps {
+  type?: "button" | "submit" | "reset";
   variant?: "solid" | "flat" | "outline";
   animated?: boolean;
   loading?: boolean;
-  className?: string;
+  children: React.ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Button: React.FC<ButtonProps> = ({
   variant = "solid",
   animated = false,
   loading = false,
-  className,
   children,
   ...rest
 }) => {
@@ -26,7 +26,6 @@ const Button: React.FC<ButtonProps> = ({
     variant === "flat" &&
       "border-transparent bg-transparent text-black hover:bg-stone-200 dark:text-white dark:hover:bg-gray-700",
     "transition-all inline-flex items-center justify-center rounded-2xl border p-1.5 px-4 text-sm",
-    className,
   );
 
   if (animated) {

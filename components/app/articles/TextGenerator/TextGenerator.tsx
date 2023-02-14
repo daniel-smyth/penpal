@@ -5,7 +5,6 @@ import { fetcher } from "@lib/fetcher";
 import { useArticle } from "@lib/hooks";
 import { IArticle, ITextQuery } from "@lib/database/models";
 import { Input } from "@components/ui/server";
-import { SendIcon } from "lucide-react";
 
 interface TextGeneratorProps {
   article: IArticle;
@@ -31,7 +30,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
           articleId: article._id || "",
         },
       });
-      setQuery(result);
+      setQuery({ ...result, input: "" });
 
       const newArticle = {
         ...article,
@@ -65,21 +64,24 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
     mutate(newArticle, { optimisticData: newArticle });
   };
 
-  console.log(article);
-
   return (
-    <>
-      ASS
-      <div className="fixed bottom-0 left-0 right-0 z-0 flex h-32 items-center justify-center bg-gray-900 text-center sm:left-64">
-        <Input
-          id="text-generator-input"
-          type="email"
-          width="w-8/12"
-          value={query.input}
-          onChange={(e) =>
-            setQuery((query) => ({ ...query, input: e.target.value }))
-          }
-        />
+    <div className="z-40">
+      {article.text.history.map((query, i) => (
+        <li key={i}>
+          <button onClick={() => onHistoryClick(query)}>{query.input}</button>
+        </li>
+      ))}
+      <div className="fixed bottom-0 left-0 right-0 flex h-32 items-center justify-center border-t border-gray-300 bg-gray-50 text-center dark:bg-gray-900 sm:left-64">
+        <form onSubmit={generateText} className="w-8/12">
+          <Input
+            id="text-generator-input"
+            type="text"
+            value={query.input}
+            onChange={(e) =>
+              setQuery((query) => ({ ...query, input: e.target.value }))
+            }
+          />
+        </form>
       </div>
       {/* <strong>
         Error: <p>{error}</p>
@@ -116,7 +118,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
           <button onClick={() => onHistoryClick(query)}>{query.input}</button>
         </li>
       ))} */}
-    </>
+    </div>
   );
 };
 

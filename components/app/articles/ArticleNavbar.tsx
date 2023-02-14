@@ -14,7 +14,7 @@ import {
 import { AnimatePresence } from "framer-motion";
 import { useScroll, useWindowSize } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
-import { Button } from "@components/ui/server";
+import { Button, SidebarButton } from "@components/ui/server";
 
 const navbar = [
   { name: "Why Penpal?", href: "#" },
@@ -86,34 +86,13 @@ const ArticleNavbar: React.FC = () => {
               <ul className="space-y-4">
                 {sidebar.map((item) => (
                   <li key={item.text}>
-                    <button className="group flex w-full items-center rounded-lg p-3 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                      <item.Icon className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
-                      <span className="ml-3 flex-1 whitespace-nowrap text-left">
-                        {item.text}
-                      </span>
-
-                      {item.children && item.children.length > 0 && (
-                        <ChevronDownIcon className="h-6 w-6" />
-                      )}
-                    </button>
-
-                    {item.children && item.children.length > 0 && (
-                      <ul id="dropdown-item" className="hidden space-y-2 py-2">
-                        {item.children &&
-                          item.children.map(
-                            (item: { text: string; href: string }) => (
-                              <li key={item.text}>
-                                <a
-                                  href={item.href}
-                                  className="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                >
-                                  {item.text}
-                                </a>
-                              </li>
-                            ),
-                          )}
-                      </ul>
-                    )}
+                    <SidebarButton
+                      key={item.text}
+                      Icon={item.Icon}
+                      items={item.children}
+                    >
+                      <Disclosure.Button>{item.text}</Disclosure.Button>
+                    </SidebarButton>
                   </li>
                 ))}
               </ul>
@@ -136,37 +115,13 @@ const ArticleNavbar: React.FC = () => {
                     <ul className="space-y-4">
                       {sidebar.map((item) => (
                         <li key={item.text}>
-                          <button className="group flex w-full items-center rounded-lg p-3 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            <item.Icon className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
-                            <span className="ml-3 flex-1 whitespace-nowrap text-left">
-                              {item.text}
-                            </span>
-
-                            {item.children && item.children.length > 0 && (
-                              <ChevronDownIcon className="h-6 w-6" />
-                            )}
-                          </button>
-
-                          {item.children && item.children.length > 0 && (
-                            <ul
-                              id="dropdown-item"
-                              className="hidden space-y-2 py-2"
-                            >
-                              {item.children &&
-                                item.children.map(
-                                  (item: { text: string; href: string }) => (
-                                    <li key={item.text}>
-                                      <a
-                                        href={item.href}
-                                        className="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                      >
-                                        {item.text}
-                                      </a>
-                                    </li>
-                                  ),
-                                )}
-                            </ul>
-                          )}
+                          <SidebarButton
+                            key={item.text}
+                            Icon={item.Icon}
+                            items={item.children}
+                          >
+                            <Disclosure.Button>{item.text}</Disclosure.Button>
+                          </SidebarButton>
                         </li>
                       ))}
                     </ul>
