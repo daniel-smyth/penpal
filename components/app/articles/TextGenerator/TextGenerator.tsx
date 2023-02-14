@@ -122,11 +122,11 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
         </AnimatePresence>
       </ul>
       <div className="flex-none">
-        <div className="fixed bottom-0 left-0 right-0 flex h-40 items-center justify-center border-t border-gray-300 bg-gray-50 px-8 pb-8 text-center dark:bg-gray-900 sm:left-64 sm:flex-[0.22] sm:px-12 lg:px-16">
+        <div className="fixed bottom-0 left-0 right-0 flex h-40 items-center justify-center border-t border-gray-300 bg-gray-50 px-8 pb-8 text-center dark:border-gray-600 dark:bg-gray-900 sm:left-64 sm:flex-[0.22] sm:px-12 lg:px-16">
           <form onSubmit={generateText} className="w-full">
             <Input
               id="text-generator-input"
-              label="Enter Prompt"
+              label="Generate Text"
               type="text"
               value={query.input}
               onChange={(e) =>

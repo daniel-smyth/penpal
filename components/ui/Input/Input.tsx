@@ -1,5 +1,3 @@
-"use client";
-
 import { Mail as MailIcon, Send as SendIcon } from "lucide-react";
 import React from "react";
 
@@ -24,7 +22,7 @@ const Input: React.FC<InputProps> = (props) => {
         <div className="absolute inset-y-0 left-0 flex items-center rounded pl-3 transition-all focus:ring-2 focus:ring-blue-400">
           <button
             onClick={onClick}
-            className="h-8 w-8 rounded-lg bg-gray-100 p-1.5 text-gray-500 hover:bg-gray-200 focus:ring-2 focus:ring-gray-200 dark:text-gray-400"
+            className="h-8 w-8 rounded-lg bg-gray-100 p-1.5 text-gray-500 hover:bg-gray-200 focus:ring-2 focus:ring-gray-200 dark:bg-gray-700 dark:text-gray-400"
           >
             {props.type === "text" && <SendIcon className="h-5 w-5" />}
             {props.type === "email" && <MailIcon className="h-5 w-5" />}

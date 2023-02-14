@@ -4,13 +4,16 @@ import {
   ChevronUp as ChevronUpIcon,
   LucideIcon,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export interface DropdownItem {
   text: string;
   href: string;
 }
 
-interface SidebarButtonProps {
+interface NavigationButtonProps {
+  href?: string;
   items?: DropdownItem[];
   Icon?: LucideIcon;
   loading?: boolean;
@@ -18,7 +21,8 @@ interface SidebarButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-const SidebarButton: React.FC<SidebarButtonProps> = ({
+const NavigationButton: React.FC<NavigationButtonProps> = ({
+  href = "",
   items = [],
   loading = false,
   Icon,
@@ -36,12 +40,12 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
         {Icon && (
           <Icon className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
         )}
-        <span className="ml-3 inline-flex flex-1 items-center whitespace-nowrap text-left">
-          {children}
+        <span className="ml-5 inline-flex flex-1 items-center whitespace-nowrap text-left">
+          {items.length === 0 ? <Link href={href}>{children}</Link> : children}
           {loading && (
             <span className="spinner-grow spinner-sm ml-4 inline-block">
               <svg
-                className="mr- -ml-1 h-4 w-4 animate-spin text-black"
+                className="mr- ml-2 h-4 w-4 animate-spin text-black dark:text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -77,6 +81,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
             className={`${!dropdown && `hidden`} space-y-2 py-2`}
           >
             <li>
+              <Link href={item.href}>{item.text}</Link>
               <a
                 href={item.href}
                 className="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -90,4 +95,4 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
   );
 };
 
-export default SidebarButton;
+export default NavigationButton;

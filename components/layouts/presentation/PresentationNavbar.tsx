@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { fetcher } from "@lib/fetcher";
 import {
   Menu as MenuIcon,
-  Plus as PlusIcon,
+  PlusCircle as PlusCircleIcon,
   BookOpen as BookOpenIcon,
   CheckCircle as CheckCircleIcon,
 } from "lucide-react";
@@ -14,10 +14,9 @@ import { AnimatePresence } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { useScroll } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
-import { Button, Popover } from "@components/ui/client";
-import { SidebarButton } from "@components/ui/server";
+import { Button, SidebarButton, Popover } from "@components/ui/client";
 
-const navigation = [
+const navbar = [
   { name: "Why Penpal?", Icon: CheckCircleIcon, href: "#" },
   { name: "Tools & Guides", Icon: BookOpenIcon, href: "#" },
 ];
@@ -47,7 +46,7 @@ const PresentationNavbar: React.FC = () => {
         method: "POST",
         body: article,
       });
-      router.push(`/articles/${_id}`);
+      router.push(`/articles/${_id}/text`);
     } catch (err: any) {
       console.log(err);
       setFetching(false);
@@ -64,39 +63,39 @@ const PresentationNavbar: React.FC = () => {
       } z-40 transition-all`}
     >
       <div className="mx-auto px-4 dark:bg-gray-800 dark:text-white sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between">
-          <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            <button
+        <nav className="relative flex h-16 items-center justify-between">
+          <div
+            id="mobile-hamburger"
+            className="absolute flex text-gray-400 sm:hidden"
+          >
+            <MenuIcon
               onClick={() => setOpenPopover(!openPopover)}
-              className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-            >
-              <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-            </button>
+              className="h-6 w-6"
+              aria-hidden="true"
+            />
           </div>
 
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <Link
-              href="/"
-              className="flex items-center px-3 font-display text-2xl"
-            >
-              <p>Penpal</p>
+          <div
+            id="navbar-items"
+            className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
+          >
+            <Link href="/">
+              <p className="font-display text-2xl">Penpal</p>
             </Link>
 
-            <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
-                <AnimatePresence>
-                  {navigation.map((item) => (
-                    <Button
-                      animated
-                      variant="flat"
-                      key={item.name}
-                      {...FADE_IN_ANIMATION_SETTINGS}
-                    >
-                      <Link href={item.href}>{item.name}</Link>
-                    </Button>
-                  ))}
-                </AnimatePresence>
-              </div>
+            <div className="hidden space-x-4 sm:ml-6 sm:flex">
+              <AnimatePresence>
+                {navbar.map((item) => (
+                  <Button
+                    animated
+                    variant="flat"
+                    key={item.name}
+                    {...FADE_IN_ANIMATION_SETTINGS}
+                  >
+                    <Link href={item.href}>{item.name}</Link>
+                  </Button>
+                ))}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -114,7 +113,7 @@ const PresentationNavbar: React.FC = () => {
               </Button>
             </div>
           </div>
-        </div>
+        </nav>
       </div>
 
       <div className="sm:hidden">
@@ -124,11 +123,11 @@ const PresentationNavbar: React.FC = () => {
               <SidebarButton
                 loading={fetching}
                 onClick={createArticle}
-                Icon={PlusIcon}
+                Icon={PlusCircleIcon}
               >
                 Create Article
               </SidebarButton>
-              {navigation.map((item) => (
+              {navbar.map((item) => (
                 <SidebarButton key={item.name} Icon={item.Icon}>
                   <Link href={item.href}>{item.name}</Link>
                 </SidebarButton>
