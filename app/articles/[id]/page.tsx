@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 import { articleService } from "@lib/database/services";
-import { Input } from "@components/ui/server";
-import { SendIcon } from "lucide-react";
 import { TextGenerator } from "@components/app/articles";
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -34,7 +32,7 @@ async function ArticlePage({ params: { id } }: { params: { id: string } }) {
 
   return (
     <div>
-      <TextGenerator article={article} />
+      <TextGenerator article={JSON.parse(JSON.stringify(article))} />
     </div>
   );
 }
