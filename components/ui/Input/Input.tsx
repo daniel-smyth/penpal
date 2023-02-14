@@ -1,6 +1,6 @@
 "use client";
 
-import { SendIcon } from "lucide-react";
+import { Mail as MailIcon, Send as SendIcon } from "lucide-react";
 import React from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -13,8 +13,11 @@ const Input: React.FC<InputProps> = (props) => {
   return (
     <div className={`relative ${width && width}`}>
       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        {props.type === "email" && (
+        {props.type === "text" && (
           <SendIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+        )}
+        {props.type === "email" && (
+          <MailIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
         )}
       </div>
       <input
