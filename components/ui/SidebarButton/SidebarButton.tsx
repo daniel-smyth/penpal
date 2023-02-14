@@ -28,7 +28,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
   const [dropdown, setDropdown] = useState(false);
 
   return (
-    <>
+    <div onClick={() => setDropdown((value) => !value)}>
       <button
         {...rest}
         className="group flex w-full items-center rounded-lg p-3 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -65,15 +65,9 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
         </span>
         {items.length > 0 &&
           (!dropdown ? (
-            <ChevronDownIcon
-              onClick={() => setDropdown((value) => !value)}
-              className="h-6 w-6"
-            />
+            <ChevronDownIcon className="h-6 w-6" />
           ) : (
-            <ChevronUpIcon
-              onClick={() => setDropdown((value) => !value)}
-              className="h-6 w-6"
-            />
+            <ChevronUpIcon className="h-6 w-6" />
           ))}
       </button>
       {items.length > 0 &&
@@ -92,7 +86,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
             </li>
           </ul>
         ))}
-    </>
+    </div>
   );
 };
 

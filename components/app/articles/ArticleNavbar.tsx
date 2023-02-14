@@ -127,7 +127,7 @@ const ArticleNavbar: React.FC = () => {
                             Icon={item.Icon}
                             items={item.children}
                           >
-                            <Disclosure.Button>{item.text}</Disclosure.Button>
+                            {item.text}
                           </SidebarButton>
                         </li>
                       ))}
