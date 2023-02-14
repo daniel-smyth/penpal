@@ -1,6 +1,6 @@
 import React from "react";
 import { getUser } from "@lib/auth";
-import { BillingPlanCard } from "@components/app/admin/settings/plan";
+import { BillingPlanCard } from "@components/app/admin/plan";
 
 // Price ID values can be found on the Stripe dashboard
 // https://stripe.com/docs/billing/subscriptions/price-and-product-ids

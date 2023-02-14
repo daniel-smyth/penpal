@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { articleService } from "@lib/database/services";
-import { ImageGenerator } from "@components/app/articles/id";
+import { ImageGenerator } from "@components/app/article";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
