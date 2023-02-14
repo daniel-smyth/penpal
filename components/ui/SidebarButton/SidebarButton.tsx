@@ -1,14 +1,12 @@
 import React, { MouseEventHandler } from "react";
-import { motion } from "framer-motion";
-import cn from "classnames";
-import { ChevronDownIcon, LucideIcon } from "lucide-react";
+import { ChevronDown as ChevronDownIcon, LucideIcon } from "lucide-react";
 
 interface DropdownItem {
   text: string;
   href: string;
 }
 
-interface ButtonProps {
+interface SidebarButtonProps {
   items?: DropdownItem[];
   Icon?: LucideIcon;
   loading?: boolean;
@@ -16,10 +14,10 @@ interface ButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  Icon,
-  loading = false,
+const SidebarButton: React.FC<SidebarButtonProps> = ({
   items = [],
+  loading = false,
+  Icon,
   children,
   ...rest
 }) => {
@@ -79,4 +77,4 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default SidebarButton;

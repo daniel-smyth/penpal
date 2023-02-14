@@ -20,7 +20,6 @@ const navigation = [
 
 const PresentationNavbar: React.FC = () => {
   const [fetching, setFetching] = useState(false);
-  const { isMobile, isDesktop } = useWindowSize();
   const scrolled = useScroll(50);
   const router = useRouter();
 
@@ -101,9 +100,9 @@ const PresentationNavbar: React.FC = () => {
               </div>
 
               <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <SignInButton variant={isMobile ? "solid" : "flat"} />
+                <SignInButton />
 
-                {isDesktop && (
+                <div className="hidden sm:block">
                   <Button
                     animated
                     loading={fetching}
@@ -112,12 +111,12 @@ const PresentationNavbar: React.FC = () => {
                   >
                     Create Article
                   </Button>
-                )}
+                </div>
               </div>
             </div>
           </div>
 
-          {isMobile && (
+          <div className="hidden sm:block">
             <Transition
               show={open}
               enter="transition duration-150 ease-out"
@@ -143,7 +142,7 @@ const PresentationNavbar: React.FC = () => {
                 </div>
               </Disclosure.Panel>
             </Transition>
-          )}
+          </div>
         </>
       )}
     </Disclosure>

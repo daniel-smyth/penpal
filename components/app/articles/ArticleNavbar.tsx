@@ -9,7 +9,6 @@ import {
   Share as ShareIcon,
   X as XIcon,
   Menu as MenuIcon,
-  ChevronDown as ChevronDownIcon,
 } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import { useScroll, useWindowSize } from "@lib/hooks";
@@ -91,7 +90,7 @@ const ArticleNavbar: React.FC = () => {
                       Icon={item.Icon}
                       items={item.children}
                     >
-                      <Disclosure.Button>{item.text}</Disclosure.Button>
+                      {item.text}
                     </SidebarButton>
                   </li>
                 ))}
