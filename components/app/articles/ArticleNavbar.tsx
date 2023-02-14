@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Disclosure, Transition } from "@headlessui/react";
 import {
@@ -13,6 +13,7 @@ import {
 import { AnimatePresence } from "framer-motion";
 import { SignInButton } from "@components/auth";
 import { Button, SidebarButton } from "@components/ui/server";
+import { Popover } from "@components/ui/client";
 
 const navbar = [
   { name: "Why Penpal?", href: "#" },
@@ -34,6 +35,8 @@ const sidebar = [
 ];
 
 const ArticleNavbar: React.FC = () => {
+  const [openPopover, setOpenPopover] = useState(false);
+
   return (
     <Disclosure
       as="div"
@@ -50,12 +53,15 @@ const ArticleNavbar: React.FC = () => {
                 id="mobile-hamburger"
                 className="absolute inset-y-0 left-0 flex items-center sm:hidden"
               >
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  {open ? (
+                <Disclosure.Button
+                  onClick={() => setOpenPopover(!openPopover)}
+                  className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                >
+                  {/* {open ? (
                     <XIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                  )}
+                  ) : ( */}
+                  <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                  {/* )} */}
                 </Disclosure.Button>
               </div>
 
@@ -111,7 +117,26 @@ const ArticleNavbar: React.FC = () => {
           </aside>
 
           <aside id="mobile-sidebar" className="sm:hidden">
-            <Transition
+            <Popover
+              content={
+                <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+                  {sidebar.map((item) => (
+                    <SidebarButton
+                      key={item.text}
+                      Icon={item.Icon}
+                      items={item.children}
+                    >
+                      {item.text}
+                    </SidebarButton>
+                  ))}
+                </div>
+              }
+              openPopover={openPopover}
+              setOpenPopover={setOpenPopover}
+            >
+              <></>
+            </Popover>
+            {/* <Transition
               show={open}
               enter="transition duration-150 ease-out"
               enterFrom="left-0 opacity-0"
@@ -139,7 +164,7 @@ const ArticleNavbar: React.FC = () => {
                   </div>
                 </aside>
               </Disclosure.Panel>
-            </Transition>
+            </Transition> */}
           </aside>
         </>
       )}
