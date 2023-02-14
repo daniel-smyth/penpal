@@ -4,9 +4,10 @@ import React, { Fragment } from "react";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import { Menu, Transition } from "@headlessui/react";
-import { LayoutDashboard, LogOut, User } from "lucide-react";
+import { LayoutDashboard, LogOut, User, Library } from "lucide-react";
 import { motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
+import Link from "next/link";
 
 const UserDropdown: React.FC = () => {
   const { data: session } = useSession();
@@ -45,23 +46,17 @@ const UserDropdown: React.FC = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700">
             <Menu.Item>
               {({ active }) => (
                 <button
                   className="relative flex w-full cursor-not-allowed items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
                   disabled
                 >
-                  <LayoutDashboard className="h-4 w-4" />
-                  <p className="text-sm">Dashboard</p>
-                </button>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <button className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100">
-                  <User className="h-4 w-4" />
-                  <p className="text-sm">Profile</p>
+                  <Library className="h-4 w-4" />
+                  <p className="text-sm">
+                    <Link href="admin/articles">Articles</Link>
+                  </p>
                 </button>
               )}
             </Menu.Item>

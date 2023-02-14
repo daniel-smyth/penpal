@@ -14,7 +14,7 @@ export interface DropdownItem {
 
 interface NavigationButtonProps {
   href?: string;
-  items?: DropdownItem[];
+  childLinks?: DropdownItem[];
   Icon?: LucideIcon;
   loading?: boolean;
   children?: React.ReactNode;
@@ -23,7 +23,7 @@ interface NavigationButtonProps {
 
 const NavigationButton: React.FC<NavigationButtonProps> = ({
   href = "",
-  items = [],
+  childLinks = [],
   loading = false,
   Icon,
   children,
@@ -41,7 +41,11 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
           <Icon className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
         )}
         <span className="ml-5 inline-flex flex-1 items-center whitespace-nowrap text-left">
-          {items.length === 0 ? <Link href={href}>{children}</Link> : children}
+          {childLinks.length === 0 ? (
+            <Link href={href}>{children}</Link>
+          ) : (
+            children
+          )}
           {loading && (
             <span className="spinner-grow spinner-sm ml-4 inline-block">
               <svg
@@ -67,15 +71,15 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
             </span>
           )}
         </span>
-        {items.length > 0 &&
+        {childLinks.length > 0 &&
           (!dropdown ? (
             <ChevronDownIcon className="h-6 w-6" />
           ) : (
             <ChevronUpIcon className="h-6 w-6" />
           ))}
       </button>
-      {items.length > 0 &&
-        items.map((item) => (
+      {childLinks.length > 0 &&
+        childLinks.map((item) => (
           <ul
             key={item.text}
             className={`${!dropdown && `hidden`} space-y-2 py-2`}

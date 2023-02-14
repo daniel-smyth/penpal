@@ -46,7 +46,7 @@ const PresentationNavbar: React.FC = () => {
         method: "POST",
         body: article,
       });
-      router.push(`/articles/${_id}/text`);
+      router.push(`/article/${_id}/text`);
     } catch (err: any) {
       console.log(err);
       setFetching(false);

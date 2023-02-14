@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { articleService } from "@lib/database/services";
-import { TextGenerator } from "@components/app/articles";
+import { ImageGenerator } from "@components/app/articles/id";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -26,7 +26,15 @@ async function getArticle(id: string) {
 async function ArticlePage({ params: { id } }: { params: { id: string } }) {
   const article = await getArticle(id);
 
-  return <TextGenerator article={JSON.parse(JSON.stringify(article))} />;
+  if (!article) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      <ImageGenerator article={JSON.parse(JSON.stringify(article))} />
+    </div>
+  );
 }
 
 export default ArticlePage;
