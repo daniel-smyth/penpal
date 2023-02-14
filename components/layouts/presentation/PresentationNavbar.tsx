@@ -116,7 +116,7 @@ const PresentationNavbar: React.FC = () => {
             </div>
           </div>
 
-          <div className="hidden sm:block">
+          <div className="sm:hidden">
             <Transition
               show={open}
               enter="transition duration-150 ease-out"
