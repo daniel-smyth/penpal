@@ -19,13 +19,14 @@ const Button: React.FC<ButtonProps> = ({
   ...rest
 }) => {
   const rootClassName = cn(
+    loading && "px-2",
     variant === "solid" &&
       "border-emerald-600 bg-emerald-600 text-white hover:bg-emerald-700",
     variant === "outline" &&
       "border-emerald-600 bg-transparent text-black hover:bg-stone-200 dark:text-white dark:hover:bg-gray-700",
     variant === "flat" &&
       "border-transparent bg-transparent text-black hover:bg-stone-200 dark:text-white dark:hover:bg-gray-700",
-    "transition-all inline-flex items-center justify-center rounded-2xl border p-1.5 px-4 text-sm",
+    "inline-flex items-center justify-center rounded-2xl border p-1.5 px-4 text-sm",
   );
 
   if (animated) {
@@ -33,9 +34,9 @@ const Button: React.FC<ButtonProps> = ({
       <motion.button {...rest} className={rootClassName}>
         <>
           {loading && (
-            <span className="spinner-grow spinner-sm mr-2 inline-block">
+            <span className="spinner-grow spinner-sm mr-1 inline-block">
               <svg
-                className="mr- -ml-1 h-4 w-4 animate-spin text-white"
+                className="h-3 w-3 animate-spin text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
