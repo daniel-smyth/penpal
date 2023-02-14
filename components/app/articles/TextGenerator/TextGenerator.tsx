@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { fetcher } from "@lib/fetcher";
 import { useArticle } from "@lib/hooks";
 import { IArticle, ITextQuery } from "@lib/database/models";
 import { Input } from "@components/ui/server";
 import Balancer from "react-wrap-balancer";
 import { AnimatePresence, motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 
 interface TextGeneratorProps {
   article: IArticle;
@@ -15,6 +17,8 @@ interface TextGeneratorProps {
 const TextGenerator: React.FC<TextGeneratorProps> = ({
   article: fallbackData,
 }) => {
+  const { data: session } = useSession();
+  const { email, image } = session?.user || {};
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
   const [query, setQuery] = useState({ ...fallbackData.text.current });
   const [error, setError] = useState("");
@@ -76,7 +80,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
 
   return (
     <div className="flex h-screen flex-col">
-      <ul ref={ulRef} className="flex-[0.6] overflow-y-auto">
+      <ul ref={ulRef} className="flex-[0.7] overflow-y-auto">
         <AnimatePresence>
           {article.text.history.map((query, i) => (
             <motion.li
@@ -86,19 +90,30 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
+              <div className="flex"></div>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.3 }}
-                className="bg-gray-200 p-6 text-gray-500"
+                className="flex items-center gap-3 bg-gray-200 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
               >
+                <Image
+                  className="h-7 w-7 rounded-full"
+                  alt={email || ""}
+                  src={
+                    image ||
+                    `https://avatars.dicebear.com/api/micah/${email}.svg`
+                  }
+                  width={21}
+                  height={21}
+                />
                 <Balancer>{query.input}</Balancer>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.3 }}
-                className="bg-gray-100 p-6 text-gray-500"
+                className="bg-gray-100 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
               >
                 <Balancer>{query.output.choices[0].text}</Balancer>
               </motion.div>
@@ -106,7 +121,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
           ))}
         </AnimatePresence>
       </ul>
-      <div className="flex flex-[0.3] items-center justify-center border-t border-gray-300 bg-gray-50 text-center dark:bg-gray-900 sm:left-64">
+      <div className="flex flex-[0.2] items-center justify-center border-t border-gray-300 bg-gray-50 text-center dark:bg-gray-900 sm:left-64 sm:flex-[0.22]">
         <form onSubmit={generateText} className="w-8/12">
           <Input
             id="text-generator-input"
