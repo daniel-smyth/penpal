@@ -5,8 +5,10 @@ import Link from "next/link";
 import {
   ChevronDown as ChevronDownIcon,
   ChevronUp as ChevronUpIcon,
-  LucideIcon,
+  LucideIcon as LucideIconType,
 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 
 /** If button is a dropdown it has extra dropdown buttons */
 interface DropdownItem {
@@ -15,7 +17,7 @@ interface DropdownItem {
 }
 
 interface LeafletButtonProps {
-  Icon?: LucideIcon;
+  Icon?: LucideIconType;
   href?: string; // Only if button is not a dropdown
   onClick?: MouseEventHandler<HTMLButtonElement>;
   loading?: boolean;
@@ -41,9 +43,12 @@ const LeafletButton: React.FC<LeafletButtonProps> = ({
       className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
     >
       {Icon && (
-        <>
+        <AnimatePresence>
           {loading ? (
-            <span className="spinner-grow spinner-sm inline-block">
+            <motion.span
+              className="spinner-grow spinner-sm inline-block"
+              {...FADE_IN_ANIMATION_SETTINGS}
+            >
               <svg
                 className="h-6 w-6 animate-spin text-black dark:text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,11 +69,13 @@ const LeafletButton: React.FC<LeafletButtonProps> = ({
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-            </span>
+            </motion.span>
           ) : (
-            <Icon className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
+            <motion.div {...FADE_IN_ANIMATION_SETTINGS}>
+              <Icon className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
+            </motion.div>
           )}
-        </>
+        </AnimatePresence>
       )}
       <span className="ml-4 inline-flex flex-1 items-center whitespace-nowrap text-left">
         {children}
@@ -84,7 +91,12 @@ const LeafletButton: React.FC<LeafletButtonProps> = ({
 
   return (
     <>
-      {hasDropdown ? logoButton : <Link href={href}>{logoButton}</Link>}
+      {hasDropdown ? (
+        <div onClick={() => setDropdown((value) => !value)}>{logoButton}</div>
+      ) : (
+        <Link href={href}>{logoButton}</Link>
+      )}
+
       {hasDropdown &&
         dropdownItems.map((item) => (
           <ul key={item.text} className={`${!dropdown && `hidden`}`}>
