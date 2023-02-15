@@ -1,10 +1,18 @@
 "use client";
 
 import Balancer from "react-wrap-balancer";
-import { motion } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import { Twitter, Github } from "lucide-react";
-import { FADE_DOWN_ANIMATION_VARIANTS } from "@lib/theme";
+import {
+  FADE_DOWN_ANIMATION_VARIANTS,
+  FADE_IN_ANIMATION_SETTINGS,
+} from "@lib/theme";
 import { Card, ComponentGrid } from "@components/app/home";
+import { Button } from "@components/ui/server";
+import { fetcher } from "@lib/fetcher";
+import { useWindowSize } from "@lib/hooks";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const features = [
   {
@@ -31,6 +39,36 @@ const features = [
 ];
 
 export default function Hero() {
+  const [fetching, setFetching] = useState(false);
+  const router = useRouter();
+
+  const createArticle = async () => {
+    try {
+      setFetching(true);
+      const article = {
+        title: "",
+        text: {
+          current: { input: "", output: { choices: [{ text: "" }] } },
+          history: [],
+        },
+        image: {
+          current: { input: "", output: { data: { url: "" } } },
+          history: [],
+        },
+      };
+      const { _id } = await fetcher({
+        url: "/api/article",
+        method: "POST",
+        body: article,
+      });
+      router.push(`/article/${_id}/text`);
+    } catch (err: any) {
+      console.log(err);
+      setFetching(false);
+      throw new Error(err);
+    }
+  };
+
   return (
     <>
       <motion.div
@@ -57,7 +95,7 @@ export default function Hero() {
         >
           <Twitter className="h-5 w-5 text-[#1d9bf0]" />
           <p className="text-sm font-semibold text-[#1d9bf0]">
-            Introducing Precedent
+            Introducing Penpal
           </p>
         </motion.a>
         <motion.h1
@@ -79,37 +117,9 @@ export default function Hero() {
           className="mx-auto mt-6 flex items-center justify-center space-x-5"
           variants={FADE_DOWN_ANIMATION_VARIANTS}
         >
-          <a
-            className="group flex max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
-            href={"www.google.com"}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg
-              className="h-4 w-4 group-hover:text-black"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12 4L20 20H4L12 4Z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <p>Deploy to Vercel</p>
-          </a>
-          <a
-            className="flex max-w-fit items-center justify-center space-x-2 rounded-full border border-gray-300 bg-white px-5 py-2 text-sm text-gray-600 shadow-md transition-colors hover:border-gray-800"
-            href="https://github.com/steven-tey/precedent"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Github />
-            <p>Star on GitHub</p>
-          </a>
+          <Button size="large" loading={fetching} onClick={createArticle}>
+            Create Article
+          </Button>
         </motion.div>
       </motion.div>
       {/* here we are animating with Tailwind instead of Framer Motion because Framer Motion messes up the z-index for child components */}

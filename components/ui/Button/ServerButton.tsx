@@ -2,6 +2,7 @@ import React, { MouseEventHandler } from "react";
 import cn from "classnames";
 
 interface ButtonProps {
+  size?: "medium" | "large";
   type?: "button" | "submit" | "reset";
   variant?: "solid" | "flat" | "outline";
   loading?: boolean;
@@ -10,6 +11,7 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
+  size = "medium",
   variant = "solid",
   loading = false,
   children,
@@ -23,7 +25,9 @@ const Button: React.FC<ButtonProps> = ({
       "border-emerald-600 bg-transparent text-black hover:bg-stone-200 dark:text-white dark:hover:bg-gray-700",
     variant === "flat" &&
       "border-transparent bg-transparent text-black hover:bg-stone-200 dark:text-white dark:hover:bg-gray-700",
-    "inline-flex items-center justify-center rounded-2xl border p-1.5 px-4 text-sm",
+    size === "medium" && "text-sm rounded-2xl",
+    size === "large" && "text-lg rounded-3xl",
+    "inline-flex items-center justify-center border p-1.5 px-4",
   );
 
   return (

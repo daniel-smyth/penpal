@@ -123,17 +123,6 @@ const Navbar: React.FC = () => {
 
             <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <SignInButton />
-
-              <div className="hidden sm:block">
-                <Button
-                  animated
-                  loading={fetching}
-                  onClick={createArticle}
-                  {...FADE_IN_ANIMATION_SETTINGS}
-                >
-                  Create Article
-                </Button>
-              </div>
             </div>
           </nav>
         </div>
