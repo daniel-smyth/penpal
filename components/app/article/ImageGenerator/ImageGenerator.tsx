@@ -22,12 +22,14 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
   const [query, setQuery] = useState({ ...fallbackData.image.current });
   const [error, setError] = useState("");
-  const ulRef = useRef<HTMLUListElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    if (ulRef.current) {
-      ulRef.current.scrollTop = ulRef.current.scrollHeight;
-    }
+    scrollToBottom();
   }, [article?.image.history]);
 
   if (!article) {
@@ -81,7 +83,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
   return (
     <div className="fixed bottom-0 left-0 h-full w-full">
       <div className="flex h-4/5 items-center justify-center overflow-y-auto pt-16">
-        <ul ref={ulRef} className="max-h-4/5 h-full w-full">
+        <ul className="max-h-4/5 h-full w-full">
           <AnimatePresence>
             {article.image.history.map((query, i) => (
               <motion.li
@@ -120,6 +122,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
                 </motion.div>
               </motion.li>
             ))}
+            <div ref={messagesEndRef} />
           </AnimatePresence>
         </ul>
       </div>
