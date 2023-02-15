@@ -15,7 +15,7 @@ const ArticleList: React.FC = () => {
   }
 
   return (
-    <ul className="max-w-md divide-y divide-gray-300 dark:divide-gray-700">
+    <ul className="divide-y divide-gray-300 dark:divide-gray-700">
       {articles.map((article) => (
         <ArticleListItem article={article} key={article._id} />
       ))}

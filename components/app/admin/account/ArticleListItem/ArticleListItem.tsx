@@ -32,12 +32,12 @@ const ArticleListItem: React.FC<{ article: IArticle }> = ({ article }) => {
   };
 
   return (
-    <li className="p-3">
+    <li className="p-3 sm:px-6 lg:px-8">
       <div className="flex items-center space-x-4">
         <div className="min-w-0 flex-1" onClick={openArticle}>
           <p>{article.title === "" ? "No title" : article.title}</p>
           <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-            {article.updatedAt?.toDateString() || "No date"}
+            {article.updatedAt ? <>{article.updatedAt}</> : "No date"}
           </p>
         </div>
         <div className="flex-shrink-0">
