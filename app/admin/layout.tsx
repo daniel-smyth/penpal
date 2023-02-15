@@ -1,5 +1,5 @@
-import { ArticleLayout } from "@components/layouts/admin";
+import Provider from "./provider";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <ArticleLayout>{children}</ArticleLayout>;
+  return <Provider>{children}</Provider>;
 }

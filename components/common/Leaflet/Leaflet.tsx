@@ -1,4 +1,6 @@
-import {
+"use client";
+
+import React, {
   Dispatch,
   FC,
   ReactNode,
@@ -23,6 +25,7 @@ const Leaflet: FC<LeafletProps> = ({ setShow, children }: LeafletProps) => {
       y: 20,
       transition: transitionProps,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function handleDragEnd(_: any, info: any) {

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useDemoModal } from "@components/app/home";
-import { Popover, Tooltip } from "@components/ui/client";
+import { Popover, Tooltip } from "@components/common";
 
 export default function ComponentGrid() {
   const { DemoModal, setShowDemoModal } = useDemoModal();

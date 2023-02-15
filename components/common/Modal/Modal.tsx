@@ -1,4 +1,6 @@
-import {
+"use client";
+
+import React, {
   Dispatch,
   FC,
   SetStateAction,
@@ -9,7 +11,7 @@ import {
 import FocusTrap from "focus-trap-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useWindowSize } from "@lib/hooks";
-import { Leaflet } from "../Leaflet";
+import { Leaflet } from "@components/common";
 
 interface ModalProps {
   children: React.ReactNode;
@@ -17,12 +19,6 @@ interface ModalProps {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
-/**
- * Displays additional content on top of a page. Blocks the main page until user interaction,
- * requiring the user to close the modal before being able to access the main page again.
- * Larger and more intrusive than a popover. Provides a way to display important information or
- * prompt a user for action.
- */
 const Modal: FC<ModalProps> = ({ children, showModal, setShowModal }) => {
   const desktopModalRef = useRef(null);
 

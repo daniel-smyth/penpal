@@ -10,10 +10,10 @@ import {
   LoadingDots,
   Twitter,
 } from "@components/icons";
-import { Alert, Button } from "@components/ui/client";
 import { Mail as MailIcon } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
+import { Alert, Button } from "@components/ui/server";
 
 const PROVIDERS = [
   { name: "Google", icon: Google },

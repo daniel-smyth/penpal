@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { useSearchParams } from "next/navigation";
 import { SignInForm } from "@components/auth";
-import { Modal } from "@components/ui/client";
+import { Modal } from "@components/common";
 
 interface SignInModalProps {
   showSignInModal: boolean;

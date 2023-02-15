@@ -4,7 +4,6 @@ import cn from "classnames";
 interface ButtonProps {
   type?: "button" | "submit" | "reset";
   variant?: "solid" | "flat" | "outline";
-  animated?: boolean;
   loading?: boolean;
   children: React.ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;

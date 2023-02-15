@@ -1,7 +1,9 @@
+"use client";
+
 import { ReactNode, useState } from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { useWindowSize } from "@lib/hooks";
-import { Leaflet } from "@components/ui/client";
+import Leaflet from "../Leaflet/Leaflet";
 
 export default function Tooltip({
   children,
