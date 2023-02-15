@@ -79,9 +79,9 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
   };
 
   return (
-    <div className="flex h-screen flex-col">
-      <div className="flex-1 overflow-y-scroll pt-16">
-        <ul ref={ulRef} className="max-h-4/5 h-full">
+    <div className="fixed bottom-0 left-0 h-full w-full">
+      <div className="flex h-4/5 items-center justify-center pt-16">
+        <ul ref={ulRef} className="max-h-4/5 h-full w-full">
           <AnimatePresence>
             {article.text.history.map((query, i) => (
               <motion.li
@@ -123,7 +123,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
           </AnimatePresence>
         </ul>
       </div>
-      <div className="flex h-1/5 items-center justify-center border-t border-gray-300 bg-gray-50 px-8 dark:border-gray-600 dark:bg-gray-900 sm:px-12 lg:px-16">
+      <div className="flex h-1/5 items-center justify-center border-t border-gray-300 bg-gray-50 px-6 dark:border-gray-600 dark:bg-gray-900 sm:px-12 lg:px-16">
         <form onSubmit={generateText} className="w-full">
           <Input
             id="text-generator-input"

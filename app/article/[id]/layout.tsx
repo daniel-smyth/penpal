@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { fetcher } from "@lib/fetcher";
-import Provider from "../provider";
+import Provider from "./provider";
 
 const APP_URL = process.env.APP_URL;
 
