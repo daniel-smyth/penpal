@@ -80,7 +80,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
 
   return (
     <div className="fixed bottom-0 left-0 h-full w-full">
-      <div className="flex h-4/5 items-center justify-center pt-16">
+      <div className="flex h-4/5 items-center justify-center overflow-y-auto pt-16">
         <ul ref={ulRef} className="max-h-4/5 h-full w-full">
           <AnimatePresence>
             {article.image.history.map((query, i) => (
@@ -122,19 +122,19 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
             ))}
           </AnimatePresence>
         </ul>
-        <div className="flex h-1/5 items-center justify-center border-t border-gray-300 bg-gray-50 px-6 dark:border-gray-600 dark:bg-gray-900 sm:px-12 lg:px-16">
-          <form onSubmit={generateImage} className="w-full">
-            <Input
-              id="image-generator-input"
-              label="Generate Image"
-              type="text"
-              value={query.input}
-              onChange={(e) =>
-                setQuery((query) => ({ ...query, input: e.target.value }))
-              }
-            />
-          </form>
-        </div>
+      </div>
+      <div className="flex h-1/5 items-center justify-center border-t border-gray-300 bg-gray-50 px-6 dark:border-gray-600 dark:bg-gray-900 sm:px-12 lg:px-16">
+        <form onSubmit={generateImage} className="w-full">
+          <Input
+            id="image-generator-input"
+            label="Generate Image"
+            type="text"
+            value={query.input}
+            onChange={(e) =>
+              setQuery((query) => ({ ...query, input: e.target.value }))
+            }
+          />
+        </form>
       </div>
     </div>
   );
