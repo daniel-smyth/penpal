@@ -93,12 +93,11 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="flex"></div>
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.3 }}
-                  className="flex items-center gap-3 bg-gray-200 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
+                  className="flex items-center gap-3 bg-gray-200 py-6 px-4 text-gray-500 dark:bg-gray-700 dark:text-white sm:px-6 lg:px-8"
                 >
                   <Image
                     className="h-7 w-7 rounded-full"
@@ -116,7 +115,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.3 }}
-                  className="bg-gray-100 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
+                  className="bg-gray-100 py-6 px-4 text-gray-500 dark:bg-gray-900 dark:text-white sm:px-6 lg:px-8"
                 >
                   <Balancer>{query.output.choices[0].text}</Balancer>
                 </motion.div>

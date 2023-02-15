@@ -17,8 +17,8 @@ export interface IArticle {
     current: IImageQuery;
     history: IImageQuery[];
   };
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const ArticleSchema = new Schema<IArticle>(

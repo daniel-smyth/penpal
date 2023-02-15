@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { getUser } from "@lib/auth";
-import { ArticleList } from "@components/app/admin/account";
 
 export default async function AccountPage() {
   const user = await getUser();
@@ -103,7 +102,6 @@ export default async function AccountPage() {
                   <a
                     href="https://www.creative-tim.com/product/notus-js"
                     className="text-blueGray-500 hover:text-gray-800"
-                    target="_blank"
                   >
                     Notus JS
                   </a>{" "}
@@ -111,7 +109,6 @@ export default async function AccountPage() {
                   <a
                     href="https://www.creative-tim.com"
                     className="text-blueGray-500 hover:text-blueGray-800"
-                    target="_blank"
                   >
                     {" "}
                     Creative Tim

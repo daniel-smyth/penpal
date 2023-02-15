@@ -3,20 +3,24 @@
 import React from "react";
 import useSWR from "swr";
 import { IArticle } from "@lib/database/models";
-import { ArticleListItem } from "@components/app/admin/account";
+import ArticleListItem from "./ArticleListItem/ArticleListItem";
 
 const fetchGet = (url: string) => fetch(url).then((res) => res.json());
 
-const ArticleList: React.FC = () => {
-  const { data: articles } = useSWR<IArticle[]>(`/api/article`, fetchGet);
+interface ArticleListProps {
+  articles?: IArticle[];
+}
 
-  if (!articles) {
-    return <div>Loading...</div>;
-  }
+const ArticleList: React.FC<ArticleListProps> = ({
+  articles: fallbackData,
+}) => {
+  const { data: articles } = useSWR<IArticle[]>(`/api/article`, fetchGet, {
+    fallbackData,
+  });
 
   return (
     <ul className="divide-y divide-gray-300 dark:divide-gray-700">
-      {articles.map((article) => (
+      {articles?.map((article) => (
         <ArticleListItem article={article} key={article._id} />
       ))}
     </ul>

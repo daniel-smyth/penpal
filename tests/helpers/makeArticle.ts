@@ -52,6 +52,8 @@ const makeArticle = (): IArticle => {
         },
       ],
     },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
 
   articleCount += 1;

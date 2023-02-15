@@ -49,15 +49,12 @@ const UserDropdown: React.FC = () => {
           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-700">
             <Menu.Item>
               {({ active }) => (
-                <button
-                  className="relative flex w-full cursor-not-allowed items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
-                  disabled
-                >
-                  <Library className="h-4 w-4" />
-                  <p className="text-sm">
-                    <Link href="admin/articles">Articles</Link>
-                  </p>
-                </button>
+                <Link href="admin/articles">
+                  <button className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100">
+                    <Library className="h-4 w-4" />
+                    <p className="text-sm">Articles</p>
+                  </button>
+                </Link>
               )}
             </Menu.Item>
             <Menu.Item>

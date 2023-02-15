@@ -38,6 +38,14 @@ const SignInForm: React.FC = () => {
     message: error || "",
   });
 
+  const onProviderSignInClick = async (provider: (typeof PROVIDERS)[0]) => {
+    setSignInClicked({ [provider.name]: true });
+    signIn(provider.name.toLowerCase(), {
+      redirect: false,
+      callbackUrl: searchParams.get("callbackUrl") || undefined,
+    });
+  };
+
   const onEmailSignInSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSignInClicked({ email: true });
@@ -53,16 +61,6 @@ const SignInForm: React.FC = () => {
         });
     setSignInClicked({ email: false });
   };
-
-  useEffect(() => {
-    () => {
-      setSignInClicked({
-        ...PROVIDERS.reduce((acc, p) => ({ ...acc, [p.name]: false }), {}),
-        email: false,
-      });
-      setResponse({ type: "success", message: "" });
-    };
-  });
 
   return (
     <>
@@ -132,10 +130,7 @@ const SignInForm: React.FC = () => {
                 ? "cursor-not-allowed border-gray-200 bg-gray-100 dark:border-gray-600 dark:bg-gray-900"
                 : "border border-gray-200 bg-white text-black hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:hover:bg-gray-900"
             } flex h-10 w-full items-center justify-center space-x-3 rounded-md border text-sm shadow-sm transition-all duration-75 focus:outline-none`}
-            onClick={() => {
-              setSignInClicked({ [provider.name]: true });
-              signIn(provider.name.toLowerCase());
-            }}
+            onClick={() => onProviderSignInClick(provider)}
             key={provider.name}
           >
             {signInClicked[provider.name] ? (
