@@ -1,10 +1,10 @@
 const LoadingPage: React.FC = () => {
   return (
     <div className="flex h-screen flex-col">
-      <div className="z-40 mb-40 flex h-screen w-screen items-center justify-center">
+      <div className="z-40 mb-40 flex h-full w-full items-center justify-center">
         <span className="spinner-grow spinner-sm">
           <svg
-            className="h-8 w-8 animate-spin bg-gray-50"
+            className="h-8 w-8 animate-spin text-emerald-700"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
