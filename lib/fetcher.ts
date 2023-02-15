@@ -31,6 +31,7 @@ export const fetcher = async (config: IFetcher) => {
 
   if (response?.ok) {
     const json = await response.json();
+    // const text = await response.text();
     return json;
   } else {
     const json = await response.json();

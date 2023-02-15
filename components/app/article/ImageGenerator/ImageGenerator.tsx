@@ -10,11 +10,11 @@ import Balancer from "react-wrap-balancer";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 
-interface ImageGenerator {
+interface ImageGeneratorProps {
   article: IArticle;
 }
 
-const ImageGenerator: React.FC<ImageGenerator> = ({
+const ImageGenerator: React.FC<ImageGeneratorProps> = ({
   article: fallbackData,
 }) => {
   const { data: session } = useSession();
