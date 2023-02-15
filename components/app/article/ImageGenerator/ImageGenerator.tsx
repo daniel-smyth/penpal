@@ -81,7 +81,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 h-full w-full">
+    <div className="fixed bottom-0 left-0 h-full w-full sm:pl-64">
       <div className="flex h-4/5 items-center justify-center overflow-y-auto pt-16">
         <ul className="max-h-4/5 h-full w-full">
           <AnimatePresence>

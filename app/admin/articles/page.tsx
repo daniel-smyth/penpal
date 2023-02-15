@@ -38,7 +38,7 @@ export default function ArticlesPage() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 h-full w-full">
+    <div className="fixed bottom-0 left-0 h-full w-full sm:pl-64">
       <div className="h-4/5 overflow-y-auto pt-16">
         <ArticleList />
       </div>

@@ -25,7 +25,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <Navbar menuItems={menuItems} />
         <Sidebar menuItems={menuItems} />
       </div>
-      <main className="fixed w-full flex-col sm:pl-64">{children}</main>
+      <div className="fixed w-full flex-col sm:pl-64">{children}</div>
     </>
   );
 };

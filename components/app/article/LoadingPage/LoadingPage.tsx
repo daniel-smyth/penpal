@@ -6,7 +6,7 @@ const LoadingPage: React.FC = () => {
       <div className="flex h-4/5 w-full items-center justify-center pt-16">
         <LoadingSpinner />
       </div>
-      <div className="h-1/5 w-full border-t border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-900"></div>
+      <div className="h-1/5 w-full border-t border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-900 sm:pl-64"></div>
     </div>
   );
 };
