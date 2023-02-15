@@ -17,33 +17,40 @@ export interface IArticle {
     current: IImageQuery;
     history: IImageQuery[];
   };
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const ArticleSchema = new Schema<IArticle>({
-  title: {
-    type: String,
-    maxlength: 20,
-  },
-  text: {
-    current: {
-      input: String,
-      output: {
-        choices: [{ text: String }],
-      },
+const ArticleSchema = new Schema<IArticle>(
+  {
+    title: {
+      type: String,
+      maxlength: 20,
     },
-    history: [{ type: TextQuerySchema }],
-  },
-  image: {
-    current: {
-      input: String,
-      output: {
-        data: { url: String },
-        errors: [{ type: Schema.Types.Mixed }],
+    text: {
+      current: {
+        input: String,
+        output: {
+          choices: [{ text: String }],
+        },
       },
+      history: [{ type: TextQuerySchema }],
     },
-    history: [{ type: ImageQuerySchema }],
+    image: {
+      current: {
+        input: String,
+        output: {
+          data: { url: String },
+          errors: [{ type: Schema.Types.Mixed }],
+        },
+      },
+      history: [{ type: ImageQuerySchema }],
+    },
   },
-});
+  {
+    timestamps: true,
+  },
+);
 
 const Article =
   mongoose.models.Article || mongoose.model<IArticle>("Article", ArticleSchema);

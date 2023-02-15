@@ -2,12 +2,13 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu as MenuIcon } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu as MenuIcon, PlusCircle as PlusCircleIcon } from "lucide-react";
 import { useWindowSize } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
 import { Leaflet, LeafletButton } from "@components/common";
 import { MenuItem } from "../DashboardLayout";
+import { fetcher } from "@lib/fetcher";
 
 export interface NavbarProps {
   menuItems: MenuItem[];
@@ -15,14 +16,50 @@ export interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ menuItems }) => {
   const [openLeaflet, setOpenLeaflet] = useState(false);
+  const [fetching, setFetching] = useState(false);
   const { isMobile } = useWindowSize();
+  const router = useRouter();
   const pathname = usePathname();
+
+  const createArticle = async () => {
+    try {
+      setFetching(true);
+      const article = {
+        title: "",
+        text: {
+          current: { input: "", output: { choices: [{ text: "" }] } },
+          history: [],
+        },
+        image: {
+          current: { input: "", output: { data: { url: "" } } },
+          history: [],
+        },
+      };
+      const { _id } = await fetcher({
+        url: "/api/article",
+        method: "POST",
+        body: article,
+      });
+      router.push(`/article/${_id}/text`);
+    } catch (err: any) {
+      console.log(err);
+      setFetching(false);
+      throw new Error(err);
+    }
+  };
 
   return (
     <>
       {isMobile && openLeaflet && (
         <Leaflet setShow={setOpenLeaflet}>
           <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+            <LeafletButton
+              loading={fetching}
+              onClick={createArticle}
+              Icon={PlusCircleIcon}
+            >
+              Create Article
+            </LeafletButton>
             {menuItems.map((item) => (
               <LeafletButton
                 key={item.title}

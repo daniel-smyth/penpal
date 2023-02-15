@@ -1,6 +1,6 @@
 import React from "react";
 import { getUser } from "@lib/auth";
-import { ArticleList } from "@components/app/admin/account";
+import { ArticleList, LoadingPage } from "@components/app/admin/articles";
 
 export default async function ArticlesPage() {
   const user = await getUser();
@@ -10,13 +10,11 @@ export default async function ArticlesPage() {
   }
 
   return (
-    <main>
-      Name: {user.name}
-      <br />
-      Email: {user.email}
-      <br />
-      Articles:
-      <ArticleList />
-    </main>
+    <div className="fixed bottom-0 left-0 h-full w-full">
+      <div className="h-full w-full pt-16">
+        <ArticleList />
+      </div>
+    </div>
   );
+  return <LoadingPage />;
 }

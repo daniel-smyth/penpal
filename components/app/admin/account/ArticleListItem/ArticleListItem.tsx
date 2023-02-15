@@ -5,6 +5,7 @@ import { useSWRConfig } from "swr";
 import { useRouter } from "next/navigation";
 import { fetcher as fetch } from "@lib/fetcher";
 import { IArticle } from "@lib/database/models";
+import { X as XIcon } from "lucide-react";
 
 const fetchDelete = (url: string) => fetch({ url, method: "DELETE" });
 
@@ -31,13 +32,19 @@ const ArticleListItem: React.FC<{ article: IArticle }> = ({ article }) => {
   };
 
   return (
-    <>
-      <div onClick={openArticle}>
-        <br />
-        <p>{article.title}</p>
+    <li className="p-3">
+      <div className="flex items-center space-x-4">
+        <div className="min-w-0 flex-1" onClick={openArticle}>
+          <p>{article.title === "" ? "No title" : article.title}</p>
+          <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+            {article.updatedAt?.toDateString() || "No date"}
+          </p>
+        </div>
+        <div className="flex-shrink-0">
+          <XIcon onClick={deleteArticle} />
+        </div>
       </div>
-      <button onClick={deleteArticle}>Delete</button>
-    </>
+    </li>
   );
 };
 
