@@ -3,8 +3,10 @@ import { Hero } from "@components/app/home";
 
 export default function Home() {
   return (
-    <PresentationLayout>
-      <Hero />
-    </PresentationLayout>
+    <main>
+      <PresentationLayout>
+        <Hero />
+      </PresentationLayout>
+    </main>
   );
 }
