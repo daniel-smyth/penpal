@@ -14,7 +14,7 @@ const ArticleListItem: React.FC<{ article: IArticle }> = ({ article }) => {
   const { mutate } = useSWRConfig();
 
   const openArticle = () => {
-    router.push(`/article/${article._id}`);
+    router.push(`/article/${article._id}/text`);
   };
 
   const deleteArticle = async () => {
