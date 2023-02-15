@@ -80,61 +80,61 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
 
   return (
     <div className="flex h-screen flex-col">
-      <ul ref={ulRef} className="mb-60 flex-auto overflow-y-auto">
-        <AnimatePresence>
-          {article.text.history.map((query, i) => (
-            <motion.li
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="flex"></div>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
+      <div className="flex-1 overflow-y-scroll pt-16">
+        <ul ref={ulRef} className="max-h-4/5 h-full">
+          <AnimatePresence>
+            {article.text.history.map((query, i) => (
+              <motion.li
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.3 }}
-                className="flex items-center gap-3 bg-gray-200 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
               >
-                <Image
-                  className="h-7 w-7 rounded-full"
-                  alt={email || ""}
-                  src={
-                    image ||
-                    `https://avatars.dicebear.com/api/micah/${email}.svg`
-                  }
-                  width={21}
-                  height={21}
-                />
-                <Balancer>{query.input}</Balancer>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.3 }}
-                className="bg-gray-100 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
-              >
-                <Balancer>{query.output.choices[0].text}</Balancer>
-              </motion.div>
-            </motion.li>
-          ))}
-        </AnimatePresence>
-      </ul>
-      <div className="flex-none">
-        <div className="fixed bottom-0 left-0 right-0 flex h-40 items-center justify-center border-t border-gray-300 bg-gray-50 px-8 pb-8 text-center dark:border-gray-600 dark:bg-gray-900 sm:left-64 sm:flex-[0.22] sm:px-12 lg:px-16">
-          <form onSubmit={generateText} className="w-full">
-            <Input
-              id="text-generator-input"
-              label="Generate Text"
-              type="text"
-              value={query.input}
-              onChange={(e) =>
-                setQuery((query) => ({ ...query, input: e.target.value }))
-              }
-            />
-          </form>
-        </div>
+                <div className="flex"></div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.3 }}
+                  className="flex items-center gap-3 bg-gray-200 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
+                >
+                  <Image
+                    className="h-7 w-7 rounded-full"
+                    alt={email || ""}
+                    src={
+                      image ||
+                      `https://avatars.dicebear.com/api/micah/${email}.svg`
+                    }
+                    width={21}
+                    height={21}
+                  />
+                  <Balancer>{query.input}</Balancer>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.3 }}
+                  className="bg-gray-100 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
+                >
+                  <Balancer>{query.output.choices[0].text}</Balancer>
+                </motion.div>
+              </motion.li>
+            ))}
+          </AnimatePresence>
+        </ul>
+      </div>
+      <div className="flex h-1/5 items-center justify-center border-t border-gray-300 bg-gray-50 px-8 dark:border-gray-600 dark:bg-gray-900 sm:px-12 lg:px-16">
+        <form onSubmit={generateText} className="w-full">
+          <Input
+            id="text-generator-input"
+            label="Generate Text"
+            type="text"
+            value={query.input}
+            onChange={(e) =>
+              setQuery((query) => ({ ...query, input: e.target.value }))
+            }
+          />
+        </form>
       </div>
     </div>
   );
