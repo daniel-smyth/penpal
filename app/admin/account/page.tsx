@@ -27,7 +27,7 @@ export default async function AccountPage() {
                       alt={user.email || ""}
                       src={
                         user.image ||
-                        `https://avatars.dicebear.com/api/micah/${email}.svg`
+                        `https://avatars.dicebear.com/api/micah/${user.email}.svg`
                       }
                       width={130}
                       height={130}
