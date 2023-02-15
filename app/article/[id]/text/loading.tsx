@@ -4,7 +4,7 @@ async function LoadingPage() {
       <div className="z-40 mb-40 flex h-screen w-screen items-center justify-center">
         <span className="spinner-grow spinner-sm">
           <svg
-            className="h-12 w-12 animate-spin text-zinc-300"
+            className="h-8 w-8 animate-spin bg-gray-50"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
