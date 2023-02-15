@@ -14,8 +14,8 @@ import { AnimatePresence } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { useScroll, useWindowSize } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
-import { Button } from "@components/ui/client";
 import { Leaflet, LeafletButton } from "@components/common";
+import { Button } from "@components/ui/client";
 
 const navItems = [
   { name: "Why Penpal?", Icon: CheckCircleIcon, href: "#" },

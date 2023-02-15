@@ -6,7 +6,6 @@ import {
   Pencil as PencilIcon,
   Share as ShareIcon,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
 
 const menuItems = [
   {

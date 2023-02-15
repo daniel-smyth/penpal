@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu as MenuIcon } from "lucide-react";
 import { useWindowSize } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
 import { Leaflet, LeafletButton } from "@components/common";
 import { MenuItem } from "../DashboardLayout";
-import { usePathname } from "next/navigation";
 
 export interface NavbarProps {
   menuItems: MenuItem[];

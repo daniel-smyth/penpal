@@ -2,13 +2,13 @@
 
 import React, { MouseEventHandler, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   ChevronDown as ChevronDownIcon,
   ChevronUp as ChevronUpIcon,
   LucideIcon,
 } from "lucide-react";
 import { MenuItem } from "../DashboardLayout";
-import { usePathname } from "next/navigation";
 
 interface SidebarButtonProps {
   href?: string; // Only if button is not a dropdown
