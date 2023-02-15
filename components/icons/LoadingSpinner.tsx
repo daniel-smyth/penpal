@@ -1,9 +1,15 @@
-const LoadingSpinner: React.FC = () => {
+interface LoadingSpinnerProps {
+  size?: 4 | 8;
+}
+
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size }) => {
+  const rootClass = size === 8 ? "h-8 w-8" : "h-4 w-4";
+
   return (
     <div role="status">
       <svg
         aria-hidden="true"
-        className="h-8 w-8 animate-spin fill-emerald-600 text-gray-200 dark:text-gray-600"
+        className={`${rootClass} animate-spin fill-emerald-600 text-gray-200 dark:text-gray-600`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

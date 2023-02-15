@@ -7,7 +7,7 @@ import {
   Facebook,
   Github,
   Google,
-  LoadingDots,
+  LoadingSpinner,
   Twitter,
 } from "@components/icons";
 import { Mail as MailIcon } from "lucide-react";
@@ -139,7 +139,7 @@ const SignInForm: React.FC = () => {
             key={provider.name}
           >
             {signInClicked[provider.name] ? (
-              <LoadingDots color="#808080" />
+              <LoadingSpinner size={4} />
             ) : (
               <>
                 <provider.icon className="h-5 w-5" />
