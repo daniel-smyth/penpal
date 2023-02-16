@@ -9,6 +9,8 @@ import { Input } from "@components/ui/server";
 import Balancer from "react-wrap-balancer";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
+import MockOutput from "../MockOutput/MockOutput";
+import Output from "../Output/Output";
 
 interface ImageGeneratorProps {
   article: IArticle;
@@ -17,8 +19,6 @@ interface ImageGeneratorProps {
 const ImageGenerator: React.FC<ImageGeneratorProps> = ({
   article: fallbackData,
 }) => {
-  const { data: session } = useSession();
-  const { email, image } = session?.user || {};
   const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
   const [query, setQuery] = useState({ ...fallbackData.image.current });
   const [error, setError] = useState("");
@@ -63,21 +63,8 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
     }
   };
 
-  const onHistoryClick = async (query: IImageQuery) => {
-    setQuery(query);
-
-    const newArticle = {
-      ...article,
-      image: { ...article.image, current: query },
-    };
-
-    await fetcher({
-      url: "/api/article",
-      method: "PUT",
-      params: { id: article._id || "" },
-      body: { ...article, image: { ...article.image, current: query } },
-    });
-    mutate(newArticle, { optimisticData: newArticle });
+  const onMockInputClick = (input: string) => {
+    setQuery({ ...query, input });
   };
 
   return (
@@ -85,53 +72,37 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
       <div className="flex h-4/5 items-center justify-center overflow-y-auto pt-16">
         <ul className="max-h-4/5 h-full w-full">
           <AnimatePresence>
-            {article.image.history.map((query, i) => (
-              <motion.li
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="flex"></div>
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.3 }}
-                  className="flex items-center gap-3 bg-gray-200 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
-                >
-                  <Image
-                    className="h-7 w-7 rounded-full"
-                    alt={email || ""}
-                    src={
-                      image ||
-                      `https://avatars.dicebear.com/api/micah/${email}.svg`
-                    }
-                    width={21}
-                    height={21}
-                  />
-                  <Balancer>{query.input}</Balancer>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.3 }}
-                  className="bg-gray-100 py-6 px-4 text-gray-500 sm:px-6 lg:px-8"
-                >
-                  <Balancer>{query.output.data.url}</Balancer>
-                </motion.div>
-              </motion.li>
-            ))}
-            <div ref={messagesEndRef} />
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              animate="show"
+              viewport={{ once: true }}
+              variants={{
+                hidden: {},
+                show: {
+                  transition: {
+                    staggerChildren: 0.15,
+                  },
+                },
+              }}
+            >
+              {article.text.history.length === 0 ? (
+                <MockOutput onClick={onMockInputClick} />
+              ) : (
+                article.text.history.map((query) => (
+                  <Output key={query.input} query={query} />
+                ))
+              )}
+            </motion.div>
           </AnimatePresence>
         </ul>
       </div>
       <div className="flex h-1/5 items-center justify-center border-t border-gray-300 bg-gray-50 px-6 dark:border-gray-600 dark:bg-gray-900 sm:px-12 lg:px-16">
         <form onSubmit={generateImage} className="w-full">
           <Input
-            id="image-generator-input"
-            label="Generate Image"
             type="text"
+            label="Generate Image"
+            id="image-generator-input"
             value={query.input}
             onChange={(e) =>
               setQuery((query) => ({ ...query, input: e.target.value }))

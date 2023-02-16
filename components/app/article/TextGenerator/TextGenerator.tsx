@@ -1,16 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { fetcher } from "@lib/fetcher";
 import { useArticle } from "@lib/hooks";
-import { IArticle, ITextQuery } from "@lib/database/models";
+import { IArticle } from "@lib/database/models";
 import { Input } from "@components/ui/server";
-import Balancer from "react-wrap-balancer";
 import { AnimatePresence, motion } from "framer-motion";
-import { useSession } from "next-auth/react";
-import MockOutput from "./MockOutput";
-import Output from "./Output";
+import MockOutput from "../MockOutput/MockOutput";
+import Output from "../Output/Output";
 
 interface TextGeneratorProps {
   article: IArticle;
@@ -101,9 +98,9 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
       <div className="flex h-1/5 items-center justify-center border-t border-gray-300 bg-gray-50 px-6 dark:border-gray-600 dark:bg-gray-900 sm:px-12 lg:px-16">
         <form onSubmit={generateText} className="w-full">
           <Input
-            id="text-generator-input"
-            label="Generate Content"
             type="text"
+            label="Generate Content"
+            id="text-generator-input"
             value={query.input}
             onChange={(e) =>
               setQuery((query) => ({ ...query, input: e.target.value }))
