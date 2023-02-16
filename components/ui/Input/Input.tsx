@@ -11,7 +11,7 @@ const Input: React.FC<InputProps> = (props) => {
   const { id, label, width, onClick } = props;
 
   return (
-    <div className="pb-2 text-left">
+    <div className="pb-4 text-left">
       <label
         htmlFor={id}
         className="mt-0 pl-3 text-sm font-medium text-gray-500 dark:text-white"
@@ -31,7 +31,7 @@ const Input: React.FC<InputProps> = (props) => {
         <input
           {...props}
           id={id}
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-12 text-sm text-gray-900 outline-none focus:border-emerald-600 focus:ring-emerald-600  dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:focus:border-emerald-600 dark:focus:ring-emerald-600"
+          className="mt-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-12 text-sm text-gray-900 outline-none focus:border-emerald-600 focus:ring-emerald-600  dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:focus:border-emerald-600 dark:focus:ring-emerald-600"
         />
       </div>
     </div>

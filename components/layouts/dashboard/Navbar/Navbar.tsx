@@ -58,7 +58,7 @@ const Navbar: React.FC<NavbarProps> = ({ menuItems }) => {
               onClick={createArticle}
               Icon={PlusCircleIcon}
             >
-              Create Article
+              Create New
             </LeafletButton>
             {menuItems.map((item) => (
               <LeafletButton
