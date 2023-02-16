@@ -87,7 +87,9 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
               }}
             >
               {article.text.history.length === 0 ? (
-                <MockOutput onClick={onMockInputClick} />
+                <div className="py-8">
+                  <MockOutput onClick={onMockInputClick} />
+                </div>
               ) : (
                 article.text.history.map((query) => (
                   <Output key={query.input} query={query} />
