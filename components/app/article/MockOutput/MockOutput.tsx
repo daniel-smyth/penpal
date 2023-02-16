@@ -20,7 +20,7 @@ const MockOutput: React.FC<MockOutputProps> = ({ onClick }) => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="flex gap-3 text-gray-600 dark:text-white"
+          className="flex cursor-pointer gap-3 text-gray-600 dark:text-white"
           onClick={() => onClick(input)}
           variants={FADE_DOWN_ANIMATION_VARIANTS}
         >
