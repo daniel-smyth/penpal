@@ -7,9 +7,8 @@ import { Menu as MenuIcon, PlusCircle as PlusCircleIcon } from "lucide-react";
 import { useWindowSize } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
 import { Leaflet, LeafletButton } from "@components/common";
-import { MenuItem } from "../DashboardLayout";
-import { fetcher } from "@lib/fetcher";
 import { createArticle } from "@lib/api/article";
+import { MenuItem } from "../DashboardLayout";
 
 export interface NavbarProps {
   menuItems: MenuItem[];
@@ -68,19 +67,19 @@ const Navbar: React.FC<NavbarProps> = ({ menuItems }) => {
           <div className="absolute flex text-gray-400">
             <MenuIcon
               onClick={() => setOpenLeaflet(true)}
-              className="h-6 w-6"
+              className="z-20 h-6 w-6"
               aria-hidden="true"
             />
           </div>
         )}
 
-        <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+        <div className="z-10 flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <Link href="/">
             <p className="font-display text-2xl">Penpal</p>
           </Link>
         </div>
 
-        <div className="absolute right-0 pr-4 sm:pr-6 lg:pr-8">
+        <div className="absolute right-0 z-10 pr-4 sm:pr-6 lg:pr-8">
           <SignInButton />
         </div>
       </nav>

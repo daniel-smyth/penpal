@@ -9,11 +9,16 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   const user = await getUser();
-  await getArticles(user?.id!);
 
-  return (
-    <Provider>
-      <>{!user ? <AuthBlock /> : children}</>
-    </Provider>
-  );
+  if (!user?.id) {
+    return (
+      <Provider>
+        <AuthBlock />
+      </Provider>
+    );
+  }
+
+  await getArticles(user?.id);
+
+  return <Provider>{children}</Provider>;
 }

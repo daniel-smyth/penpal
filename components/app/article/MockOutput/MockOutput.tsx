@@ -25,7 +25,7 @@ const MockOutput: React.FC<MockOutputProps> = ({ onClick }) => {
           variants={FADE_DOWN_ANIMATION_VARIANTS}
         >
           <div className="h-full w-full px-8 sm:px-12 lg:px-16">
-            <div className="h-full w-full rounded-xl bg-gray-200 p-6">
+            <div className="h-full w-full rounded-xl bg-gray-200 p-6 dark:bg-gray-800">
               &quot;{input}&quot;
             </div>
           </div>
