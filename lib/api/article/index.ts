@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 import { fetcher } from "@lib/fetcher";
 import { IArticle } from "@lib/database/models";
 
-const APP_URL = process.env.APP_URL;
+let APP_URL = process.env.APP_URL;
+
+if (!APP_URL) {
+  APP_URL = process.env.NEXT_PUBLIC_APP_URL;
+}
 
 if (!APP_URL) {
   throw new Error("APP_URL undefined. Please add to .env file");
