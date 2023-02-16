@@ -15,9 +15,9 @@ const FilterDropdown: React.FC = () => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-            clip-rule="evenodd"
+            clipRule="evenodd"
           ></path>
         </svg>
         Last 30 days
@@ -30,9 +30,9 @@ const FilterDropdown: React.FC = () => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="M19 9l-7 7-7-7"
           ></path>
         </svg>
@@ -70,6 +70,7 @@ const FilterDropdown: React.FC = () => {
             <div className="flex items-center rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
               <input
                 checked={false}
+                onChange={() => {}}
                 id="filter-radio-example-2"
                 type="radio"
                 value=""
