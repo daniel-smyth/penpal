@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { fetcher } from "@lib/fetcher";
 import {
   Menu as MenuIcon,
   PlusCircle as PlusCircleIcon,
@@ -16,6 +15,7 @@ import { useScroll, useWindowSize } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
 import { Leaflet, LeafletButton } from "@components/common";
 import { Button } from "@components/ui/client";
+import { createArticle } from "@lib/api/article";
 
 const navItems = [
   { name: "Why Penpal?", Icon: CheckCircleIcon, href: "#" },
@@ -29,25 +29,10 @@ const Navbar: React.FC = () => {
   const scrolled = useScroll(50);
   const router = useRouter();
 
-  const createArticle = async () => {
+  const onCreateArticleClick = async () => {
     try {
       setFetching(true);
-      const article = {
-        title: "",
-        text: {
-          current: { input: "", output: { choices: [{ text: "" }] } },
-          history: [],
-        },
-        image: {
-          current: { input: "", output: { data: { url: "" } } },
-          history: [],
-        },
-      };
-      const { _id } = await fetcher({
-        url: "/api/article",
-        method: "POST",
-        body: article,
-      });
+      const { _id } = await createArticle();
       router.push(`/article/${_id}/text`);
     } catch (err: any) {
       console.log(err);
@@ -63,7 +48,7 @@ const Navbar: React.FC = () => {
           <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
             <LeafletButton
               loading={fetching}
-              onClick={createArticle}
+              onClick={onCreateArticleClick}
               Icon={PlusCircleIcon}
             >
               Create Article

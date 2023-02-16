@@ -1,10 +1,14 @@
 import { ImageGenerator } from "@components/app/article";
-import { getArticle } from "../layout";
+import { getArticle } from "@lib/api";
 
-async function ArticlePage({ params: { id } }: { params: { id: string } }) {
+async function ArticleImagePage({
+  params: { id },
+}: {
+  params: { id: string };
+}) {
   const article = await getArticle(id);
 
   return <ImageGenerator article={JSON.parse(JSON.stringify(article))} />;
 }
 
-export default ArticlePage;
+export default ArticleImagePage;

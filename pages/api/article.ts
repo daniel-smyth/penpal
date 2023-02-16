@@ -8,17 +8,17 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   await dbConnect();
+  // const userA = await getUser();
   const user = await getUser({ req, res });
 
   switch (req.method) {
     case "GET":
       try {
-        const getAllArticles = Object.keys(req.query).length === 0;
+        const getAllArticles = req.query.userId;
         if (getAllArticles) {
-          if (!user) {
-            return res.status(404).json({ message: "unauthorized" });
-          }
-          const allArticles = await userService.getArticles(user.id as string);
+          const allArticles = await userService.getArticles(
+            req.query.userId as string,
+          );
           return res.status(200).json(allArticles);
         }
         // no null check for user - if user is not logged in, they can still create articles

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { fetcher } from "@lib/fetcher";
+import { createArticle } from "@lib/api/article";
 import { Button } from "@components/ui/server";
 
 interface CreateButtonProps {
@@ -13,25 +13,10 @@ const CreateButton: React.FC<CreateButtonProps> = ({ children }) => {
   const [fetching, setFetching] = useState(false);
   const router = useRouter();
 
-  const createArticle = async () => {
+  const onClick = async () => {
     try {
       setFetching(true);
-      const article = {
-        title: "",
-        text: {
-          current: { input: "", output: { choices: [{ text: "" }] } },
-          history: [],
-        },
-        image: {
-          current: { input: "", output: { data: { url: "" } } },
-          history: [],
-        },
-      };
-      const { _id } = await fetcher({
-        url: "/api/article",
-        method: "POST",
-        body: article,
-      });
+      const { _id } = await createArticle();
       router.push(`/article/${_id}/text`);
     } catch (err: any) {
       console.log(err);
@@ -41,7 +26,7 @@ const CreateButton: React.FC<CreateButtonProps> = ({ children }) => {
   };
 
   return (
-    <Button size="large" loading={fetching} onClick={createArticle}>
+    <Button size="large" loading={fetching} onClick={onClick}>
       {children}
     </Button>
   );

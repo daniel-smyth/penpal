@@ -11,7 +11,6 @@ const LoadingPage: React.FC = () => {
           <LoadingSpinner size={8} />
         </div>
       </div>
-      <div className="h-1/5 w-full border-t border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-900 sm:hidden sm:pl-64"></div>
     </div>
   );
 };

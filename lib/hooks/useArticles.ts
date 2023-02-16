@@ -5,18 +5,20 @@ import { BareFetcher, PublicConfiguration } from "swr/_internal";
 import { fetcher } from "@lib/fetcher";
 import { IArticle } from "@lib/database/models";
 
-export const useArticle = (
-  id: string,
-  config?: Partial<PublicConfiguration<IArticle, any, BareFetcher<IArticle>>>,
+export const useArticles = (
+  userId: string,
+  config?: Partial<
+    PublicConfiguration<IArticle[], any, BareFetcher<IArticle[]>>
+  >,
 ) => {
-  const { data, mutate, error, isLoading } = useSWR<IArticle>(
-    `/api/article?id=${id}`,
+  const { data, mutate, error, isLoading } = useSWR<IArticle[]>(
+    `/api/article?userId=${userId}`,
     fetcher,
     config,
   );
 
   return {
-    article: data,
+    articles: data,
     mutate,
     isLoading,
     isError: error,

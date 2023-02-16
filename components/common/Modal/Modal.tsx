@@ -14,12 +14,18 @@ import { useWindowSize } from "@lib/hooks";
 import { Leaflet } from "@components/common";
 
 interface ModalProps {
+  disableClose?: boolean;
   children: React.ReactNode;
   showModal: boolean;
-  setShowModal: Dispatch<SetStateAction<boolean>>;
+  setShowModal?: Dispatch<SetStateAction<boolean>>;
 }
 
-const Modal: FC<ModalProps> = ({ children, showModal, setShowModal }) => {
+const Modal: FC<ModalProps> = ({
+  children,
+  showModal,
+  setShowModal = () => {},
+  disableClose = false,
+}) => {
   const desktopModalRef = useRef(null);
 
   const onKeyDown = useCallback(
@@ -55,7 +61,7 @@ const Modal: FC<ModalProps> = ({ children, showModal, setShowModal }) => {
                   exit={{ scale: 0.95 }}
                   onMouseDown={(e) => {
                     if (desktopModalRef.current === e.target) {
-                      setShowModal(false);
+                      !disableClose && setShowModal(false);
                     }
                   }}
                 >
@@ -68,7 +74,7 @@ const Modal: FC<ModalProps> = ({ children, showModal, setShowModal }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setShowModal(false)}
+                onClick={() => !disableClose && setShowModal(false)}
               />
             </>
           )}

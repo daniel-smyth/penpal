@@ -1,17 +1,17 @@
 "use client";
 
 import React from "react";
-import { useSWRConfig } from "swr";
 import { useRouter } from "next/navigation";
+import { useSWRConfig } from "swr";
+import { X as XIcon, Pencil as PencilIcon } from "lucide-react";
 import { fetcher as fetch } from "@lib/fetcher";
 import { IArticle } from "@lib/database/models";
-import { X as XIcon, Pencil as PencilIcon } from "lucide-react";
 
 const fetchDelete = (url: string) => fetch({ url, method: "DELETE" });
 
 const ArticleListItem: React.FC<{ article: IArticle }> = ({ article }) => {
-  const router = useRouter();
   const { mutate } = useSWRConfig();
+  const router = useRouter();
 
   const openArticle = () => {
     router.push(`/article/${article._id}/text`);
@@ -45,9 +45,9 @@ const ArticleListItem: React.FC<{ article: IArticle }> = ({ article }) => {
               : "No date"}
           </p>
         </div>
-        <div className="flex flex-shrink-0 gap-4">
-          <PencilIcon className="dark:text-white" onClick={deleteArticle} />
-          <XIcon className="dark:text-white" onClick={deleteArticle} />
+        <div className="flex flex-shrink-0 gap-4 text-gray-500 dark:text-white">
+          <PencilIcon onClick={deleteArticle} />
+          <XIcon onClick={deleteArticle} />
         </div>
       </div>
     </li>

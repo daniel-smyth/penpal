@@ -9,6 +9,7 @@ import { SignInButton } from "@components/auth";
 import { Leaflet, LeafletButton } from "@components/common";
 import { MenuItem } from "../DashboardLayout";
 import { fetcher } from "@lib/fetcher";
+import { createArticle } from "@lib/api/article";
 
 export interface NavbarProps {
   menuItems: MenuItem[];
@@ -21,25 +22,10 @@ const Navbar: React.FC<NavbarProps> = ({ menuItems }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const createArticle = async () => {
+  const onCreateArticleClick = async () => {
     try {
       setFetching(true);
-      const article = {
-        title: "",
-        text: {
-          current: { input: "", output: { choices: [{ text: "" }] } },
-          history: [],
-        },
-        image: {
-          current: { input: "", output: { data: { url: "" } } },
-          history: [],
-        },
-      };
-      const { _id } = await fetcher({
-        url: "/api/article",
-        method: "POST",
-        body: article,
-      });
+      const { _id } = await createArticle();
       router.push(`/article/${_id}/text`);
     } catch (err: any) {
       console.log(err);
@@ -55,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({ menuItems }) => {
           <div className="space-y-4 border-b border-gray-200 bg-white px-2 pt-2 pb-6 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
             <LeafletButton
               loading={fetching}
-              onClick={createArticle}
+              onClick={onCreateArticleClick}
               Icon={PlusCircleIcon}
             >
               Create New
