@@ -1,6 +1,6 @@
 import React from "react";
 import { getUser } from "@lib/auth";
-import { BillingPlanCard } from "@components/app/admin/plan";
+import { PriceCard } from "@components/app/admin/plan";
 
 // Price ID values can be found on the Stripe dashboard
 // https://stripe.com/docs/billing/subscriptions/price-and-product-ids
@@ -14,40 +14,41 @@ if (!PRICE_ID_SUBSCRIPTION_MONTHLY || !PRICE_ID_SUBSCRIPTION_YEARLY) {
 }
 
 async function PlanPage() {
-  const user = await getUser();
-
   return (
-    <>
-      {/* Remove class [ h-64 ] when adding a card block */}
-      <div className="container mx-auto h-64 w-11/12 py-10 px-6 md:w-4/5">
-        {/* Remove class [ border-dashed border-2 border-gray-300 ] to remove dotted border */}
-        <div className="h-full w-full rounded border-2 border-dashed border-gray-300">
-          {user && <p>Current Plan: {user.subscriptionStatus}</p>}
-          <BillingPlanCard
-            name="Unlimited"
-            description="Everything you need to create and publish articles"
-            price={"4.99"}
+    <section className="dark:bg-gray-900">
+      <div className="mx-auto max-w-screen-xl px-4 sm:px-0 lg:py-4 lg:px-6">
+        <div className="mx-auto mb-8 max-w-screen-md text-center lg:mb-12">
+          <h2 className="mb-4 hidden text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:flex">
+            Designed for business teams like yours
+          </h2>
+          <p className="mb-5 font-light text-gray-500 dark:text-gray-400 sm:text-xl">
+            Here at Flowbite we focus on markets where technology, innovation,
+            and capital can unlock long-term value and drive economic growth.
+          </p>
+        </div>
+        <div className="space-y-8 sm:gap-6 lg:grid lg:grid-cols-3 lg:space-y-0 xl:gap-10">
+          <PriceCard
+            name="Starter"
+            description="Best option for personal use & for your next project."
+            price="29"
             features={[
-              { icon: "newspaper", text: "Unlimited articles" },
-              { icon: "image", text: "Unlimited images" },
-              { icon: "arrow", text: "Unlimited re-shares" },
+              "Individual configuration",
+              "No setup, or hidden fees",
+              <>
+                Team size: <span className="font-semibold">1 developer</span>
+              </>,
+              <>
+                Premium support: <span className="font-semibold">6 months</span>
+              </>,
+              <>
+                Free updates: <span className="font-semibold">6 months</span>
+              </>,
             ]}
             stripePriceId={PRICE_ID_SUBSCRIPTION_MONTHLY!}
           />
-          <BillingPlanCard
-            name="Unlimited"
-            description="Everything you need to create and publish articles"
-            price={"299.99"}
-            features={[
-              { icon: "newspaper", text: "Unlimited articles" },
-              { icon: "image", text: "Unlimited images" },
-              { icon: "arrow", text: "Unlimited re-shares" },
-            ]}
-            stripePriceId={PRICE_ID_SUBSCRIPTION_YEARLY!}
-          />
         </div>
       </div>
-    </>
+    </section>
   );
 }
 
