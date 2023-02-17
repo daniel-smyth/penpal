@@ -9,24 +9,24 @@ import {
 
 const menuItems = [
   {
-    title: "Articles",
-    Icon: LibraryIcon,
-    href: "/articles",
-    dropdownItems: [],
-  },
-  {
     title: "Account",
     Icon: UserIcon,
     dropdownItems: [
       {
         title: "Profile",
-        href: "/admin/profile",
+        href: "/admin/account/profile",
       },
       {
         title: "Plan",
-        href: "/admin/plan",
+        href: "/admin/account/plan",
       },
     ],
+  },
+  {
+    title: "Articles",
+    Icon: LibraryIcon,
+    href: "/articles",
+    dropdownItems: [],
   },
   {
     title: "Plan",
