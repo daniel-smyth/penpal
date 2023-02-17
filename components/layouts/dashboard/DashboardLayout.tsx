@@ -1,11 +1,12 @@
 import { LucideIcon } from "lucide-react";
+import BreadCrumbs from "./Breadcrumbs/Breadcrumbs";
 import Navbar from "./Navbar/Navbar";
 import Sidebar from "./Sidebar/Sidebar";
 
 export interface MenuItem {
   title: string;
   Icon: LucideIcon;
-  href: string; // Only applies if no dropdown items
+  href?: string; // Only applies if no dropdown items
   dropdownItems: { title: string; href: string }[];
 }
 
@@ -25,7 +26,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <Navbar menuItems={menuItems} />
         <Sidebar menuItems={menuItems} />
       </div>
-      <div className="fixed w-full flex-col sm:pl-64">{children}</div>
+      <div className="absolute mt-20 w-full flex-col sm:pl-64">
+        <div className="ml-4 mb-4 sm:ml-8">
+          <BreadCrumbs />
+        </div>
+        {children}
+      </div>
     </>
   );
 };

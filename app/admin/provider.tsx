@@ -17,8 +17,16 @@ const menuItems = [
   {
     title: "Account",
     Icon: UserIcon,
-    href: "/account",
-    dropdownItems: [],
+    dropdownItems: [
+      {
+        title: "Profile",
+        href: "/admin/profile",
+      },
+      {
+        title: "Plan",
+        href: "/admin/plan",
+      },
+    ],
   },
   {
     title: "Plan",

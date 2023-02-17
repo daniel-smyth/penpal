@@ -9,19 +9,14 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
-
-/** If button is a dropdown it has extra dropdown buttons */
-interface DropdownItem {
-  text: string;
-  href: string;
-}
+import { MenuItem } from "@components/layouts/dashboard/DashboardLayout";
 
 interface LeafletButtonProps {
-  Icon?: LucideIconType;
   href?: string; // Only if button is not a dropdown
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  dropdownItems?: MenuItem["dropdownItems"];
   loading?: boolean;
-  dropdownItems?: DropdownItem[];
+  Icon?: LucideIconType;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   children?: React.ReactNode;
 }
 
@@ -37,11 +32,8 @@ const LeafletButton: React.FC<LeafletButtonProps> = ({
 
   const hasDropdown = dropdownItems.length > 0;
 
-  const logoButton = (
-    <button
-      {...rest}
-      className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-    >
+  const buttonContent = (
+    <>
       {Icon && (
         <AnimatePresence>
           {loading ? (
@@ -86,26 +78,37 @@ const LeafletButton: React.FC<LeafletButtonProps> = ({
         ) : (
           <ChevronUpIcon className="h-6 w-6" />
         ))}
-    </button>
+    </>
   );
 
   return (
     <>
       {hasDropdown ? (
-        <div onClick={() => setDropdown((value) => !value)}>{logoButton}</div>
+        <button
+          {...rest}
+          className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+          onClick={() => setDropdown((value) => !value)}
+        >
+          {buttonContent}
+        </button>
       ) : (
-        <Link href={href}>{logoButton}</Link>
+        <Link
+          href={href}
+          className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+        >
+          {buttonContent}
+        </Link>
       )}
 
       {hasDropdown &&
         dropdownItems.map((item) => (
-          <ul key={item.text} className={`${!dropdown && `hidden`}`}>
+          <ul key={item.title} className={`${!dropdown && `hidden`}`}>
             <li>
               <Link
                 href={item.href}
                 className="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
               >
-                {item.text}
+                {item.title}
               </Link>
             </li>
           </ul>

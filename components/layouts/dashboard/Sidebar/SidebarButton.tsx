@@ -16,8 +16,8 @@ interface SidebarButtonProps {
   href?: string; // Only if button is not a dropdown
   dropdownItems?: MenuItem["dropdownItems"];
   loading?: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
   Icon?: LucideIcon;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   children?: React.ReactNode;
 }
 
@@ -38,6 +38,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
     <button
       {...rest}
       className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+      onClick={() => hasDropdown && setDropdown((value) => !value)}
     >
       {Icon && (
         <AnimatePresence>
@@ -77,12 +78,15 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
       <span className="ml-4 inline-flex flex-1 items-center whitespace-nowrap text-left">
         {children}
       </span>
-      {dropdownItems.length > 0 &&
-        (!dropdown ? (
-          <ChevronDownIcon className="h-6 w-6" />
-        ) : (
-          <ChevronUpIcon className="h-6 w-6" />
-        ))}
+      {dropdownItems.length > 0 && (
+        <div onClick={() => setDropdown((value) => !value)}>
+          {!dropdown ? (
+            <ChevronDownIcon className="h-6 w-6" />
+          ) : (
+            <ChevronUpIcon className="h-6 w-6" />
+          )}
+        </div>
+      )}
     </button>
   );
 
@@ -99,10 +103,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
       )}
       {hasDropdown &&
         dropdownItems.map((item) => (
-          <ul
-            key={item.title}
-            className={`${!dropdown && `hidden`} space-y-2 py-2`}
-          >
+          <ul key={item.title} className={`${!dropdown && `hidden`} space-y-2`}>
             <li>
               <Link
                 href={item.href}

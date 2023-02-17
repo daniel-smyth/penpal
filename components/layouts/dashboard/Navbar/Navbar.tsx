@@ -52,8 +52,9 @@ const Navbar: React.FC<NavbarProps> = ({ menuItems }) => {
                   item.href &&
                   pathname?.slice(0, pathname.lastIndexOf("/")) + item.href
                 }
+                dropdownItems={item.dropdownItems}
                 Icon={item.Icon}
-                onClick={() => setOpenLeaflet(false)}
+                onClick={() => !item.dropdownItems && setOpenLeaflet(false)}
               >
                 {item.title}
               </LeafletButton>
