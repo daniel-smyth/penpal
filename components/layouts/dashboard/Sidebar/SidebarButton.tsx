@@ -8,11 +8,13 @@ import {
   ChevronUp as ChevronUpIcon,
   LucideIcon,
 } from "lucide-react";
+import cx from "classnames";
 import { MenuItem } from "../DashboardLayout";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 
 interface SidebarButtonProps {
+  header?: boolean;
   href?: string; // Only if button is not a dropdown
   dropdownItems?: MenuItem["dropdownItems"];
   loading?: boolean;
@@ -22,6 +24,7 @@ interface SidebarButtonProps {
 }
 
 const SidebarButton: React.FC<SidebarButtonProps> = ({
+  header = false,
   href = "",
   dropdownItems = [],
   loading = false,
@@ -29,10 +32,12 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
   children,
   ...rest
 }) => {
-  const pathname = usePathname();
   const [dropdown, setDropdown] = useState(false);
-
   const hasDropdown = dropdownItems.length > 0;
+  const routeClass = cx(
+    "group flex w-full items-center rounded-lg px-6 py-4 text-base text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700",
+    header ? "font-semibold" : "font-normal",
+  );
 
   const buttonContent = (
     <>
@@ -88,16 +93,13 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
       {hasDropdown ? (
         <button
           {...rest}
-          className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+          className={routeClass}
           onClick={() => setDropdown((value) => !value)}
         >
           {buttonContent}
         </button>
       ) : (
-        <Link
-          href={href}
-          className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-        >
+        <Link href={href} className={routeClass}>
           {buttonContent}
         </Link>
       )}
