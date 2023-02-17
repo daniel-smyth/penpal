@@ -99,7 +99,6 @@ const LeafletButton: React.FC<LeafletButtonProps> = ({
           {buttonContent}
         </Link>
       )}
-
       {hasDropdown &&
         dropdownItems.map((item) => (
           <ul key={item.title} className={`${!dropdown && `hidden`}`}>

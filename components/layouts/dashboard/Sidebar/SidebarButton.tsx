@@ -34,12 +34,8 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
 
   const hasDropdown = dropdownItems.length > 0;
 
-  const logoButton = (
-    <button
-      {...rest}
-      className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-      onClick={() => hasDropdown && setDropdown((value) => !value)}
-    >
+  const buttonContent = (
+    <>
       {Icon && (
         <AnimatePresence>
           {loading ? (
@@ -78,27 +74,31 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
       <span className="ml-4 inline-flex flex-1 items-center whitespace-nowrap text-left">
         {children}
       </span>
-      {dropdownItems.length > 0 && (
-        <div onClick={() => setDropdown((value) => !value)}>
-          {!dropdown ? (
-            <ChevronDownIcon className="h-6 w-6" />
-          ) : (
-            <ChevronUpIcon className="h-6 w-6" />
-          )}
-        </div>
-      )}
-    </button>
+      {dropdownItems.length > 0 &&
+        (!dropdown ? (
+          <ChevronDownIcon className="h-6 w-6" />
+        ) : (
+          <ChevronUpIcon className="h-6 w-6" />
+        ))}
+    </>
   );
 
   return (
     <>
       {hasDropdown ? (
-        logoButton
+        <button
+          {...rest}
+          className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+          onClick={() => setDropdown((value) => !value)}
+        >
+          {buttonContent}
+        </button>
       ) : (
         <Link
-          href={href && pathname?.slice(0, pathname.lastIndexOf("/")) + href}
+          href={href}
+          className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
         >
-          {logoButton}
+          {buttonContent}
         </Link>
       )}
       {hasDropdown &&
