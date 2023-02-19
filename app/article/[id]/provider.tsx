@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardLayout } from "@components/layouts";
+import { ArticleLayout } from "@components/layouts";
 import {
   Image as ImageIcon,
   Pencil as PencilIcon,
@@ -29,5 +29,5 @@ const menuItems = [
 ];
 
 export default function Provider({ children }: { children: React.ReactNode }) {
-  return <DashboardLayout menuItems={menuItems}>{children}</DashboardLayout>;
+  return <ArticleLayout menuItems={menuItems}>{children}</ArticleLayout>;
 }

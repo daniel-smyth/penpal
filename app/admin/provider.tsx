@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardLayout } from "@components/layouts";
+import { AdminLayout } from "@components/layouts";
 import {
   Library as LibraryIcon,
   User as UserIcon,
@@ -37,5 +37,5 @@ const menuItems = [
 ];
 
 export default function Provider({ children }: { children: React.ReactNode }) {
-  return <DashboardLayout menuItems={menuItems}>{children}</DashboardLayout>;
+  return <AdminLayout menuItems={menuItems}>{children}</AdminLayout>;
 }

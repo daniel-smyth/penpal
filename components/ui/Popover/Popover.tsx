@@ -13,12 +13,6 @@ interface PopoverProps {
   setOpenPopover: Dispatch<SetStateAction<boolean>>;
 }
 
-/**
- * Displays additional content on top of a page. Smaller and less intrusive than the modal.
- * Allows users to interact with the main page while still being able to access the contents of
- * the popover. Modal completely blocks the main page and requires user interaction with the
- * modal before being able to access the main page again.
- */
 const Popover: React.FC<PopoverProps> = ({
   children,
   content,

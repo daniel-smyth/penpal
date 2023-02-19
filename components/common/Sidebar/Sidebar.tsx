@@ -1,6 +1,12 @@
-import { Settings } from "lucide-react";
-import { MenuItem } from "../DashboardLayout";
+import { LucideIcon, Settings } from "lucide-react";
 import SidebarButton from "./SidebarButton";
+
+export interface MenuItem {
+  title: string;
+  Icon: LucideIcon;
+  href?: string; // Only applies if no dropdown items
+  dropdownItems: { title: string; href: string }[];
+}
 
 export interface SidebarProps {
   menuItems: MenuItem[];

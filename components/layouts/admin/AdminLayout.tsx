@@ -1,7 +1,6 @@
-import { LucideIcon } from "lucide-react";
-import BreadCrumbs from "./Breadcrumbs/Breadcrumbs";
-import Navbar from "./Navbar/Navbar";
-import Sidebar from "./Sidebar/Sidebar";
+import { Navbar } from "@components/common";
+import { Breadcrumbs } from "@components/ui/client";
+import { LucideIcon, Sidebar } from "lucide-react";
 
 export interface MenuItem {
   title: string;
@@ -15,7 +14,7 @@ export interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({
+const AdminLayout: React.FC<DashboardLayoutProps> = ({
   menuItems,
   children,
 }) => {
@@ -27,8 +26,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         <Sidebar menuItems={menuItems} />
       </div>
       <div className="absolute mt-20 w-full flex-col sm:pl-64">
-        <div className="ml-4 mb-4 sm:ml-8">
-          <BreadCrumbs />
+        <div className="mx-4 mb-4 sm:ml-8">
+          <Breadcrumbs />
         </div>
         {children}
       </div>
@@ -36,4 +35,4 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   );
 };
 
-export default DashboardLayout;
+export default AdminLayout;

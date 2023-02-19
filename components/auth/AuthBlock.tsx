@@ -1,4 +1,4 @@
-import { Modal } from "@components/common";
+import { Modal } from "@components/ui/client";
 import { SignInForm } from "@components/auth";
 
 const AuthBlock: React.FC = () => {

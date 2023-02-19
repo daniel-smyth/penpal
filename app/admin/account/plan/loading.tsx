@@ -1,4 +1,4 @@
-import { LoadingPage } from "@components/layouts/dashboard";
+import { LoadingPage } from "@components/layouts/admin";
 
 async function Loading() {
   return <LoadingPage />;

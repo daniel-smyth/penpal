@@ -13,7 +13,7 @@ import { AnimatePresence } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { useScroll, useWindowSize } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
-import { Leaflet, LeafletButton } from "@components/common";
+import { Leaflet, LeafletButton } from "@components/ui/client";
 import { Button } from "@components/ui/client";
 import { createArticle } from "@lib/api/article";
 

@@ -11,7 +11,7 @@ import React, {
 import FocusTrap from "focus-trap-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useWindowSize } from "@lib/hooks";
-import { Leaflet } from "@components/common";
+import { Leaflet } from "../Leaflet";
 
 interface ModalProps {
   disableClose?: boolean;

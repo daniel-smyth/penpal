@@ -7,7 +7,7 @@ import {
   useCallback,
   useMemo,
 } from "react";
-import { Modal } from "@components/common";
+import { Modal } from "@components/ui/client";
 
 const DemoModal = ({
   showDemoModal,

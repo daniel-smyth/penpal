@@ -1,6 +1,5 @@
 import { getUser } from "@lib/auth";
 import { getArticles } from "@lib/api";
-import { AuthBlock } from "@components/layouts/dashboard";
 import Provider from "./provider";
 
 export default async function Layout({

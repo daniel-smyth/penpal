@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { fetcher } from "@lib/fetcher";
 import { IArticle } from "@lib/database/models";
 import { useArticles, useWindowSize } from "@lib/hooks";
-import { LoadingPage } from "@components/layouts/dashboard";
-import { Table } from "@components/common";
+import { LoadingPage } from "@components/layouts/admin";
+import { Table } from "@components/ui/client";
 
 const fetchDelete = (url: string) => fetcher({ url, method: "DELETE" });
 

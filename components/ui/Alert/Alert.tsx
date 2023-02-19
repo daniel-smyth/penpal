@@ -1,3 +1,5 @@
+"use client";
+
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import cn from "classnames";
 import { motion } from "framer-motion";

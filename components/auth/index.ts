@@ -1,3 +1,4 @@
+export { default as AuthBlock } from "./AuthBlock";
 export { default as SignInForm } from "./SignInForm";
 export { default as useSignInModal } from "./SignInModal";
 export { default as UserDropdown } from "./UserDropdown";

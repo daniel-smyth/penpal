@@ -3,12 +3,22 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu as MenuIcon, PlusCircle as PlusCircleIcon } from "lucide-react";
+import {
+  LucideIcon,
+  Menu as MenuIcon,
+  PlusCircle as PlusCircleIcon,
+} from "lucide-react";
 import { useWindowSize } from "@lib/hooks";
 import { SignInButton } from "@components/auth";
-import { Leaflet, LeafletButton } from "@components/common";
+import { Leaflet, LeafletButton } from "@components/ui/client";
 import { createArticle } from "@lib/api/article";
-import { MenuItem } from "../DashboardLayout";
+
+export interface MenuItem {
+  title: string;
+  Icon: LucideIcon;
+  href?: string; // Only applies if no dropdown items
+  dropdownItems: { title: string; href: string }[];
+}
 
 export interface NavbarProps {
   menuItems: MenuItem[];

@@ -84,7 +84,7 @@ const TextGenerator: React.FC<TextGeneratorProps> = ({
               }}
             >
               {article.text.history.length === 0 ? (
-                <div className="py-8">
+                <div className="py-16">
                   <MockOutput onClick={onMockInputClick} />
                 </div>
               ) : (

@@ -2,35 +2,42 @@
 
 import React, { MouseEventHandler, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   ChevronDown as ChevronDownIcon,
   ChevronUp as ChevronUpIcon,
-  LucideIcon as LucideIconType,
+  LucideIcon,
 } from "lucide-react";
+import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
 import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
-import { MenuItem } from "@components/layouts/dashboard/DashboardLayout";
+import { MenuItem } from "./Sidebar";
 
-interface LeafletButtonProps {
+interface SidebarButtonProps {
+  header?: boolean;
   href?: string; // Only if button is not a dropdown
   dropdownItems?: MenuItem["dropdownItems"];
   loading?: boolean;
-  Icon?: LucideIconType;
+  Icon?: LucideIcon;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   children?: React.ReactNode;
 }
 
-const LeafletButton: React.FC<LeafletButtonProps> = ({
-  Icon,
+const SidebarButton: React.FC<SidebarButtonProps> = ({
+  header = false,
   href = "",
-  loading = false,
   dropdownItems = [],
+  loading = false,
+  Icon,
   children,
   ...rest
 }) => {
   const [dropdown, setDropdown] = useState(false);
-
   const hasDropdown = dropdownItems.length > 0;
+  const routeClass = cx(
+    "group flex w-full items-center rounded-lg px-6 py-4 text-base text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700",
+    header ? "font-semibold" : "font-normal",
+  );
 
   const buttonContent = (
     <>
@@ -86,22 +93,19 @@ const LeafletButton: React.FC<LeafletButtonProps> = ({
       {hasDropdown ? (
         <button
           {...rest}
-          className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+          className={routeClass}
           onClick={() => setDropdown((value) => !value)}
         >
           {buttonContent}
         </button>
       ) : (
-        <Link
-          href={href}
-          className="group flex w-full items-center rounded-lg px-6 py-4 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-        >
+        <Link href={href} className={routeClass}>
           {buttonContent}
         </Link>
       )}
       {hasDropdown &&
         dropdownItems.map((item) => (
-          <ul key={item.title} className={`${!dropdown && `hidden`}`}>
+          <ul key={item.title} className={`${!dropdown && `hidden`} space-y-2`}>
             <li>
               <Link
                 href={item.href}
@@ -116,4 +120,4 @@ const LeafletButton: React.FC<LeafletButtonProps> = ({
   );
 };
 
-export default LeafletButton;
+export default SidebarButton;
