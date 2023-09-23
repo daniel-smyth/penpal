@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -13,6 +12,8 @@ import { FADE_IN_ANIMATION_SETTINGS } from "@lib/theme";
 import { useScroll } from "@lib/hooks";
 import { useSignInModal } from "./SignInModal";
 import UserDropdown from "./UserDropdown";
+import React from "react";
+import { Article } from "@prisma/client";
 
 const navigation = [
   { name: "Why Penpal?", href: "#" },
@@ -22,7 +23,7 @@ const navigation = [
 const Navbar: React.FC = () => {
   const { data: session, status } = useSession();
   const { SignInModal, setShowSignInModal } = useSignInModal();
-  const [fetching, setFetching] = useState(false);
+  const [fetching, setFetching] = React.useState(false);
   const scrolled = useScroll(50);
   const router = useRouter();
   const pathname = usePathname();
@@ -30,23 +31,13 @@ const Navbar: React.FC = () => {
   const handleCreatePostClick = async () => {
     try {
       setFetching(true);
-      const article = {
-        title: "",
-        text: {
-          current: { input: "", output: { choices: [{ text: "" }] } },
-          history: [],
-        },
-        image: {
-          current: { input: "", output: { data: { url: "" } } },
-          history: [],
-        },
-      };
-      const { _id } = await fetcher({
-        url: "/api/article",
+      
+      const article = await fetcher({
+        url: "/api/articles",
         method: "POST",
-        body: article,
       });
-      router.push(`/articles/${_id}`);
+      
+      router.push(`/articles/${article.id}`);
     } catch (err: any) {
       console.log(err);
       setFetching(false);
@@ -61,9 +52,7 @@ const Navbar: React.FC = () => {
       <Disclosure
         as="div"
         className={`fixed top-0 w-full ${
-          scrolled
-            ? "border-b border-gray-200 bg-white/50 backdrop-blur-xl"
-            : "bg-white/0"
+          scrolled ? "border-b border-gray-200 bg-white/50 backdrop-blur-xl" : "bg-white/0"
         } z-30 transition-all`}
       >
         {({ open }) => (
@@ -83,10 +72,7 @@ const Navbar: React.FC = () => {
                 </div>
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   {/* Logo */}
-                  <Link
-                    href="/"
-                    className="flex items-center px-3 font-display text-2xl"
-                  >
+                  <Link href="/" className="flex items-center px-3 font-display text-2xl">
                     <p>Penpal</p>
                   </Link>
                   {/* Desktop Navbar links */}
@@ -164,7 +150,7 @@ const Navbar: React.FC = () => {
             </div>
             {/* Mobile Navbar menu links */}
             <Disclosure.Panel className="sm:hidden">
-              <div className="space-y-1 px-2 pt-2 pb-3">
+              <div className="space-y-1 px-2 pb-3 pt-2">
                 {navigation.map((item) => (
                   <Disclosure.Button
                     key={item.name}
@@ -176,9 +162,7 @@ const Navbar: React.FC = () => {
                         : "text-gray-500 hover:bg-gray-700 hover:text-white",
                       "block rounded-md px-3 py-2 text-base font-medium",
                     )}
-                    aria-current={
-                      pathname?.includes(item.href) ? "page" : undefined
-                    }
+                    aria-current={pathname?.includes(item.href) ? "page" : undefined}
                   >
                     {item.name}
                   </Disclosure.Button>

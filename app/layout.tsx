@@ -1,6 +1,6 @@
 import "../styles/globals.css";
-import localFont from "@next/font/local";
-import { Inter } from "@next/font/google";
+import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import cx from "classnames";
 import Providers from "./providers";
 

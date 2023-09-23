@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: penpal
+      POSTGRES_PASSWORD: penpal
+      POSTGRES_DB: penpal
+    ports:
+      - 5432:5432
+    volumes:
+      - penpal:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - penpal
+volumes:
+  penpal:
+    driver: local
+  api-redis:
+    driver: local
+networks:
+  penpal:
+    driver: bridge

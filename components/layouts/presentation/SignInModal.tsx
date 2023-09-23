@@ -32,7 +32,7 @@ const SignInModal: React.FC<SignInModalProps> = ({
 
 export function useSignInModal() {
   const searchParams = useSearchParams();
-  const isOpen = searchParams.get("showSignInModal");
+  const isOpen = searchParams?.get("showSignInModal");
   const [showSignInModal, setShowSignInModal] = useState(isOpen === "true");
 
   const SignInModalCallback = useCallback(() => {

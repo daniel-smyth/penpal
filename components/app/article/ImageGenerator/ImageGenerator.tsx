@@ -3,17 +3,22 @@
 import React, { useState } from "react";
 import { fetcher } from "@lib/fetcher";
 import { useArticle } from "@lib/hooks";
-import { IArticle, IImageQuery } from "@lib/database/models";
+import { ArticleJoined } from "@app/api/articles/[id]/route";
+import { ImageQuery } from "@prisma/client";
 
 interface ImageGeneratorProps {
-  article: IArticle;
+  article: ArticleJoined;
 }
 
 const ImageGenerator: React.FC<ImageGeneratorProps> = ({
   article: fallbackData,
 }) => {
-  const { article, mutate } = useArticle(fallbackData._id, { fallbackData });
-  const [query, setQuery] = useState({ ...fallbackData.image.current });
+  const { article, mutate } = useArticle(fallbackData.id, { 
+    fallbackData 
+  });
+  const [query, setQuery] = useState({ 
+    ...fallbackData.image_queries.at(0) ?? ''
+  });
   const [error, setError] = useState("");
 
   if (!article) {
@@ -46,7 +51,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
     }
   };
 
-  const onHistoryClick = async (query: IImageQuery) => {
+  const onHistoryClick = async (query: ImageQuery) => {
     setQuery(query);
 
     const newArticle = {
@@ -74,7 +79,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
 
       <strong>
         Current Output
-        <p>{article.image.current.output.data.url}</p>
+        <p>{article.image_queries.at(0)?.output[0] ?? ''}</p>
       </strong>
 
       <br />
@@ -96,7 +101,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
       <br />
 
       <strong>History</strong>
-      {article.image.history.map((query, i) => (
+      {article.image_queries.map((query, i) => (
         <li key={i}>
           <button onClick={() => onHistoryClick(query)}>{query.input}</button>
         </li>

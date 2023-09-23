@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
-import { IUser } from "@lib/database/models";
+import { User } from "@prisma/client";
 
 declare module "next-auth" {
   interface Session {
-    user: IUser;
+    user: User;
   }
 }
